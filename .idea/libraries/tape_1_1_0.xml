@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="tape-1.1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SDK/libs/tape-1.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
