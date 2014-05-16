@@ -1,27 +1,15 @@
 package com.sailthru.android.sdk.api;
 
-import com.google.gson.GsonBuilder;
 import com.sailthru.android.sdk.api.model.UserRegisterAppResponse;
-
-//import org.springframework.http.HttpEntity;
-//import org.springframework.http.HttpHeaders;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.http.MediaType;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.http.converter.FormHttpMessageConverter;
-//import org.springframework.http.converter.HttpMessageConverter;
-//import org.springframework.http.converter.json.GsonHttpMessageConverter;
-//import org.springframework.util.LinkedMultiValueMap;
-//import org.springframework.util.MultiValueMap;
-//import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.RestAdapter;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.observables.AndroidObservable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -59,6 +47,32 @@ public class APIManager {
                 "419188ee0d0dc748f04e0cd9ea7d7c0f",
                 "json");
 
+//        return Observable.create(new Observable.OnSubscribe<UserRegisterAppResponse>() {
+//            @Override
+//            public void call(Subscriber<? super UserRegisterAppResponse> subscriber) {
+//                try {
+//                    subscriber.onNext(userService.registerUser(sig, json, apiKey, format));
+//                    subscriber.onCompleted();
+//                } catch (Exception e) {
+//                    subscriber.onError(e);
+//                }
+//            }
+//        }).subscribeOn(Schedulers.io());
+
+//        return new UserRegisterAppResponse();
+//        public static Observable<UserRegisterAppResponse> registerUser(final String city) {
+//            return Observable.create(new Observable.OnSubscribe<UserRegisterAppResponse>() {
+//                @Override
+//                public void call(Subscriber<? super UserRegisterAppResponse> subscriber) {
+//                    try {
+//                        subscriber.onNext(apiManager.getWeather(city, "metric"));
+//                        subscriber.onCompleted();
+//                    } catch (Exception e) {
+//                        subscriber.onError(e);
+//                    }
+//                }
+//            }).subscribeOn(Schedule.io());
+//        }
 //        MultiValueMap<String, String> postParams = new LinkedMultiValueMap<String, String>();
 //        postParams.add("sig", "d48ffaf86db3afaa1d7201ca8ac25bac");
 //        postParams.add("json", ApiConstants.TEMP_JSON);
