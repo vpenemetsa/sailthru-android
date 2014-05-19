@@ -5,8 +5,10 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.sailthru.android.sdk.Constants;
 import com.sailthru.android.sdk.api.ApiConstants;
+import com.sailthru.android.sdk.api.model.UserRegisterAppRequest;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -22,31 +24,58 @@ import java.util.Map;
  *
  * Util methods to construct data for App Register request
  */
-class AppRegisterUtils {
+public class AppRegisterUtils {
 
-    public String generateRegisterJson() {
-
-        return "";
-    }
-
-    public Map<String, String> buildRequest() {
+    public static Map<String, String> buildRequest(Context context, String appId, String apiKey, String uid,
+                                            ApiConstants.Identification userType) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("api_key", "419188ee0d0dc748f04e0cd9ea7d7c0f");
-        params.put("format", "json");
-        params.put("json", ApiConstants.TEMP_JSON);
-        params.put("sig", "d48ffaf86db3afaa1d7201ca8ac25bac");
+        params.put(ApiConstants.UR_API_KEY, apiKey);
+        params.put(ApiConstants.UR_FORMAT_KEY, ApiConstants.UR_FORMAT_VALUE);
+        params.put(ApiConstants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
+        params.put(ApiConstants.UR_SIG_KEY, generateSig(appId, params));
 
         return params;
     }
 
-    public String generateSig(String apiSecret, Map<String, String> params) {
+    private static String generateRegisterJson(Context context, String uid, ApiConstants.Identification userType) {
+        DeviceUtils deviceUtils = DeviceUtils.getInstance();
+        deviceUtils.setContext(context);
+
+        UserRegisterAppRequest request = new UserRegisterAppRequest();
+        request.setPlatformAppVersion(ApiConstants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
+        request.setId(uid);
+        request.setDeviceId(deviceUtils.getDeviceId());
+        request.setOsVersion(deviceUtils.getOsVersion());
+        request.setEnv(ApiConstants.UR_JSON_ENV_VALUE);
+        request.setPlatformAppId(ApiConstants.UR_JSON_PLATFORM_APP_ID_VALUE);
+        request.setKey(userType.toString());
+        request.setDeviceType(deviceUtils.getDeviceType());
+        request.setDeviceVersion(deviceUtils.getDeviceVersion());
+
+        Map<String, String> data = new HashMap<String, String>();
+        data.put(ApiConstants.UR_JSON_PLATFORM_APP_VERSION_KEY, ApiConstants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
+        data.put(ApiConstants.UR_JSON_ID_KEY, uid);
+        data.put(ApiConstants.UR_JSON_DEVICE_ID_KEY, deviceUtils.getDeviceId());
+        data.put(ApiConstants.UR_JSON_OS_VERSION_KEY, deviceUtils.getOsVersion());
+        data.put(ApiConstants.UR_JSON_ENV_KEY, ApiConstants.UR_JSON_ENV_VALUE);
+        data.put(ApiConstants.UR_JSON_PLATFORM_APP_ID_KEY, ApiConstants.UR_JSON_PLATFORM_APP_ID_VALUE);
+        data.put(ApiConstants.UR_JSON_KEY_KEY, userType.toString());
+        data.put(ApiConstants.UR_JSON_DEVICE_TYPE_KEY, deviceUtils.getDeviceType());
+        data.put(ApiConstants.UR_JSON_DEVICE_VERSION_KEY, deviceUtils.getDeviceVersion());
+
+        Gson gson = new Gson();
+        Log.d("**********************", gson.toJson(request));
+        return gson.toJson(request);
+    }
+
+    private static String generateSig(String appId, Map<String, String> params) {
         List<String> values = new ArrayList<String>();
 
         StringBuilder builder = new StringBuilder();
-        builder.append(apiSecret);
+        builder.append(appId);
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
-            builder.append(entry.getValue());
+            values.add(entry.getValue());
         }
         Collections.sort(values);
 
@@ -55,14 +84,6 @@ class AppRegisterUtils {
         }
 
         return getMd5(builder.toString());
-    }
-
-    private String getDeviceId(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-    }
-
-    private String getOsVersion() {
-        return String.valueOf(Build.VERSION.SDK_INT);
     }
 
     private static String getMd5(String data) {
