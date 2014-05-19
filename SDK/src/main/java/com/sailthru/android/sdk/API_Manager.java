@@ -1,9 +1,6 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.Map;
