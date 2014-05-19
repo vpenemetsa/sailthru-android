@@ -6,12 +6,12 @@ import android.provider.Settings;
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  */
-class UTILS_Device {
+class Utils_Device {
 
     static Context mContext;
 
-    public static UTILS_Device getInstance() {
-        return new UTILS_Device();
+    public static Utils_Device getInstance() {
+        return new Utils_Device();
     }
 
     public void setContext(Context context) {

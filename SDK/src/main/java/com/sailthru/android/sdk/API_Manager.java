@@ -1,6 +1,10 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.Map;
 
@@ -15,46 +19,51 @@ import retrofit.http.POST;
  *
  * A Central class to handle all API transactions
  */
-class API_Manager {
+class Api_Manager {
 
-    private static final String TAG = API_Manager.class.getSimpleName();
+    private static final String TAG = Api_Manager.class.getSimpleName();
 
-    public static API_Manager getInstance() {
-        return new API_Manager();
+    public static Api_Manager getInstance() {
+        return new Api_Manager();
     }
 
     public interface RegisterUserService {
         @FormUrlEncoded
         @POST("/userregisterapp")
-        MODEL_UserRegisterAppResponse registerUser(@Field(API_Constants.UR_SIG_KEY) String sig,
-                                             @Field(API_Constants.UR_JSON_KEY) String json,
-                                             @Field(API_Constants.UR_API_KEY) String apiKey,
-                                             @Field(API_Constants.UR_FORMAT_KEY) String format);
+        Model_UserRegisterAppResponse registerUser(@Field(Api_Constants.UR_SIG_KEY) String sig,
+                                             @Field(Api_Constants.UR_JSON_KEY) String json,
+                                             @Field(Api_Constants.UR_API_KEY) String apiKey,
+                                             @Field(Api_Constants.UR_FORMAT_KEY) String format);
     }
 
-    public MODEL_UserRegisterAppResponse registerUser(Context context, String appId,
+    public Model_UserRegisterAppResponse registerUser(Context context, String appId,
                                                 String apiKey, String uid,
-                                                API_Constants.Identification userType) {
+                                                SailthruClient.Identification userType) {
 
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(API_Constants.API_ENDPOINT)
+                .setEndpoint(Api_Constants.API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
+//        Log.d("!!!!!!!!!!!APi manager!!!!!!!!!!", Looper.getMainLooper().getThread().toString());
+//        Log.d("!!!!!!!!!!!APi manager!!!!!!!!!!", Thread.currentThread().toString());
         RegisterUserService service = adapter.create(RegisterUserService.class);
 
-        Map<String, String> params = UTILS_AppRegister.buildRequest(context, appId, apiKey,
+        Map<String, String> params = Utils_AppRegister.buildRequest(context, appId, apiKey,
                 uid, userType);
 
-        MODEL_UserRegisterAppResponse response = new MODEL_UserRegisterAppResponse();
+        Model_UserRegisterAppResponse response = new Model_UserRegisterAppResponse();
         try {
             response = service.registerUser(
-                    params.get(API_Constants.UR_SIG_KEY),
-                    params.get(API_Constants.UR_JSON_KEY),
+                    params.get(Api_Constants.UR_SIG_KEY),
+                    params.get(Api_Constants.UR_JSON_KEY),
                     apiKey,
-                    API_Constants.UR_FORMAT_VALUE);
+                    Api_Constants.UR_FORMAT_VALUE);
             response.setStatusCode(200);
             response.setStatusText("success");
+            Utils_SecurePreferences prefs = new Utils_SecurePreferences(context,
+                    St_Constants.ST_SECURE_PREFS, St_Constants.ST_SECURE_PREFS_KEY, true);
+            prefs.put(St_Constants.ST_PREFS_CACHED_HID, response.getHid());
         } catch (RetrofitError error) {
             response.setStatusCode(error.getResponse().getStatus());
             response.setStatusText(error.getBody().toString());
@@ -67,9 +76,9 @@ class API_Manager {
         /******JSON*******﹕ {"platform_app_id":"com.sailthru.qa","id":"dhoerl+testa009@sailthru.com","device_version":"4.3","device_type":"iphone","device_id":"32f1b4b34b5c0df0","env":"dev","platform_app_version":"1.0","key":"email","os_version":"7.1"}
         /******SIG*******﹕ 3fb2a09da32da85d4136492b361f3643
 */
-//        return Observable.create(new Observable.OnSubscribe<MODEL_UserRegisterAppResponse>() {
+//        return Observable.create(new Observable.OnSubscribe<Model_UserRegisterAppResponse>() {
 //            @Override
-//            public void call(Subscriber<? super MODEL_UserRegisterAppResponse> subscriber) {
+//            public void call(Subscriber<? super Model_UserRegisterAppResponse> subscriber) {
 //                try {
 //                    subscriber.onNext(userService.registerUser(sig, json, apiKey, format));
 //                    subscriber.onCompleted();
@@ -79,11 +88,11 @@ class API_Manager {
 //            }
 //        }).subscribeOn(Schedulers.io());
 
-//        return new MODEL_UserRegisterAppResponse();
-//        public static Observable<MODEL_UserRegisterAppResponse> registerUser(final String city) {
-//            return Observable.create(new Observable.OnSubscribe<MODEL_UserRegisterAppResponse>() {
+//        return new Model_UserRegisterAppResponse();
+//        public static Observable<Model_UserRegisterAppResponse> registerUser(final String city) {
+//            return Observable.create(new Observable.OnSubscribe<Model_UserRegisterAppResponse>() {
 //                @Override
-//                public void call(Subscriber<? super MODEL_UserRegisterAppResponse> subscriber) {
+//                public void call(Subscriber<? super Model_UserRegisterAppResponse> subscriber) {
 //                    try {
 //                        subscriber.onNext(apiManager.getWeather(city, "metric"));
 //                        subscriber.onCompleted();
@@ -94,5 +103,4 @@ class API_Manager {
 //            }).subscribeOn(Schedule.io());
 //        }
     }
-
 }

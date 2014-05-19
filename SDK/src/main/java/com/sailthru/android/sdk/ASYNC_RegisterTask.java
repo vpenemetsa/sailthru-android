@@ -8,16 +8,16 @@ import android.widget.Toast;
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  */
-class ASYNC_RegisterTask extends AsyncTask<Void, Void, String> {
+class Async_RegisterTask extends AsyncTask<Void, Void, String> {
 
     Context mContext;
     String mAppId;
     String mApiKey;
     String mUid;
-    API_Constants.Identification mUserType;
+    SailthruClient.Identification mUserType;
 
-    ASYNC_RegisterTask(Context context, String appId, String apiKey, String uid,
-                       API_Constants.Identification userType) {
+    Async_RegisterTask(Context context, String appId, String apiKey, String uid,
+                       SailthruClient.Identification userType) {
         mContext = context;
         mAppId = appId;
         mApiKey = apiKey;
@@ -27,7 +27,7 @@ class ASYNC_RegisterTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... params) {
-        MODEL_UserRegisterAppResponse response = API_Manager.getInstance().registerUser(mContext,
+        Model_UserRegisterAppResponse response = Api_Manager.getInstance().registerUser(mContext,
                 mAppId, mApiKey, mUid, mUserType);
         String text = response.getHid();
 

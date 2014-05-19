@@ -4,7 +4,7 @@ package com.sailthru.android.sdk;
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  */
-class API_Constants {
+class Api_Constants {
 
     public static final String API_ENDPOINT = "https://api.sailthru.com/mobile";
 
@@ -35,31 +35,4 @@ class API_Constants {
 
 //    public static final String TEMP_JSON = "{ \"platform_app_version\" : \"1.0\", \"id\" : \"dhoerl+testa009@sailthru.com\", \"device_id\" : \"acabd25475bfbdb927ca989ef5cba4d0eefb9655d33d127dc8e01432dc01e8ca\", \"os_version\" : \"7.1\", \"env\" : \"dev\", \"platform_app_id\" : \"com.sailthru.qa\", \"key\" : \"email\", \"device_type\" : \"iphone\", \"device_version\" : \"4.3\" }";
 
-    public enum Identification {
-        EMAIL("email"), ANONYMOUS("anonymous");
-
-        private final String name;
-
-        private Identification(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
-
-    public enum RegistrationMode {
-        DEV("DEV"), PROD("PROD");
-
-        private final String name;
-
-        private RegistrationMode(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
 }

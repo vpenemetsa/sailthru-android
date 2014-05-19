@@ -5,7 +5,7 @@ package com.sailthru.android.sdk;
  *
  * Reponse class matching response from API for registration request
  */
-class MODEL_UserRegisterAppResponse extends MODEL_BaseResponse {
+class Model_UserRegisterAppResponse extends Model_BaseResponse {
 
     private String hid;
 
