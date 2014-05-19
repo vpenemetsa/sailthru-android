@@ -1,4 +1,4 @@
-package com.sailthru.android.sdk.api.model;
+package com.sailthru.android.sdk;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * Request Class used to send data across to the API during registration
  */
-public class UserRegisterAppRequest {
+class MODEL_UserRegisterAppRequest {
 
     @SerializedName("platform_app_version")
     private String platformAppVersion;

@@ -1,19 +1,17 @@
-package com.sailthru.android.sdk.utils;
+package com.sailthru.android.sdk;
 
 import android.content.Context;
-import android.os.Build;
 import android.provider.Settings;
-import android.view.Display;
 
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  */
-public class DeviceUtils {
+class UTILS_Device {
 
     static Context mContext;
 
-    public static DeviceUtils getInstance() {
-        return new DeviceUtils();
+    public static UTILS_Device getInstance() {
+        return new UTILS_Device();
     }
 
     public void setContext(Context context) {

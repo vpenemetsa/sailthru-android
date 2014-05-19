@@ -1,11 +1,11 @@
-package com.sailthru.android.sdk.api.model;
+package com.sailthru.android.sdk;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  *
  * Reponse class matching response from API for registration request
  */
-public class UserRegisterAppResponse extends BaseResponse {
+class MODEL_UserRegisterAppResponse extends MODEL_BaseResponse {
 
     private String hid;
 
