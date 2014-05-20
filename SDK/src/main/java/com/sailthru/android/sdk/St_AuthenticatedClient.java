@@ -101,61 +101,61 @@ class St_AuthenticatedClient {
         return mMode;
     }
 
-    public static void setMode(String mode) {
+    public void setMode(String mode) {
         mPrefs.put(ST_SECURE_PREFS_REGISTRATION_MODE, mode);
         mMode = mode;
     }
 
-    public static String getDomain() {
+    public String getDomain() {
         return mDomain;
     }
 
-    public static void setDomain(String domain) {
+    public void setDomain(String domain) {
         mPrefs.put(ST_SECURE_PREFS_DOMAIN, domain);
         mDomain = domain;
     }
 
-    public static String getApiKey() {
+    public String getApiKey() {
         return mApiKey;
     }
 
-    public static void setApiKey(String apiKey) {
+    public void setApiKey(String apiKey) {
         mPrefs.put(ST_SECURE_PREFS_API_KEY, apiKey);
         mApiKey = apiKey;
     }
 
-    public static String getAppId() {
+    public String getAppId() {
         return mAppId;
     }
 
-    public static void setAppId(String appId) {
+    public void setAppId(String appId) {
         mPrefs.put(ST_SECURE_PREFS_APP_ID, appId);
         mAppId = appId;
     }
 
-    public static String getIdentification() {
+    public String getIdentification() {
         return mIdentification;
     }
 
-    public static void setIdentification(String identification) {
+    public void setIdentification(String identification) {
         mPrefs.put(ST_SECURE_PREFS_IDENTIFICATION, identification);
         mIdentification = identification;
     }
 
-    public static String getUid() {
+    public  String getUid() {
         return mUid;
     }
 
-    public static void setUid(String uid) {
+    public void setUid(String uid) {
         mPrefs.put(ST_SECURE_PREFS_UID, uid);
         mUid = uid;
     }
 
-    public static String getToken() {
+    public String getToken() {
         return mToken;
     }
 
-    public static void setToken(String token) {
+    public void setToken(String token) {
         mPrefs.put(ST_SECURE_PREFS_TOKEN, token);
         mToken = token;
     }

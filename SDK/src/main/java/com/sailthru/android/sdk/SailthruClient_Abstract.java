@@ -1,6 +1,7 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 /**
  * Created by Vijay Penemetsa on 5/20/14.
@@ -32,7 +33,7 @@ class SailthruClient_Abstract {
      * Defines registration environment
      */
     public enum RegistrationMode {
-        DEV("DEV"), PROD("PROD");
+        DEV("dev"), PROD("prod");
 
         private final String name;
 
@@ -67,4 +68,28 @@ class SailthruClient_Abstract {
         mAuthenticatedClient.setToken(token);
     }
 
+    protected boolean passedSanityChecks() {
+
+        return true;
+    }
+
+    protected boolean notNullOrEmpty(String input) {
+        if (input != null ) {
+            if (!TextUtils.isEmpty(input)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean notNullAndHasValue(String input, String match) {
+        if (input != null) {
+            if (input.equals(match)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

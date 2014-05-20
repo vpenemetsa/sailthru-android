@@ -3,6 +3,7 @@ package com.sailthru.android.sdk;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -45,13 +46,25 @@ public class SailthruClient extends SailthruClient_Abstract {
             mHorIdLoader.cancel(true);
         }
 
-        if (mAuthenticatedClient.isConnectedToNetwork()) {
-            Async_RegisterTask loader = new Async_RegisterTask(mContext, appId, apiKey, uid,
-                    identification, mAuthenticatedClient);
-            loader.execute((Void) null);
-        }
+        if (passedSanityChecks()) {
+            if (mAuthenticatedClient.isConnectedToNetwork()) {
+                Async_RegisterTask loader;
+                String storedHid = mAuthenticatedClient.getHid();
+                if (notNullAndHasValue(mAuthenticatedClient.getIdentification(), Identification.ANONYMOUS.toString()) &&
+                        identification.equals(Identification.EMAIL) && notNullOrEmpty(storedHid)) {
+                    Log.d("stored Hid", storedHid);
+                    loader = new Async_RegisterTask(mContext, appId, apiKey, storedHid,
+                            null, mAuthenticatedClient);
+                } else {
+                    loader = new Async_RegisterTask(mContext, appId, apiKey, uid,
+                            identification, mAuthenticatedClient);
+                }
 
-        saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
+                loader.execute((Void) null);
+            }
+
+            saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
+        }
     }
 
     /**

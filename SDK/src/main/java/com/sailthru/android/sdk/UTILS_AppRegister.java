@@ -38,14 +38,15 @@ class Utils_AppRegister {
 
         Map<String, String> data = new HashMap<String, String>();
         data.put(Api_Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, Api_Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
-        Log.d("*******************", userType.toString());
-        if (userType.equals(SailthruClient_Abstract.Identification.EMAIL)) {
-            Log.d("*******************", "ENtered as email");
+        if (userType == null) {
+            Log.d("*******************", "ENtered as null");
+            Log.d("*******************", uid);
+            data.put(Api_Constants.UR_JSON_ID_KEY, uid);
+            data.put(Api_Constants.UR_JSON_KEY_KEY, "hid");
+        } else if (userType.equals(SailthruClient_Abstract.Identification.EMAIL)) {
+            Log.d("*******************", "Entered as email");
             data.put(Api_Constants.UR_JSON_ID_KEY, uid);
             data.put(Api_Constants.UR_JSON_KEY_KEY, userType.toString());
-        } else if (userType == null) {
-            Log.d("*******************", "ENtered as null");
-            data.put(Api_Constants.UR_JSON_KEY_KEY, "hid");
         }
 
         data.put(Api_Constants.UR_JSON_DEVICE_ID_KEY, UTILSDevice.getDeviceId());

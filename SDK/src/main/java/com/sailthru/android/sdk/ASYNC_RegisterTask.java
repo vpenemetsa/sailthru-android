@@ -39,7 +39,7 @@ class Async_RegisterTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        Log.d("*********fskljdfhlskjdfg**********", s);
+        Log.d("*********Returned HID**********", s);
         Toast.makeText(mContext, s, Toast.LENGTH_LONG).show();
     }
 }
