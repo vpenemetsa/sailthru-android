@@ -1,6 +1,8 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 /**
@@ -10,6 +12,7 @@ public class SailthruClient {
 
     Context mContext;
     Async_RegisterTask mHorIdLoader = null;
+    St_AuthenticatedClient mAuthenticatedClient;
 
     public enum Identification {
         EMAIL("email"), ANONYMOUS("anonymous");
@@ -41,6 +44,15 @@ public class SailthruClient {
 
     public SailthruClient(Context context) {
         mContext = context;
+        mAuthenticatedClient = St_AuthenticatedClient.getInstance(context);
+
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo == null) {
+            mAuthenticatedClient.setConnectedToNetwork(false);
+        } else {
+            mAuthenticatedClient.setConnectedToNetwork(true);
+        }
     }
 
     public void register(RegistrationMode mode, String domain,
@@ -51,18 +63,14 @@ public class SailthruClient {
             mHorIdLoader.cancel(true);
         }
 
-        Async_RegisterTask loader = new Async_RegisterTask(mContext, appId, apiKey, uid, identification);
-        loader.execute((Void) null);
-    }
-
-    public void unregisterUser() {
-        Utils_SecurePreferences prefs = new Utils_SecurePreferences(mContext,
-                St_Constants.ST_SECURE_PREFS, St_Constants.ST_SECURE_PREFS_KEY, true);
-        if (prefs.containsKey(St_Constants.ST_PREFS_CACHED_HID)) {
-            Log.d("((((((HID))))))", prefs.getString(St_Constants.ST_PREFS_CACHED_HID));
-            prefs.removeValue(St_Constants.ST_PREFS_CACHED_HID);
-            Log.d("((((((HID-AFTER))))))", "HID CLEARED");
+        if (mAuthenticatedClient.isConnectedToNetwork()) {
+            Async_RegisterTask loader = new Async_RegisterTask(mContext, appId, apiKey, uid,
+                    identification, mAuthenticatedClient);
+            loader.execute((Void) null);
         }
     }
 
+    public void unregisterUser() {
+        mAuthenticatedClient.deleteHid();
+    }
 }

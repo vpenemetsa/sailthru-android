@@ -19,8 +19,10 @@ import retrofit.http.POST;
 class Api_Manager {
 
     private static final String TAG = Api_Manager.class.getSimpleName();
+    private static St_AuthenticatedClient mAuthenticatedClient;
 
-    public static Api_Manager getInstance() {
+    public static Api_Manager getInstance(St_AuthenticatedClient client) {
+        mAuthenticatedClient = client;
         return new Api_Manager();
     }
 
@@ -58,46 +60,15 @@ class Api_Manager {
                     Api_Constants.UR_FORMAT_VALUE);
             response.setStatusCode(200);
             response.setStatusText("success");
-            Utils_SecurePreferences prefs = new Utils_SecurePreferences(context,
-                    St_Constants.ST_SECURE_PREFS, St_Constants.ST_SECURE_PREFS_KEY, true);
-            prefs.put(St_Constants.ST_PREFS_CACHED_HID, response.getHid());
+            mAuthenticatedClient.saveHid(response.getHid());
+//            Utils_SecurePreferences prefs = new Utils_SecurePreferences(context,
+//                    St_Constants.ST_SECURE_PREFS, St_Constants.ST_SECURE_PREFS_KEY, true);
+//            prefs.put(St_Constants.ST_PREFS_CACHED_HID, response.getHid());
         } catch (RetrofitError error) {
             response.setStatusCode(error.getResponse().getStatus());
             response.setStatusText(error.getBody().toString());
         }
 
         return response;
-/*
-        /******APP KEY*******﹕ 419188ee0d0dc748f04e0cd9ea7d7c0f
-        /******APP ID*******﹕ 5362a304fdd5ac3611000481
-        /******JSON*******﹕ {"platform_app_id":"com.sailthru.qa","id":"dhoerl+testa009@sailthru.com","device_version":"4.3","device_type":"iphone","device_id":"32f1b4b34b5c0df0","env":"dev","platform_app_version":"1.0","key":"email","os_version":"7.1"}
-        /******SIG*******﹕ 3fb2a09da32da85d4136492b361f3643
-*/
-//        return Observable.create(new Observable.OnSubscribe<Model_UserRegisterAppResponse>() {
-//            @Override
-//            public void call(Subscriber<? super Model_UserRegisterAppResponse> subscriber) {
-//                try {
-//                    subscriber.onNext(userService.registerUser(sig, json, apiKey, format));
-//                    subscriber.onCompleted();
-//                } catch (Exception e) {
-//                    subscriber.onError(e);
-//                }
-//            }
-//        }).subscribeOn(Schedulers.io());
-
-//        return new Model_UserRegisterAppResponse();
-//        public static Observable<Model_UserRegisterAppResponse> registerUser(final String city) {
-//            return Observable.create(new Observable.OnSubscribe<Model_UserRegisterAppResponse>() {
-//                @Override
-//                public void call(Subscriber<? super Model_UserRegisterAppResponse> subscriber) {
-//                    try {
-//                        subscriber.onNext(apiManager.getWeather(city, "metric"));
-//                        subscriber.onCompleted();
-//                    } catch (Exception e) {
-//                        subscriber.onError(e);
-//                    }
-//                }
-//            }).subscribeOn(Schedule.io());
-//        }
     }
 }
