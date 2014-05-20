@@ -3,6 +3,8 @@ package com.sailthru.android.sdk;
 import android.content.Context;
 import android.util.Log;
 
+import org.apache.http.HttpStatus;
+
 import java.util.Map;
 
 import retrofit.RestAdapter;
@@ -43,9 +45,6 @@ class Api_Manager {
                 .setEndpoint(Api_Constants.API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-
-//        Log.d("!!!!!!!!!!!APi manager!!!!!!!!!!", Looper.getMainLooper().getThread().toString());
-//        Log.d("!!!!!!!!!!!APi manager!!!!!!!!!!", Thread.currentThread().toString());
         RegisterUserService service = adapter.create(RegisterUserService.class);
 
         Map<String, String> params = Utils_AppRegister.buildRequest(context, appId, apiKey,
@@ -58,12 +57,9 @@ class Api_Manager {
                     params.get(Api_Constants.UR_JSON_KEY),
                     apiKey,
                     Api_Constants.UR_FORMAT_VALUE);
-            response.setStatusCode(200);
+            response.setStatusCode(HttpStatus.SC_OK);
             response.setStatusText("success");
             mAuthenticatedClient.saveHid(response.getHid());
-//            Utils_SecurePreferences prefs = new Utils_SecurePreferences(context,
-//                    St_Constants.ST_SECURE_PREFS, St_Constants.ST_SECURE_PREFS_KEY, true);
-//            prefs.put(St_Constants.ST_PREFS_CACHED_HID, response.getHid());
         } catch (RetrofitError error) {
             response.setStatusCode(error.getResponse().getStatus());
             response.setStatusText(error.getBody().toString());

@@ -38,12 +38,20 @@ class Utils_AppRegister {
 
         Map<String, String> data = new HashMap<String, String>();
         data.put(Api_Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, Api_Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
-        data.put(Api_Constants.UR_JSON_ID_KEY, uid);
+        Log.d("*******************", userType.toString());
+        if (userType.equals(SailthruClient_Abstract.Identification.EMAIL)) {
+            Log.d("*******************", "ENtered as email");
+            data.put(Api_Constants.UR_JSON_ID_KEY, uid);
+            data.put(Api_Constants.UR_JSON_KEY_KEY, userType.toString());
+        } else if (userType == null) {
+            Log.d("*******************", "ENtered as null");
+            data.put(Api_Constants.UR_JSON_KEY_KEY, "hid");
+        }
+
         data.put(Api_Constants.UR_JSON_DEVICE_ID_KEY, UTILSDevice.getDeviceId());
         data.put(Api_Constants.UR_JSON_OS_VERSION_KEY, UTILSDevice.getOsVersion());
         data.put(Api_Constants.UR_JSON_ENV_KEY, Api_Constants.UR_JSON_ENV_VALUE);
         data.put(Api_Constants.UR_JSON_PLATFORM_APP_ID_KEY, Api_Constants.UR_JSON_PLATFORM_APP_ID_VALUE);
-        data.put(Api_Constants.UR_JSON_KEY_KEY, userType.toString());
         data.put(Api_Constants.UR_JSON_DEVICE_TYPE_KEY, UTILSDevice.getDeviceType());
         data.put(Api_Constants.UR_JSON_DEVICE_VERSION_KEY, UTILSDevice.getDeviceVersion());
 

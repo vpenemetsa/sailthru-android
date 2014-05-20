@@ -9,7 +9,6 @@ import android.util.Log;
 
 public class Receiver_Network extends BroadcastReceiver {
     public Receiver_Network() {
-        Log.d("#$%&^*(#@*^%^$$&#^&$()*^&^%$E#*^&(*", "STarted receiver");
     }
 
     @Override

@@ -39,8 +39,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
-
-public class Utils_SecurePreferences {
+class Utils_SecurePreferences {
 
     public static class SecurePreferencesException extends RuntimeException {
 

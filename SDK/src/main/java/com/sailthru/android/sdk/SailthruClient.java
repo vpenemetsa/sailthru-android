@@ -8,40 +8,12 @@ import android.util.Log;
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  */
-public class SailthruClient {
+public class SailthruClient extends SailthruClient_Abstract {
 
-    Context mContext;
-    Async_RegisterTask mHorIdLoader = null;
-    St_AuthenticatedClient mAuthenticatedClient;
-
-    public enum Identification {
-        EMAIL("email"), ANONYMOUS("anonymous");
-
-        private final String name;
-
-        private Identification(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
-
-    public enum RegistrationMode {
-        DEV("DEV"), PROD("PROD");
-
-        private final String name;
-
-        private RegistrationMode(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
-
+    /**
+     *
+     * @param context
+     */
     public SailthruClient(Context context) {
         mContext = context;
         mAuthenticatedClient = St_AuthenticatedClient.getInstance(context);
@@ -55,6 +27,16 @@ public class SailthruClient {
         }
     }
 
+    /**
+     * Public method to register a client to Sailthru
+     * @param mode
+     * @param domain
+     * @param apiKey
+     * @param appId
+     * @param identification
+     * @param uid
+     * @param token
+     */
     public void register(RegistrationMode mode, String domain,
                          String apiKey, String appId, Identification identification,
                          String uid, String token) {
@@ -68,9 +50,14 @@ public class SailthruClient {
                     identification, mAuthenticatedClient);
             loader.execute((Void) null);
         }
+
+        saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
     }
 
-    public void unregisterUser() {
+    /**
+     * Public method to unregister current client from Sailthru
+     */
+    public void unregister() {
         mAuthenticatedClient.deleteHid();
     }
 }
