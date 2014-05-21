@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 public class Receiver_Network extends BroadcastReceiver {
+
     public Receiver_Network() {
     }
 
@@ -18,5 +18,9 @@ public class Receiver_Network extends BroadcastReceiver {
 
         St_AuthenticatedClient client = St_AuthenticatedClient.getInstance(context);
         client.setConnectedToNetwork(networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        if (client.isConnectedToNetwork()) {
+            Api_Queue.registerCachedAttemptIfAvailable(context.getApplicationContext(), client);
+        }
     }
 }

@@ -36,8 +36,17 @@ class Async_RegisterTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        Api_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
-                mAppId, mApiKey, mUid, mUserType, mCallback);
+        String storedHid = mAuthenticatedClient.getHid();
+
+        if (Utils_AppRegister.notNullOrEmpty(storedHid) &&
+                !mUserType.equals(SailthruClient_Abstract.Identification.ANONYMOUS)) {
+            Log.d("stored Hid", storedHid);
+            Api_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
+                    mAppId, mApiKey, storedHid, null, mCallback);
+        } else {
+            Api_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
+                    mAppId, mApiKey, mUid, mUserType, mCallback);
+        }
 
         return null;
     }

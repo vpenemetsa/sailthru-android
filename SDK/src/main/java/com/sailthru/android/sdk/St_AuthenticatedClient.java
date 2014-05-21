@@ -21,10 +21,7 @@ class St_AuthenticatedClient {
     private static final String ST_SECURE_PREFS_IDENTIFICATION = "ST_SECURE_PREFS_IDENTIFICATION";
     private static final String ST_SECURE_PREFS_UID = "ST_SECURE_PREFS_UID";
     private static final String ST_SECURE_PREFS_TOKEN = "ST_SECURE_PREFS_TOKEN";
-
-    //Shared prefs creds
-    private static final String ST_SECURE_PREFS = "ST_SECURE_PREFS";
-    private static final String ST_SECURE_PREFS_KEY = "de60752302fc542ece2e55ff81ff09dc";
+    private static final String ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT = "ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT";
 
     //Stored variables
     private static String mHid;
@@ -35,7 +32,9 @@ class St_AuthenticatedClient {
     private static String mIdentification;
     private static String mUid;
     private static String mToken;
+
     private boolean mConnectedToNetwork;
+    private static boolean mCachedRegisterAttempt;
 
     public static St_AuthenticatedClient getInstance(Context context) {
         if (mAuthenticatedClient == null) {
@@ -46,8 +45,7 @@ class St_AuthenticatedClient {
     }
 
     public St_AuthenticatedClient(Context context) {
-        mPrefs = new Utils_SecurePreferences(context, ST_SECURE_PREFS,
-                ST_SECURE_PREFS_KEY, true);
+        mPrefs = new Utils_SecurePreferences(context);
         mContext = context;
         loadData();
     }
@@ -76,6 +74,9 @@ class St_AuthenticatedClient {
         }
         if (mPrefs.containsKey(ST_SECURE_PREFS_TOKEN)) {
             mToken = mPrefs.getString(ST_SECURE_PREFS_TOKEN);
+        }
+        if (mPrefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
+            mCachedRegisterAttempt = true;
         }
     }
 
@@ -164,5 +165,21 @@ class St_AuthenticatedClient {
 
     public void setConnectedToNetwork(boolean connectedToNetwork) {
         mConnectedToNetwork = connectedToNetwork;
+    }
+
+    public boolean isCachedRegisterAttempt() {
+        return mCachedRegisterAttempt;
+    }
+
+    public void setCachedRegisterAttempt() {
+        mCachedRegisterAttempt = true;
+        mPrefs.put(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT, "true");
+    }
+
+    public void deleteCachedRegisterAttempt() {
+        if (mPrefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
+            mPrefs.removeValue(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT);
+            mCachedRegisterAttempt = false;
+        }
     }
 }

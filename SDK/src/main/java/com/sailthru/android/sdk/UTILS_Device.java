@@ -18,7 +18,6 @@ class Utils_Device {
         mContext = context;
     }
 
-
     public String getDeviceId() {
         return Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
     }

@@ -1,6 +1,7 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -93,5 +94,25 @@ class Utils_AppRegister {
             Log.e("MD5", e.getLocalizedMessage());
             return null;
         }
+    }
+
+    public static boolean notNullOrEmpty(String input) {
+        if (input != null ) {
+            if (!TextUtils.isEmpty(input)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean notNullAndHasValue(String input, String match) {
+        if (input != null) {
+            if (input.equals(match)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -54,34 +54,42 @@ class Utils_SecurePreferences {
     private static final String SECRET_KEY_HASH_TRANSFORMATION = "SHA-256";
     private static final String CHARSET = "UTF-8";
 
+    private static final String ST_SECURE_PREFS = "ST_SECURE_PREFS";
+    private static final String ST_SECURE_PREFS_KEY = "de60752302fc542ece2e55ff81ff09dc";
+
     private final boolean encryptKeys;
     private final Cipher writer;
     private final Cipher reader;
     private final Cipher keyWriter;
     private final SharedPreferences preferences;
 
+    static Utils_SecurePreferences mPrefs;
+
+    public static Utils_SecurePreferences getInstance(Context context) {
+        if (mPrefs == null) {
+            return new Utils_SecurePreferences(context);
+        }
+
+        return mPrefs;
+    }
+
     /**
      * This will initialize an instance of the Utils_SecurePreferences class
      * @param context your current context.
-     * @param preferenceName name of preferences file (preferenceName.xml)
-     * @param secureKey the key used for encryption, finding a good key scheme is hard.
-     * Hardcoding your key in the application is bad, but better than plaintext preferences. Having the user enter the key upon application launch is a safe(r) alternative, but annoying to the user.
-     * @param encryptKeys settings this to false will only encrypt the values,
-     * true will encrypt both values and keys. Keys can contain a lot of information about
-     * the plaintext value of the value which can be used to decipher the value.
      * @throws SecurePreferencesException
      */
-    public Utils_SecurePreferences(Context context, String preferenceName, String secureKey, boolean encryptKeys) throws SecurePreferencesException {
+    public Utils_SecurePreferences(Context context) throws SecurePreferencesException {
         try {
             this.writer = Cipher.getInstance(TRANSFORMATION);
             this.reader = Cipher.getInstance(TRANSFORMATION);
             this.keyWriter = Cipher.getInstance(KEY_TRANSFORMATION);
 
-            initCiphers(secureKey);
+            initCiphers(ST_SECURE_PREFS_KEY);
 
-            this.preferences = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
+            this.preferences = context.getSharedPreferences(ST_SECURE_PREFS, Context.MODE_PRIVATE);
 
-            this.encryptKeys = encryptKeys;
+            this.encryptKeys = true;
+            mPrefs = this;
         }
         catch (GeneralSecurityException e) {
             throw new SecurePreferencesException(e);

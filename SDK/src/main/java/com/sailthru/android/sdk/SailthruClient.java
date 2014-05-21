@@ -48,20 +48,11 @@ public class SailthruClient extends SailthruClient_Abstract {
 
         if (passedSanityChecks()) {
             if (mAuthenticatedClient.isConnectedToNetwork()) {
-                Async_RegisterTask loader;
-                String storedHid = mAuthenticatedClient.getHid();
-//                if (notNullAndHasValue(storedIdentification, Identification.ANONYMOUS.toString()) &&
-//                        identification.equals(Identification.EMAIL) && notNullOrEmpty(storedHid)) {
-                if (notNullOrEmpty(storedHid) && !identification.equals(Identification.ANONYMOUS)) {
-                    Log.d("stored Hid", storedHid);
-                    loader = new Async_RegisterTask(mContext, appId, apiKey, storedHid,
-                            null, mAuthenticatedClient, mRegisterCallback);
-                } else {
-                    loader = new Async_RegisterTask(mContext, appId, apiKey, uid,
-                            identification, mAuthenticatedClient, mRegisterCallback);
-                }
-
+                Async_RegisterTask loader = new Async_RegisterTask(mContext, appId, apiKey, uid,
+                        identification, mAuthenticatedClient, mRegisterCallback);;
                 loader.execute((Void) null);
+            } else {
+                mAuthenticatedClient.setCachedRegisterAttempt();
             }
 
             saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);

@@ -80,26 +80,6 @@ class SailthruClient_Abstract {
         return true;
     }
 
-    protected boolean notNullOrEmpty(String input) {
-        if (input != null ) {
-            if (!TextUtils.isEmpty(input)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected boolean notNullAndHasValue(String input, String match) {
-        if (input != null) {
-            if (input.equals(match)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     Callback<Model_UserRegisterAppResponse> mRegisterCallback = new Callback<Model_UserRegisterAppResponse>() {
         @Override
         public void success(Model_UserRegisterAppResponse registerAppResponse, Response response) {
