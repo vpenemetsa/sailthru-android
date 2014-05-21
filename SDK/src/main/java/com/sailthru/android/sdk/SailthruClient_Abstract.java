@@ -2,6 +2,13 @@ package com.sailthru.android.sdk;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
+
+import org.apache.http.HttpStatus;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by Vijay Penemetsa on 5/20/14.
@@ -92,4 +99,19 @@ class SailthruClient_Abstract {
 
         return false;
     }
+
+    Callback<Model_UserRegisterAppResponse> mRegisterCallback = new Callback<Model_UserRegisterAppResponse>() {
+        @Override
+        public void success(Model_UserRegisterAppResponse registerAppResponse, Response response) {
+            if (response.getStatus() == HttpStatus.SC_OK) {
+                mAuthenticatedClient.saveHid(registerAppResponse.getHid());
+                Toast.makeText(mContext, registerAppResponse.getHid(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            error.printStackTrace();
+        }
+    };
 }

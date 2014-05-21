@@ -1,8 +1,6 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 /**
  * Created by Vijay Penemetsa on 5/20/14.
