@@ -8,7 +8,7 @@ import android.widget.Toast;
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  */
-class Async_RegisterTask extends AsyncTask<Void, Void, String> {
+class Async_RegisterTask extends AsyncTask<Void, Void, Void> {
 
     Context mContext;
     String mAppId;
@@ -29,17 +29,10 @@ class Async_RegisterTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) {
-        Model_UserRegisterAppResponse response = Api_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
+    protected Void doInBackground(Void... params) {
+        Api_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
                 mAppId, mApiKey, mUid, mUserType);
-        String text = response.getHid();
 
-        return text;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-        Log.d("*********Returned HID**********", s);
-        Toast.makeText(mContext, s, Toast.LENGTH_LONG).show();
+        return null;
     }
 }
