@@ -20,42 +20,44 @@ import java.util.Map;
  *
  * Util methods to construct data for App Register request
  */
-class Utils_AppRegister {
+class UTILS_AppRegister {
 
     public static Map<String, String> buildRequest(Context context, String appId, String apiKey, String uid,
                                             SailthruClient.Identification userType) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Api_Constants.UR_API_KEY, apiKey);
-        params.put(Api_Constants.UR_FORMAT_KEY, Api_Constants.UR_FORMAT_VALUE);
-        params.put(Api_Constants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
-        params.put(Api_Constants.UR_SIG_KEY, generateSig(appId, params));
+        params.put(API_Constants.UR_API_KEY, apiKey);
+        params.put(API_Constants.UR_FORMAT_KEY, API_Constants.UR_FORMAT_VALUE);
+        params.put(API_Constants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
+        params.put(API_Constants.UR_SIG_KEY, generateSig(appId, params));
+
+        Log.d("**********SIG************", params.get(API_Constants.UR_SIG_KEY));
 
         return params;
     }
 
     private static String generateRegisterJson(Context context, String uid, SailthruClient.Identification userType) {
-        Utils_Device UTILSDevice = Utils_Device.getInstance();
+        UTILS_Device UTILSDevice = UTILS_Device.getInstance();
         UTILSDevice.setContext(context);
 
         Map<String, String> data = new HashMap<String, String>();
-        data.put(Api_Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, Api_Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
+        data.put(API_Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, API_Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
         if (userType == null) {
             Log.d("*******************", "ENtered as null");
             Log.d("*******************", uid);
-            data.put(Api_Constants.UR_JSON_ID_KEY, uid);
-            data.put(Api_Constants.UR_JSON_KEY_KEY, "hid");
+            data.put(API_Constants.UR_JSON_ID_KEY, uid);
+            data.put(API_Constants.UR_JSON_KEY_KEY, "hid");
         } else if (userType.equals(SailthruClient_Abstract.Identification.EMAIL)) {
             Log.d("*******************", "Entered as email");
-            data.put(Api_Constants.UR_JSON_ID_KEY, uid);
-            data.put(Api_Constants.UR_JSON_KEY_KEY, userType.toString());
+            data.put(API_Constants.UR_JSON_ID_KEY, uid);
+            data.put(API_Constants.UR_JSON_KEY_KEY, userType.toString());
         }
 
-        data.put(Api_Constants.UR_JSON_DEVICE_ID_KEY, UTILSDevice.getDeviceId());
-        data.put(Api_Constants.UR_JSON_OS_VERSION_KEY, UTILSDevice.getOsVersion());
-        data.put(Api_Constants.UR_JSON_ENV_KEY, Api_Constants.UR_JSON_ENV_VALUE);
-        data.put(Api_Constants.UR_JSON_PLATFORM_APP_ID_KEY, Api_Constants.UR_JSON_PLATFORM_APP_ID_VALUE);
-        data.put(Api_Constants.UR_JSON_DEVICE_TYPE_KEY, UTILSDevice.getDeviceType());
-        data.put(Api_Constants.UR_JSON_DEVICE_VERSION_KEY, UTILSDevice.getDeviceVersion());
+        data.put(API_Constants.UR_JSON_DEVICE_ID_KEY, UTILSDevice.getDeviceId());
+        data.put(API_Constants.UR_JSON_OS_VERSION_KEY, UTILSDevice.getOsVersion());
+        data.put(API_Constants.UR_JSON_ENV_KEY, API_Constants.UR_JSON_ENV_VALUE);
+        data.put(API_Constants.UR_JSON_PLATFORM_APP_ID_KEY, API_Constants.UR_JSON_PLATFORM_APP_ID_VALUE);
+        data.put(API_Constants.UR_JSON_DEVICE_TYPE_KEY, UTILSDevice.getDeviceType());
+        data.put(API_Constants.UR_JSON_DEVICE_VERSION_KEY, UTILSDevice.getDeviceVersion());
 
         Gson gson = new Gson();
         return gson.toJson(data);

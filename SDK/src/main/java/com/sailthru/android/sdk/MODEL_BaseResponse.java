@@ -6,7 +6,7 @@ package com.sailthru.android.sdk;
  * Base Response class extended by all other *Response classes to track
  * API response codes
  */
-class Model_BaseResponse {
+class MODEL_BaseResponse {
 
     private int statusCode;
 

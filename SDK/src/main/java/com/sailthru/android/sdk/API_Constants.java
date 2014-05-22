@@ -3,7 +3,7 @@ package com.sailthru.android.sdk;
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  */
-class Api_Constants {
+class API_Constants {
 
     public static final String API_ENDPOINT = "https://api.sailthru.com/mobile";
 

@@ -39,7 +39,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
-class Utils_SecurePreferences {
+class UTILS_SecurePreferences {
 
     public static class SecurePreferencesException extends RuntimeException {
 
@@ -63,11 +63,11 @@ class Utils_SecurePreferences {
     private final Cipher keyWriter;
     private final SharedPreferences preferences;
 
-    static Utils_SecurePreferences mPrefs;
+    static UTILS_SecurePreferences mPrefs;
 
-    public static Utils_SecurePreferences getInstance(Context context) {
+    public static UTILS_SecurePreferences getInstance(Context context) {
         if (mPrefs == null) {
-            return new Utils_SecurePreferences(context);
+            return new UTILS_SecurePreferences(context);
         }
 
         return mPrefs;
@@ -78,7 +78,7 @@ class Utils_SecurePreferences {
      * @param context your current context.
      * @throws SecurePreferencesException
      */
-    public Utils_SecurePreferences(Context context) throws SecurePreferencesException {
+    public UTILS_SecurePreferences(Context context) throws SecurePreferencesException {
         try {
             this.writer = Cipher.getInstance(TRANSFORMATION);
             this.reader = Cipher.getInstance(TRANSFORMATION);

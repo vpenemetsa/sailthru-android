@@ -5,11 +5,11 @@ import android.content.Context;
 /**
  * Created by Vijay Penemetsa on 5/20/14.
  */
-class St_AuthenticatedClient {
+class ST_AuthenticatedClient {
 
-    private static St_AuthenticatedClient mAuthenticatedClient;
+    private static ST_AuthenticatedClient mAuthenticatedClient;
 
-    static Utils_SecurePreferences mPrefs;
+    static UTILS_SecurePreferences mPrefs;
     static Context mContext;
 
     //Shared prefs keys
@@ -36,16 +36,16 @@ class St_AuthenticatedClient {
     private boolean mConnectedToNetwork;
     private static boolean mCachedRegisterAttempt;
 
-    public static St_AuthenticatedClient getInstance(Context context) {
+    public static ST_AuthenticatedClient getInstance(Context context) {
         if (mAuthenticatedClient == null) {
-            mAuthenticatedClient = new St_AuthenticatedClient(context);
+            mAuthenticatedClient = new ST_AuthenticatedClient(context);
         }
 
         return mAuthenticatedClient;
     }
 
-    public St_AuthenticatedClient(Context context) {
-        mPrefs = new Utils_SecurePreferences(context);
+    public ST_AuthenticatedClient(Context context) {
+        mPrefs = new UTILS_SecurePreferences(context);
         mContext = context;
         loadData();
     }

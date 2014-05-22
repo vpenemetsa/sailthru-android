@@ -2,13 +2,10 @@ package com.sailthru.android.sdk;
 
 import android.content.Context;
 
-import org.apache.http.HttpStatus;
-
 import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
-import retrofit.RetrofitError;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
@@ -18,47 +15,47 @@ import retrofit.http.POST;
  *
  * A Central class to handle all API transactions
  */
-class Api_Manager {
+class API_Manager {
 
-    private static final String TAG = Api_Manager.class.getSimpleName();
-    private static St_AuthenticatedClient mAuthenticatedClient;
+    private static final String TAG = API_Manager.class.getSimpleName();
+    private static ST_AuthenticatedClient mAuthenticatedClient;
 
-    public static Api_Manager getInstance(St_AuthenticatedClient client) {
+    public static API_Manager getInstance(ST_AuthenticatedClient client) {
         mAuthenticatedClient = client;
-        return new Api_Manager();
+        return new API_Manager();
     }
 
     public interface RegisterUserService {
         @FormUrlEncoded
         @POST("/userregisterapp")
-        void registerUser(@Field(Api_Constants.UR_SIG_KEY) String sig,
-                                                   @Field(Api_Constants.UR_JSON_KEY) String json,
-                                                   @Field(Api_Constants.UR_API_KEY) String apiKey,
-                                                   @Field(Api_Constants.UR_FORMAT_KEY) String format,
-                                                   Callback<Model_UserRegisterAppResponse> callback);
+        void registerUser(@Field(API_Constants.UR_SIG_KEY) String sig,
+                                                   @Field(API_Constants.UR_JSON_KEY) String json,
+                                                   @Field(API_Constants.UR_API_KEY) String apiKey,
+                                                   @Field(API_Constants.UR_FORMAT_KEY) String format,
+                                                   Callback<MODEL_UserRegisterAppResponse> callback);
     }
 
     public void registerUser(Context context, String appId,
                                                       String apiKey, String uid,
                                                       SailthruClient_Abstract.Identification userType,
-                                                      Callback<Model_UserRegisterAppResponse> callback) {
+                                                      Callback<MODEL_UserRegisterAppResponse> callback) {
 
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(Api_Constants.API_ENDPOINT)
+                .setEndpoint(API_Constants.API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         RegisterUserService service = adapter.create(RegisterUserService.class);
 
-        Map<String, String> params = Utils_AppRegister.buildRequest(context, appId, apiKey,
+        Map<String, String> params = UTILS_AppRegister.buildRequest(context, appId, apiKey,
                 uid, userType);
 
-        Model_UserRegisterAppResponse response = new Model_UserRegisterAppResponse();
+        MODEL_UserRegisterAppResponse response = new MODEL_UserRegisterAppResponse();
 
         service.registerUser(
-            params.get(Api_Constants.UR_SIG_KEY),
-            params.get(Api_Constants.UR_JSON_KEY),
-            apiKey,
-            Api_Constants.UR_FORMAT_VALUE,
-            callback);
+                params.get(API_Constants.UR_SIG_KEY),
+                params.get(API_Constants.UR_JSON_KEY),
+                apiKey,
+                API_Constants.UR_FORMAT_VALUE,
+                callback);
     }
 }

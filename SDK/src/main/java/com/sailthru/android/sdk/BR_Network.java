@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class Receiver_Network extends BroadcastReceiver {
+public class BR_Network extends BroadcastReceiver {
 
-    public Receiver_Network() {
+    public BR_Network() {
     }
 
     @Override
@@ -16,11 +16,11 @@ public class Receiver_Network extends BroadcastReceiver {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
-        St_AuthenticatedClient client = St_AuthenticatedClient.getInstance(context);
+        ST_AuthenticatedClient client = ST_AuthenticatedClient.getInstance(context);
         client.setConnectedToNetwork(networkInfo != null && networkInfo.isConnectedOrConnecting());
 
         if (client.isConnectedToNetwork()) {
-            Api_Queue.registerCachedAttemptIfAvailable(context.getApplicationContext(), client);
+            API_Queue.registerCachedAttemptIfAvailable(context.getApplicationContext(), client);
         }
     }
 }

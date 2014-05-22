@@ -3,7 +3,7 @@ package com.sailthru.android.sdk;
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  */
-class St_Constants {
+class ST_Constants {
 
     public static final String PLATFORM_APP_VERSION = "1.0";
     public static final String ENV = "dev";

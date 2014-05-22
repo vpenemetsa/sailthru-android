@@ -5,10 +5,10 @@ import android.content.Context;
 /**
  * Created by Vijay Penemetsa on 5/21/14.
  */
-class Api_Queue {
+class API_Queue {
 
     public static void registerCachedAttemptIfAvailable(Context context,
-                                                        St_AuthenticatedClient client) {
+                                                        ST_AuthenticatedClient client) {
         if (client.isCachedRegisterAttempt()) {
             SailthruClient stClient = new SailthruClient(context);
             SailthruClient.RegistrationMode mode;

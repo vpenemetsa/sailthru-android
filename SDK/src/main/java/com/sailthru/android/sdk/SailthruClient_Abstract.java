@@ -1,7 +1,6 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
@@ -16,8 +15,8 @@ import retrofit.client.Response;
 class SailthruClient_Abstract {
 
     Context mContext;
-    Async_RegisterTask mHorIdLoader = null;
-    St_AuthenticatedClient mAuthenticatedClient;
+    ASYNC_RegisterTask mHorIdLoader = null;
+    ST_AuthenticatedClient mAuthenticatedClient;
 
     /**
      * Defines User type for registration
@@ -80,9 +79,9 @@ class SailthruClient_Abstract {
         return true;
     }
 
-    Callback<Model_UserRegisterAppResponse> mRegisterCallback = new Callback<Model_UserRegisterAppResponse>() {
+    Callback<MODEL_UserRegisterAppResponse> mRegisterCallback = new Callback<MODEL_UserRegisterAppResponse>() {
         @Override
-        public void success(Model_UserRegisterAppResponse registerAppResponse, Response response) {
+        public void success(MODEL_UserRegisterAppResponse registerAppResponse, Response response) {
             if (response.getStatus() == HttpStatus.SC_OK) {
                 mAuthenticatedClient.saveHid(registerAppResponse.getHid());
                 Toast.makeText(mContext, registerAppResponse.getHid(), Toast.LENGTH_SHORT).show();

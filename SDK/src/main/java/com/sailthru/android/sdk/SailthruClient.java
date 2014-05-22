@@ -3,8 +3,6 @@ package com.sailthru.android.sdk;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -17,7 +15,7 @@ public class SailthruClient extends SailthruClient_Abstract {
      */
     public SailthruClient(Context context) {
         mContext = context;
-        mAuthenticatedClient = St_AuthenticatedClient.getInstance(context);
+        mAuthenticatedClient = ST_AuthenticatedClient.getInstance(context);
 
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -48,7 +46,7 @@ public class SailthruClient extends SailthruClient_Abstract {
 
         if (passedSanityChecks()) {
             if (mAuthenticatedClient.isConnectedToNetwork()) {
-                Async_RegisterTask loader = new Async_RegisterTask(mContext, appId, apiKey, uid,
+                ASYNC_RegisterTask loader = new ASYNC_RegisterTask(mContext, appId, apiKey, uid,
                         identification, mAuthenticatedClient, mRegisterCallback);;
                 loader.execute((Void) null);
             } else {
