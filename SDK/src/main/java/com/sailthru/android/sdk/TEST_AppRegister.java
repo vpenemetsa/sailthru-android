@@ -13,8 +13,6 @@ public class TEST_AppRegister extends InstrumentationTestCase {
     String mAppId = "5362a304fdd5ac3611000481";
     String mEmail = "dhoerl+testa009@sailthru.com";
 
-    final String mExpectedHid = "a1082c2fcb05478f3bb9f35810f819e85362a9ce9dbcd4904500028e1d8afe44d443865835f8d1220fa17912";
-
     public void testEmailRequest() throws Exception {
         final String expectedEmailSig = "073fcf3bb3a4fdea9b3025d2a01ffae3";
 

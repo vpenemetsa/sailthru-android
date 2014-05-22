@@ -1,6 +1,7 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
@@ -74,9 +75,54 @@ class SailthruClient_Abstract {
         mAuthenticatedClient.setToken(token);
     }
 
-    protected boolean passedSanityChecks() {
+    protected boolean passedSanityChecks(RegistrationMode mode, String domain, String apiKey,
+                                         String appId, Identification identification, String uid,
+                                         String token) {
 
-        return true;
+        boolean passedChecks = true;
+
+        if (mode == null) {
+            passedChecks = false;
+            Log.e("SailthruSDK", "Mode cannot be set to null");
+        }
+        if (domain == null) {
+            passedChecks = false;
+            Log.e("SailthruSDK", "Domain cannot be null");
+        }
+        if (apiKey == null) {
+            passedChecks = false;
+            Log.e("SailthruSDK", "API Key cannot be null");
+        }
+        if (appId == null) {
+            passedChecks = false;
+            Log.e("SailthruSDK", "APP ID cannot be null");
+        }
+        if (identification == null) {
+            Log.e("SailthruSDK", "Identification cannot be null");
+            passedChecks = false;
+        }
+
+        if (identification == Identification.EMAIL && uid == null) {
+            passedChecks = false;
+            Log.e("SailthruSDK", "UID cannot be null when Identification is set to EMAIL");
+        }
+
+        return passedChecks;
+    }
+
+    protected void makeRegistrationRequest(String appId, String apiKey, String uid,
+                                         Identification userType) {
+        String storedHid = mAuthenticatedClient.getHid();
+
+        if (UTILS_AppRegister.notNullOrEmpty(storedHid) &&
+                !userType.equals(SailthruClient_Abstract.Identification.ANONYMOUS)) {
+            Log.d("stored Hid", storedHid);
+            API_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
+                    appId, apiKey, storedHid, null, mRegisterCallback);
+        } else {
+            API_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
+                    appId, apiKey, uid, userType, mRegisterCallback);
+        }
     }
 
     Callback<MODEL_UserRegisterAppResponse> mRegisterCallback = new Callback<MODEL_UserRegisterAppResponse>() {
