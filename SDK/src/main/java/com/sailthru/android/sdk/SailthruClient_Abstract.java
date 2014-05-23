@@ -16,7 +16,7 @@ import retrofit.client.Response;
 class SailthruClient_Abstract {
 
     Context mContext;
-    ASYNC_RegisterTask mHorIdLoader = null;
+    ASYNC_RegisterTask mAppRegisterTask = null;
     ST_AuthenticatedClient mAuthenticatedClient;
 
     /**
@@ -75,6 +75,18 @@ class SailthruClient_Abstract {
         mAuthenticatedClient.setToken(token);
     }
 
+    /**
+     * Checks to see if input for registration conforms with standards
+     *
+     * @param mode
+     * @param domain
+     * @param apiKey
+     * @param appId
+     * @param identification
+     * @param uid
+     * @param token
+     * @return
+     */
     protected boolean passedSanityChecks(RegistrationMode mode, String domain, String apiKey,
                                          String appId, Identification identification, String uid,
                                          String token) {
@@ -110,22 +122,40 @@ class SailthruClient_Abstract {
         return passedChecks;
     }
 
+    /**
+     * Makes a call to the ApiManager with input credentials based on UserType
+     *
+     * @param appId
+     * @param apiKey
+     * @param uid
+     * @param userType
+     */
     protected void makeRegistrationRequest(String appId, String apiKey, String uid,
                                          Identification userType) {
         String storedHid = mAuthenticatedClient.getHid();
 
+        if (mAppRegisterTask != null) {
+            mAppRegisterTask.cancel(true);
+        }
+
+//        API_Manager apiManager = new API_Manager(mAuthenticatedClient);
         if (UTILS_AppRegister.notNullOrEmpty(storedHid) &&
                 !userType.equals(SailthruClient_Abstract.Identification.ANONYMOUS)) {
             Log.d("stored Hid", storedHid);
-            API_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
-                    appId, apiKey, storedHid, null, mRegisterCallback);
+            mAppRegisterTask = new ASYNC_RegisterTask(mContext, appId, apiKey, storedHid, null,
+                    mAuthenticatedClient, mRegisterCallback);
+//            apiManager.registerUser(mContext, appId, apiKey, storedHid, null, mRegisterCallback);
         } else {
-            API_Manager.getInstance(mAuthenticatedClient).registerUser(mContext,
-                    appId, apiKey, uid, userType, mRegisterCallback);
+            mAppRegisterTask = new ASYNC_RegisterTask(mContext, appId, apiKey, uid, userType,
+                    mAuthenticatedClient, mRegisterCallback);
+//            apiManager.registerUser(mContext, appId, apiKey, uid, userType, mRegisterCallback);
         }
     }
 
-    Callback<MODEL_UserRegisterAppResponse> mRegisterCallback = new Callback<MODEL_UserRegisterAppResponse>() {
+    /**
+     * Callback for Registration request
+     */
+    protected Callback<MODEL_UserRegisterAppResponse> mRegisterCallback = new Callback<MODEL_UserRegisterAppResponse>() {
         @Override
         public void success(MODEL_UserRegisterAppResponse registerAppResponse, Response response) {
             if (response.getStatus() == HttpStatus.SC_OK) {

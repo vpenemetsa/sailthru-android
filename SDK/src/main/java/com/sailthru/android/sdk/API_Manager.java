@@ -20,10 +20,14 @@ class API_Manager {
     private static final String TAG = API_Manager.class.getSimpleName();
     private static ST_AuthenticatedClient mAuthenticatedClient;
 
-    public static API_Manager getInstance(ST_AuthenticatedClient client) {
+    public API_Manager(ST_AuthenticatedClient client) {
         mAuthenticatedClient = client;
-        return new API_Manager();
     }
+
+//    public static API_Manager getInstance(ST_AuthenticatedClient client) {
+//        mAuthenticatedClient = client;
+//        return new API_Manager();
+//    }
 
     public interface RegisterUserService {
         @FormUrlEncoded

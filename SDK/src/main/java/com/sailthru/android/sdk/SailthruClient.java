@@ -3,7 +3,6 @@ package com.sailthru.android.sdk;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -11,6 +10,7 @@ import android.util.Log;
 public class SailthruClient extends SailthruClient_Abstract {
 
     /**
+     * Initializes Sailthru Client
      *
      * @param context
      */
@@ -29,6 +29,7 @@ public class SailthruClient extends SailthruClient_Abstract {
 
     /**
      * Public method to register a client to Sailthru
+     *
      * @param mode
      * @param domain
      * @param apiKey
@@ -40,11 +41,6 @@ public class SailthruClient extends SailthruClient_Abstract {
     public void register(RegistrationMode mode, String domain,
                          String apiKey, String appId, Identification identification,
                          String uid, String token) {
-
-        if (mHorIdLoader != null) {
-            mHorIdLoader.cancel(true);
-        }
-
         if (passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
             if (mAuthenticatedClient.isConnectedToNetwork()) {
                 makeRegistrationRequest(appId, apiKey, uid, identification);

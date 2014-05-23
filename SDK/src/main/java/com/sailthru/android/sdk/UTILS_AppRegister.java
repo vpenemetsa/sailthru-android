@@ -30,7 +30,8 @@ class UTILS_AppRegister {
         params.put(API_Constants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
         params.put(API_Constants.UR_SIG_KEY, generateSig(appId, params));
 
-        Log.d("**********SIG************", params.get(API_Constants.UR_SIG_KEY));
+//        ST_Logger.sendLog(params.get(API_Constants.UR_SIG_KEY));
+//        Log.d("**********SIG************", params.get(API_Constants.UR_SIG_KEY));
 
         return params;
     }
@@ -42,12 +43,15 @@ class UTILS_AppRegister {
         Map<String, String> data = new HashMap<String, String>();
         data.put(API_Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, API_Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
         if (userType == null) {
-            Log.d("*******************", "ENtered as null");
-            Log.d("*******************", uid);
+//            ST_Logger.sendLog("ENtered as null");
+//            Log.d("*******************", "ENtered as null");
+//            ST_Logger.sendLog(uid);
+//            Log.d("*******************", uid);
             data.put(API_Constants.UR_JSON_ID_KEY, uid);
             data.put(API_Constants.UR_JSON_KEY_KEY, "hid");
         } else if (userType.equals(SailthruClient_Abstract.Identification.EMAIL)) {
-            Log.d("*******************", "Entered as email");
+//            ST_Logger.sendLog("Entered as email");
+//            Log.d("*******************", "Entered as email");
             data.put(API_Constants.UR_JSON_ID_KEY, uid);
             data.put(API_Constants.UR_JSON_KEY_KEY, userType.toString());
         }
@@ -58,6 +62,8 @@ class UTILS_AppRegister {
         data.put(API_Constants.UR_JSON_PLATFORM_APP_ID_KEY, API_Constants.UR_JSON_PLATFORM_APP_ID_VALUE);
         data.put(API_Constants.UR_JSON_DEVICE_TYPE_KEY, UTILSDevice.getDeviceType());
         data.put(API_Constants.UR_JSON_DEVICE_VERSION_KEY, UTILSDevice.getDeviceVersion());
+
+        Log.d("***********************", data.get(API_Constants.UR_JSON_DEVICE_ID_KEY));
 
         Gson gson = new Gson();
         return gson.toJson(data);
