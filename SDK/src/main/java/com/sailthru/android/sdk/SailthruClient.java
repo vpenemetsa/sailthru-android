@@ -3,6 +3,7 @@ package com.sailthru.android.sdk;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -43,8 +44,10 @@ public class SailthruClient extends SailthruClient_Abstract {
                          String uid, String token) {
         if (passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
             if (mAuthenticatedClient.isConnectedToNetwork()) {
+                Log.d("************", "Registering");
                 makeRegistrationRequest(appId, apiKey, uid, identification);
             } else {
+                Log.d("************", "No network");
                 mAuthenticatedClient.setCachedRegisterAttempt();
             }
 

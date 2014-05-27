@@ -1,10 +1,13 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import com.sailthru.android.sdk.ST_AuthenticatedClient;
+import com.sailthru.android.sdk.api.API_Queue;
 
 public class BR_Network extends BroadcastReceiver {
 

@@ -1,4 +1,4 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.utils;
 
 /*
 Copyright (C) 2012 Sveinung Kval Bakken, sveinung.bakken@gmail.com
@@ -39,7 +39,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
-class UTILS_SecurePreferences {
+public class UTILS_SecurePreferences {
 
     public static class SecurePreferencesException extends RuntimeException {
 

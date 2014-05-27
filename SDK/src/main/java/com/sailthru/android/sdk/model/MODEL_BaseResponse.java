@@ -1,4 +1,4 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.model;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -6,7 +6,7 @@ package com.sailthru.android.sdk;
  * Base Response class extended by all other *Response classes to track
  * API response codes
  */
-class MODEL_BaseResponse {
+public class MODEL_BaseResponse {
 
     private int statusCode;
 

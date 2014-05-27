@@ -1,8 +1,14 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.async;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.sailthru.android.sdk.ST_AuthenticatedClient;
+import com.sailthru.android.sdk.SailthruClient_Abstract;
+import com.sailthru.android.sdk.api.API_Manager;
+import com.sailthru.android.sdk.model.MODEL_UserRegisterAppResponse;
+import com.sailthru.android.sdk.utils.UTILS_AppRegister;
 
 import retrofit.Callback;
 
@@ -10,18 +16,18 @@ import retrofit.Callback;
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  */
-class ASYNC_RegisterTask extends AsyncTask<Void, Void, Void> {
+public class ASYNC_RegisterTask extends AsyncTask<Void, Void, Void> {
 
     Context mContext;
     String mAppId;
     String mApiKey;
     String mUid;
-    SailthruClient.Identification mUserType;
+    SailthruClient_Abstract.Identification mUserType;
     ST_AuthenticatedClient mAuthenticatedClient;
     Callback<MODEL_UserRegisterAppResponse> mCallback;
 
     public ASYNC_RegisterTask(Context context, String appId, String apiKey, String uid,
-                              SailthruClient.Identification userType,
+                              SailthruClient_Abstract.Identification userType,
                               ST_AuthenticatedClient authenticatedClient,
                               Callback<MODEL_UserRegisterAppResponse> callback) {
         mContext = context;

@@ -1,6 +1,11 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.tests;
 
 import android.test.InstrumentationTestCase;
+
+import com.sailthru.android.sdk.SailthruClient;
+import com.sailthru.android.sdk.SailthruClient_Abstract;
+import com.sailthru.android.sdk.api.API_Constants;
+import com.sailthru.android.sdk.utils.UTILS_AppRegister;
 
 import java.util.Map;
 
@@ -18,7 +23,7 @@ public class TEST_AppRegister extends InstrumentationTestCase {
 
         Map<String, String> request = UTILS_AppRegister.buildRequest(
                 getInstrumentation().getContext(), mAppId, mApiKey, mEmail,
-                SailthruClient_Abstract.Identification.EMAIL);
+                SailthruClient.Identification.EMAIL);
 
         assertEquals(request.get(API_Constants.UR_SIG_KEY), expectedEmailSig);
     }
@@ -27,7 +32,7 @@ public class TEST_AppRegister extends InstrumentationTestCase {
         final String expectedAnonSig = "841e1c12bec027135e5a73d813a88140";
 
         Map<String, String> request = UTILS_AppRegister.buildRequest(getInstrumentation().getContext(),
-                mAppId, mApiKey, null, SailthruClient_Abstract.Identification.ANONYMOUS);
+                mAppId, mApiKey, null, SailthruClient.Identification.ANONYMOUS);
         assertEquals(request.get(API_Constants.UR_SIG_KEY), expectedAnonSig);
     }
 

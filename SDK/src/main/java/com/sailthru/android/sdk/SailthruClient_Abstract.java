@@ -4,6 +4,10 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sailthru.android.sdk.async.ASYNC_RegisterTask;
+import com.sailthru.android.sdk.model.MODEL_UserRegisterAppResponse;
+import com.sailthru.android.sdk.utils.UTILS_AppRegister;
+
 import org.apache.http.HttpStatus;
 
 import retrofit.Callback;
@@ -13,7 +17,7 @@ import retrofit.client.Response;
 /**
  * Created by Vijay Penemetsa on 5/20/14.
  */
-class SailthruClient_Abstract {
+public class SailthruClient_Abstract {
 
     Context mContext;
     ASYNC_RegisterTask mAppRegisterTask = null;
@@ -142,14 +146,16 @@ class SailthruClient_Abstract {
         if (UTILS_AppRegister.notNullOrEmpty(storedHid) &&
                 !userType.equals(SailthruClient_Abstract.Identification.ANONYMOUS)) {
             Log.d("stored Hid", storedHid);
-            mAppRegisterTask = new ASYNC_RegisterTask(mContext, appId, apiKey, storedHid, null,
+            mAppRegisterTask = new ASYNC_RegisterTask(mContext, appId, apiKey, storedHid, userType,
                     mAuthenticatedClient, mRegisterCallback);
 //            apiManager.registerUser(mContext, appId, apiKey, storedHid, null, mRegisterCallback);
         } else {
+            Log.d("stored Hid", "****************");
             mAppRegisterTask = new ASYNC_RegisterTask(mContext, appId, apiKey, uid, userType,
                     mAuthenticatedClient, mRegisterCallback);
 //            apiManager.registerUser(mContext, appId, apiKey, uid, userType, mRegisterCallback);
         }
+        mAppRegisterTask.execute((Void) null);
     }
 
     /**

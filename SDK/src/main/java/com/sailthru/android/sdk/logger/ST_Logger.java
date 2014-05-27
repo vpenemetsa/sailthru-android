@@ -1,4 +1,4 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.logger;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

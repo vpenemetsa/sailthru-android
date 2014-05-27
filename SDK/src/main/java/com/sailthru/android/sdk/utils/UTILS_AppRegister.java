@@ -1,10 +1,12 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.sailthru.android.sdk.SailthruClient_Abstract;
+import com.sailthru.android.sdk.api.API_Constants;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -20,10 +22,10 @@ import java.util.Map;
  *
  * Util methods to construct data for App Register request
  */
-class UTILS_AppRegister {
+public class UTILS_AppRegister {
 
     public static Map<String, String> buildRequest(Context context, String appId, String apiKey, String uid,
-                                            SailthruClient.Identification userType) {
+                                            SailthruClient_Abstract.Identification userType) {
         Map<String, String> params = new HashMap<String, String>();
         params.put(API_Constants.UR_API_KEY, apiKey);
         params.put(API_Constants.UR_FORMAT_KEY, API_Constants.UR_FORMAT_VALUE);
@@ -36,7 +38,7 @@ class UTILS_AppRegister {
         return params;
     }
 
-    private static String generateRegisterJson(Context context, String uid, SailthruClient.Identification userType) {
+    private static String generateRegisterJson(Context context, String uid, SailthruClient_Abstract.Identification userType) {
         UTILS_Device UTILSDevice = UTILS_Device.getInstance();
         UTILSDevice.setContext(context);
 

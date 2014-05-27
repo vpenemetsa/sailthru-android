@@ -1,6 +1,11 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.api;
 
 import android.content.Context;
+
+import com.sailthru.android.sdk.ST_AuthenticatedClient;
+import com.sailthru.android.sdk.SailthruClient_Abstract;
+import com.sailthru.android.sdk.model.MODEL_UserRegisterAppResponse;
+import com.sailthru.android.sdk.utils.UTILS_AppRegister;
 
 import java.util.Map;
 
@@ -15,7 +20,7 @@ import retrofit.http.POST;
  *
  * A Central class to handle all API transactions
  */
-class API_Manager {
+public class API_Manager {
 
     private static final String TAG = API_Manager.class.getSimpleName();
     private static ST_AuthenticatedClient mAuthenticatedClient;

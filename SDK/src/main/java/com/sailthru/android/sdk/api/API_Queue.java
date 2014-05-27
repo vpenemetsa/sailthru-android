@@ -1,11 +1,15 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.api;
 
 import android.content.Context;
+
+import com.sailthru.android.sdk.ST_AuthenticatedClient;
+import com.sailthru.android.sdk.SailthruClient;
+import com.sailthru.android.sdk.SailthruClient_Abstract;
 
 /**
  * Created by Vijay Penemetsa on 5/21/14.
  */
-class API_Queue {
+public class API_Queue {
 
     public static void registerCachedAttemptIfAvailable(Context context,
                                                         ST_AuthenticatedClient client) {

@@ -2,10 +2,12 @@ package com.sailthru.android.sdk;
 
 import android.content.Context;
 
+import com.sailthru.android.sdk.utils.UTILS_SecurePreferences;
+
 /**
  * Created by Vijay Penemetsa on 5/20/14.
  */
-class ST_AuthenticatedClient {
+public class ST_AuthenticatedClient {
 
     private static ST_AuthenticatedClient mAuthenticatedClient;
 
