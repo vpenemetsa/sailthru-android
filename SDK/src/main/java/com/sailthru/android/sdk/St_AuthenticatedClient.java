@@ -2,7 +2,7 @@ package com.sailthru.android.sdk;
 
 import android.content.Context;
 
-import com.sailthru.android.sdk.utils.UTILS_SecurePreferences;
+import com.sailthru.android.sdk.utils.SecurePreferences;
 
 /**
  * Created by Vijay Penemetsa on 5/20/14.
@@ -11,7 +11,7 @@ public class ST_AuthenticatedClient {
 
     private static ST_AuthenticatedClient mAuthenticatedClient;
 
-    static UTILS_SecurePreferences mPrefs;
+    static SecurePreferences mPrefs;
     static Context mContext;
 
     //Shared prefs keys
@@ -47,7 +47,7 @@ public class ST_AuthenticatedClient {
     }
 
     public ST_AuthenticatedClient(Context context) {
-        mPrefs = new UTILS_SecurePreferences(context);
+        mPrefs = new SecurePreferences(context);
         mContext = context;
         loadData();
     }

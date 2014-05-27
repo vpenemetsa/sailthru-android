@@ -7,11 +7,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.sailthru.android.sdk.ST_AuthenticatedClient;
-import com.sailthru.android.sdk.api.API_Queue;
+import com.sailthru.android.sdk.api.NetworkQueue;
 
-public class BR_Network extends BroadcastReceiver {
+public class NetworkStatus extends BroadcastReceiver {
 
-    public BR_Network() {
+    public NetworkStatus() {
     }
 
     @Override
@@ -23,7 +23,7 @@ public class BR_Network extends BroadcastReceiver {
         client.setConnectedToNetwork(networkInfo != null && networkInfo.isConnectedOrConnecting());
 
         if (client.isConnectedToNetwork()) {
-            API_Queue.registerCachedAttemptIfAvailable(context.getApplicationContext(), client);
+            NetworkQueue.registerCachedAttemptIfAvailable(context.getApplicationContext(), client);
         }
     }
 }

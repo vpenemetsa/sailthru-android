@@ -9,7 +9,29 @@ import com.sailthru.android.sdk.SailthruClient_Abstract;
 /**
  * Created by Vijay Penemetsa on 5/21/14.
  */
-public class API_Queue {
+public class NetworkQueue {
+
+    static NetworkQueue mQueue;
+
+    public enum TaskType {
+        APPREGISTER, EVENT
+    }
+
+    public static NetworkQueue getInstance() {
+        if (mQueue == null) {
+            mQueue = new NetworkQueue();
+        }
+
+        return mQueue;
+    }
+
+    public void addTask() {
+        //TODO
+    }
+
+    public void executePendingTasks() {
+        //TODO
+    }
 
     public static void registerCachedAttemptIfAvailable(Context context,
                                                         ST_AuthenticatedClient client) {

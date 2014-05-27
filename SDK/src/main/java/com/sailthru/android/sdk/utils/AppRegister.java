@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.SailthruClient_Abstract;
-import com.sailthru.android.sdk.api.API_Constants;
+import com.sailthru.android.sdk.api.Constants;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -22,15 +22,15 @@ import java.util.Map;
  *
  * Util methods to construct data for App Register request
  */
-public class UTILS_AppRegister {
+public class AppRegister {
 
     public static Map<String, String> buildRequest(Context context, String appId, String apiKey, String uid,
                                             SailthruClient_Abstract.Identification userType) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put(API_Constants.UR_API_KEY, apiKey);
-        params.put(API_Constants.UR_FORMAT_KEY, API_Constants.UR_FORMAT_VALUE);
-        params.put(API_Constants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
-        params.put(API_Constants.UR_SIG_KEY, generateSig(appId, params));
+        params.put(Constants.UR_API_KEY, apiKey);
+        params.put(Constants.UR_FORMAT_KEY, Constants.UR_FORMAT_VALUE);
+        params.put(Constants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
+        params.put(Constants.UR_SIG_KEY, generateSig(appId, params));
 
 //        ST_Logger.sendLog(params.get(API_Constants.UR_SIG_KEY));
 //        Log.d("**********SIG************", params.get(API_Constants.UR_SIG_KEY));
@@ -39,33 +39,33 @@ public class UTILS_AppRegister {
     }
 
     private static String generateRegisterJson(Context context, String uid, SailthruClient_Abstract.Identification userType) {
-        UTILS_Device UTILSDevice = UTILS_Device.getInstance();
+        Device UTILSDevice = Device.getInstance();
         UTILSDevice.setContext(context);
 
         Map<String, String> data = new HashMap<String, String>();
-        data.put(API_Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, API_Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
+        data.put(Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
         if (userType == null) {
 //            ST_Logger.sendLog("ENtered as null");
 //            Log.d("*******************", "ENtered as null");
 //            ST_Logger.sendLog(uid);
 //            Log.d("*******************", uid);
-            data.put(API_Constants.UR_JSON_ID_KEY, uid);
-            data.put(API_Constants.UR_JSON_KEY_KEY, "hid");
+            data.put(Constants.UR_JSON_ID_KEY, uid);
+            data.put(Constants.UR_JSON_KEY_KEY, "hid");
         } else if (userType.equals(SailthruClient_Abstract.Identification.EMAIL)) {
 //            ST_Logger.sendLog("Entered as email");
 //            Log.d("*******************", "Entered as email");
-            data.put(API_Constants.UR_JSON_ID_KEY, uid);
-            data.put(API_Constants.UR_JSON_KEY_KEY, userType.toString());
+            data.put(Constants.UR_JSON_ID_KEY, uid);
+            data.put(Constants.UR_JSON_KEY_KEY, userType.toString());
         }
 
-        data.put(API_Constants.UR_JSON_DEVICE_ID_KEY, UTILSDevice.getDeviceId());
-        data.put(API_Constants.UR_JSON_OS_VERSION_KEY, UTILSDevice.getOsVersion());
-        data.put(API_Constants.UR_JSON_ENV_KEY, API_Constants.UR_JSON_ENV_VALUE);
-        data.put(API_Constants.UR_JSON_PLATFORM_APP_ID_KEY, API_Constants.UR_JSON_PLATFORM_APP_ID_VALUE);
-        data.put(API_Constants.UR_JSON_DEVICE_TYPE_KEY, UTILSDevice.getDeviceType());
-        data.put(API_Constants.UR_JSON_DEVICE_VERSION_KEY, UTILSDevice.getDeviceVersion());
+        data.put(Constants.UR_JSON_DEVICE_ID_KEY, UTILSDevice.getDeviceId());
+        data.put(Constants.UR_JSON_OS_VERSION_KEY, UTILSDevice.getOsVersion());
+        data.put(Constants.UR_JSON_ENV_KEY, Constants.UR_JSON_ENV_VALUE);
+        data.put(Constants.UR_JSON_PLATFORM_APP_ID_KEY, Constants.UR_JSON_PLATFORM_APP_ID_VALUE);
+        data.put(Constants.UR_JSON_DEVICE_TYPE_KEY, UTILSDevice.getDeviceType());
+        data.put(Constants.UR_JSON_DEVICE_VERSION_KEY, UTILSDevice.getDeviceVersion());
 
-        Log.d("***********************", data.get(API_Constants.UR_JSON_DEVICE_ID_KEY));
+        Log.d("***********************", data.get(Constants.UR_JSON_DEVICE_ID_KEY));
 
         Gson gson = new Gson();
         return gson.toJson(data);

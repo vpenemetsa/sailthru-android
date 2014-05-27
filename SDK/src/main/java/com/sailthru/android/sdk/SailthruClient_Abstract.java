@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.sailthru.android.sdk.async.ASYNC_RegisterTask;
-import com.sailthru.android.sdk.model.MODEL_UserRegisterAppResponse;
-import com.sailthru.android.sdk.utils.UTILS_AppRegister;
+import com.sailthru.android.sdk.async.RegisterTask;
+import com.sailthru.android.sdk.response.UserRegisterAppResponse;
+import com.sailthru.android.sdk.utils.AppRegister;
 
 import org.apache.http.HttpStatus;
 
@@ -20,7 +20,7 @@ import retrofit.client.Response;
 public class SailthruClient_Abstract {
 
     Context mContext;
-    ASYNC_RegisterTask mAppRegisterTask = null;
+    RegisterTask mAppRegisterTask = null;
     ST_AuthenticatedClient mAuthenticatedClient;
 
     /**
@@ -143,15 +143,15 @@ public class SailthruClient_Abstract {
         }
 
 //        API_Manager apiManager = new API_Manager(mAuthenticatedClient);
-        if (UTILS_AppRegister.notNullOrEmpty(storedHid) &&
+        if (AppRegister.notNullOrEmpty(storedHid) &&
                 !userType.equals(SailthruClient_Abstract.Identification.ANONYMOUS)) {
             Log.d("stored Hid", storedHid);
-            mAppRegisterTask = new ASYNC_RegisterTask(mContext, appId, apiKey, storedHid, userType,
+            mAppRegisterTask = new RegisterTask(mContext, appId, apiKey, storedHid, userType,
                     mAuthenticatedClient, mRegisterCallback);
 //            apiManager.registerUser(mContext, appId, apiKey, storedHid, null, mRegisterCallback);
         } else {
             Log.d("stored Hid", "****************");
-            mAppRegisterTask = new ASYNC_RegisterTask(mContext, appId, apiKey, uid, userType,
+            mAppRegisterTask = new RegisterTask(mContext, appId, apiKey, uid, userType,
                     mAuthenticatedClient, mRegisterCallback);
 //            apiManager.registerUser(mContext, appId, apiKey, uid, userType, mRegisterCallback);
         }
@@ -161,9 +161,9 @@ public class SailthruClient_Abstract {
     /**
      * Callback for Registration request
      */
-    protected Callback<MODEL_UserRegisterAppResponse> mRegisterCallback = new Callback<MODEL_UserRegisterAppResponse>() {
+    protected Callback<UserRegisterAppResponse> mRegisterCallback = new Callback<UserRegisterAppResponse>() {
         @Override
-        public void success(MODEL_UserRegisterAppResponse registerAppResponse, Response response) {
+        public void success(UserRegisterAppResponse registerAppResponse, Response response) {
             if (response.getStatus() == HttpStatus.SC_OK) {
                 mAuthenticatedClient.saveHid(registerAppResponse.getHid());
                 Toast.makeText(mContext, registerAppResponse.getHid(), Toast.LENGTH_SHORT).show();

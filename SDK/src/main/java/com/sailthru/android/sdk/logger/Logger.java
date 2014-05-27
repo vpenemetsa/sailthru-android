@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Created by Vijay Penemetsa on 5/22/14.
  */
-public abstract class ST_Logger {
+public abstract class Logger {
 
     public static final String LOGGER_DATA_EXTRA = "LOGGER_DATA_EXTRA";
 
@@ -23,7 +23,7 @@ public abstract class ST_Logger {
 
     protected abstract void onReceivedLog(String logMessage);
 
-    public ST_Logger(Context context, boolean interceptLogs) {
+    public Logger(Context context, boolean interceptLogs) {
         mContext = context;
         mInterceptLogs = interceptLogs;
     }
