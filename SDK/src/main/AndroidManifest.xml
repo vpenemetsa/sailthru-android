@@ -20,7 +20,7 @@
         </receiver>
 
         <service
-            android:name=".async.EventService"
+            android:name=".services.EventService"
             android:exported="false" />
 
 

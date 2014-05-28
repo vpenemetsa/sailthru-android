@@ -51,4 +51,5 @@ dependencies {
     compile files ('libs/tape-1.1.0.jar')
     compile files ('libs/rxjava-core-0.18.3.jar')
     compile files ('libs/rxjava-android-0.18.3.jar')
+    compile files ('libs/javax.inject-1.jar')
 }

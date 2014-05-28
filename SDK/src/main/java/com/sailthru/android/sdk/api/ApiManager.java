@@ -20,12 +20,12 @@ import retrofit.http.POST;
  *
  * A Central class to handle all API transactions
  */
-public class Manager {
+public class ApiManager {
 
-    private static final String TAG = Manager.class.getSimpleName();
+    private static final String TAG = ApiManager.class.getSimpleName();
     private static ST_AuthenticatedClient mAuthenticatedClient;
 
-    public Manager(ST_AuthenticatedClient client) {
+    public ApiManager(ST_AuthenticatedClient client) {
         mAuthenticatedClient = client;
     }
 
@@ -66,5 +66,11 @@ public class Manager {
                 apiKey,
                 Constants.UR_FORMAT_VALUE,
                 callback);
+    }
+
+    public static boolean sendEvents() {
+        //TODO
+
+        return true;
     }
 }

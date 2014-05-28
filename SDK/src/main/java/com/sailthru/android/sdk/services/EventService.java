@@ -1,4 +1,4 @@
-package com.sailthru.android.sdk.async;
+package com.sailthru.android.sdk.services;
 
 import android.app.IntentService;
 import android.content.Intent;

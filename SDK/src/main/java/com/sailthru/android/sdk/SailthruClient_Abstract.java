@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.sailthru.android.sdk.async.RegisterTask;
+import com.sailthru.android.sdk.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.utils.AppRegister;
 
@@ -20,7 +20,7 @@ import retrofit.client.Response;
 public class SailthruClient_Abstract {
 
     Context mContext;
-    RegisterTask mAppRegisterTask = null;
+    RegisterAsyncTask mAppRegisterAsyncTask = null;
     ST_AuthenticatedClient mAuthenticatedClient;
 
     /**
@@ -138,24 +138,24 @@ public class SailthruClient_Abstract {
                                          Identification userType) {
         String storedHid = mAuthenticatedClient.getHid();
 
-        if (mAppRegisterTask != null) {
-            mAppRegisterTask.cancel(true);
+        if (mAppRegisterAsyncTask != null) {
+            mAppRegisterAsyncTask.cancel(true);
         }
 
 //        API_Manager apiManager = new API_Manager(mAuthenticatedClient);
         if (AppRegister.notNullOrEmpty(storedHid) &&
                 !userType.equals(SailthruClient_Abstract.Identification.ANONYMOUS)) {
             Log.d("stored Hid", storedHid);
-            mAppRegisterTask = new RegisterTask(mContext, appId, apiKey, storedHid, userType,
+            mAppRegisterAsyncTask = new RegisterAsyncTask(mContext, appId, apiKey, storedHid, userType,
                     mAuthenticatedClient, mRegisterCallback);
 //            apiManager.registerUser(mContext, appId, apiKey, storedHid, null, mRegisterCallback);
         } else {
             Log.d("stored Hid", "****************");
-            mAppRegisterTask = new RegisterTask(mContext, appId, apiKey, uid, userType,
+            mAppRegisterAsyncTask = new RegisterAsyncTask(mContext, appId, apiKey, uid, userType,
                     mAuthenticatedClient, mRegisterCallback);
 //            apiManager.registerUser(mContext, appId, apiKey, uid, userType, mRegisterCallback);
         }
-        mAppRegisterTask.execute((Void) null);
+        mAppRegisterAsyncTask.execute((Void) null);
     }
 
     /**
