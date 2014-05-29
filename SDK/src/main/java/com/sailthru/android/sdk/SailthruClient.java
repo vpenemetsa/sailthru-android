@@ -11,8 +11,6 @@ import com.sailthru.android.sdk.impl.utils.AppRegister;
 
 import org.apache.http.HttpStatus;
 
-import javax.inject.Inject;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

@@ -2,7 +2,6 @@ package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
 
-import com.google.inject.Inject;
 import com.sailthru.android.sdk.impl.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;

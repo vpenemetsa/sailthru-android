@@ -33,7 +33,7 @@ public class NetworkQueue {
     }
 
     public static void registerCachedAttemptIfAvailable(Context context,
-                                                        AuthenticatedClient client) {
+                                                           AuthenticatedClient client) {
         if (client.isCachedRegisterAttempt()) {
             Sailthru stClient = new Sailthru(context);
             Sailthru.RegistrationMode mode;
