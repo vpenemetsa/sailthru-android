@@ -12,17 +12,12 @@
         android:theme="@style/AppTheme" >
 
         <receiver
-            android:name=".receivers.NetworkStatus"
+            android:name=".impl.receivers.NetworkStatus"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name=".services.EventService"
-            android:exported="false" />
-
 
     </application>
 
