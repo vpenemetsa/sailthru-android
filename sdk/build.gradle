@@ -26,11 +26,11 @@ android {
     }
     buildTypes {
         debug {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -44,4 +44,5 @@ dependencies {
     compile 'com.squareup:tape:1.2.2'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup.dagger:dagger:1.2.1'
+    compile 'com.google.inject:guice:3.0'
 }

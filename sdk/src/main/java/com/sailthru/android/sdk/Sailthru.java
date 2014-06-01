@@ -5,7 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.sailthru.android.sdk.impl.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.api.ApiManager;
+import com.sailthru.android.sdk.impl.api.ApiModule;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.

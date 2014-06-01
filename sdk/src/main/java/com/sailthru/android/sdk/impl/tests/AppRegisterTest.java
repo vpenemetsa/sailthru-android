@@ -42,4 +42,6 @@ public class AppRegisterTest extends InstrumentationTestCase {
                 null);
         assertEquals(request.get(Constants.UR_SIG_KEY), expectedTransitionSig);
     }
+
+
 }
