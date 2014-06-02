@@ -3,8 +3,11 @@ package com.sailthru.android.sdk.impl.event;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 /**
  * Created by Vijay Penemetsa on 5/28/14.
@@ -18,6 +21,12 @@ public class EventTaskService extends Service implements EventTask.Callback {
     private boolean running;
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        ObjectGraph.create(new EventModule(getApplicationContext())).inject(this);
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         execute();
         return START_STICKY;
@@ -29,9 +38,10 @@ public class EventTaskService extends Service implements EventTask.Callback {
         }
 
         EventTask task = queue.peek();
-
+        Log.d("****************************", "Executing service");
         if (task != null) {
             running = true;
+            Log.d("****************************", "Executing task");
             task.execute(this);
         } else {
             stopSelf();
@@ -40,6 +50,7 @@ public class EventTaskService extends Service implements EventTask.Callback {
 
     @Override
     public void onSuccess() {
+        Log.d("****************************", "Removing task from queue");
         running = false;
         queue.remove();
         execute();

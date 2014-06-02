@@ -67,22 +67,12 @@ public class SecurePreferences {
     private final Cipher keyWriter;
     private final SharedPreferences preferences;
 
-    static SecurePreferences mPrefs;
-
-    @Inject
-    public static SecurePreferences getInstance(Context context) {
-        if (mPrefs == null) {
-            return new SecurePreferences(context);
-        }
-
-        return mPrefs;
-    }
-
     /**
      * This will initialize an instance of the Utils_SecurePreferences class
      * @param context your current context.
      * @throws SecurePreferencesException
      */
+    @Inject
     public SecurePreferences(Context context) throws SecurePreferencesException {
         try {
             this.writer = Cipher.getInstance(TRANSFORMATION);
@@ -94,7 +84,6 @@ public class SecurePreferences {
             this.preferences = context.getSharedPreferences(ST_SECURE_PREFS, Context.MODE_PRIVATE);
 
             this.encryptKeys = true;
-            mPrefs = this;
         }
         catch (GeneralSecurityException e) {
             throw new SecurePreferencesException(e);

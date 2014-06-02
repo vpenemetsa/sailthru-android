@@ -8,7 +8,9 @@ import com.sailthru.android.sdk.impl.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
-import com.sailthru.android.sdk.impl.utils.AppRegister;
+import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
+
+import javax.inject.Inject;
 
 import retrofit.Callback;
 
@@ -19,6 +21,9 @@ import retrofit.Callback;
  * Async Task to make App Registration request
  */
 public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
+
+    @Inject
+    AppRegisterUtils appRegisterUtils;
 
     Context context;
     String appId;
@@ -45,7 +50,7 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         String storedHid = authenticatedClient.getHid();
 
-        if (AppRegister.notNullOrEmpty(storedHid) &&
+        if (appRegisterUtils.notNullOrEmpty(storedHid) &&
                 !userType.equals(Sailthru.Identification.ANONYMOUS)) {
             Log.d("stored Hid", storedHid);
             ApiManager.registerUser(context, appId, apiKey, storedHid, null, callback);

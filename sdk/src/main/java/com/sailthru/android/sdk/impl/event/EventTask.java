@@ -2,6 +2,7 @@ package com.sailthru.android.sdk.impl.event;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.squareup.tape.Task;
@@ -11,7 +12,7 @@ import com.squareup.tape.Task;
  *
  * A task which is enqueued in EventTaskQueue and executed by EventTaskService.
  */
-class EventTask implements Task<EventTask.Callback> {
+public class EventTask implements Task<EventTask.Callback> {
 
     Event event;
 
@@ -36,7 +37,7 @@ class EventTask implements Task<EventTask.Callback> {
                     //TODO: MAKE REQUEST
 
                     boolean success = ApiManager.sendEvents();
-
+                    Log.d("****************************", "Executing task ----------- 2");
                     if (success) {
                         mainThread.post(new Runnable() {
                             @Override

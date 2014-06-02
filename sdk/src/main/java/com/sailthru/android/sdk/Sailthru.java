@@ -6,24 +6,68 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.sailthru.android.sdk.impl.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventModule;
+import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
+import com.sailthru.android.sdk.impl.event.EventTaskService;
+import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
 import dagger.ObjectGraph;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  */
-public class Sailthru extends AbstractSailthru {
+public class Sailthru {
 
     @Inject
-    EventTaskQueue eventTaskQueue;
+    Lazy<EventTaskQueue> eventTaskQueue;
 
+    Context context;
+    AuthenticatedClient authenticatedClient;
     private ObjectGraph objectGraph;
+    private static SailthruClient sailthruClient;
+
+    /**
+     * Defines User type for registration
+     */
+    public enum Identification {
+        EMAIL("email"), ANONYMOUS("anonymous");
+
+        private final String name;
+
+        private Identification(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return name;
+        }
+    }
+
+    /**
+     * Defines registration environment
+     */
+    public enum RegistrationMode {
+        DEV("dev"), PROD("prod");
+
+        private final String name;
+
+        private RegistrationMode(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return name;
+        }
+    }
 
     /**
      * Initializes Sailthru Client
@@ -43,7 +87,23 @@ public class Sailthru extends AbstractSailthru {
             authenticatedClient.setConnectedToNetwork(true);
         }
 
-        objectGraph = ObjectGraph.create(new EventModule(context));
+        if (sailthruClient == null) {
+            sailthruClient = new SailthruClient(context, authenticatedClient);
+        }
+
+        objectGraph = ObjectGraph.create(getModules().toArray());
+        inject(this);
+    }
+
+    private List<Object> getModules() {
+        return Arrays.asList(
+            new EventModule(context),
+            new UtilsModule(context)
+        );
+    }
+
+    public void inject(Object object) {
+        objectGraph.inject(object);
     }
 
     /**
@@ -60,16 +120,16 @@ public class Sailthru extends AbstractSailthru {
     public void register(RegistrationMode mode, String domain,
                          String apiKey, String appId, Identification identification,
                          String uid, String token) {
-        if (passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
+        if (SailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
                 Log.d("************", "Registering");
-                makeRegistrationRequest(appId, apiKey, uid, identification);
+                SailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
             } else {
                 Log.d("************", "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
-            saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
+            SailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
         }
     }
 
@@ -80,7 +140,17 @@ public class Sailthru extends AbstractSailthru {
         authenticatedClient.deleteHid();
     }
 
-    public void sendTags(ArrayList<String> tags, String email) {
 
+    /**
+     *
+     * @param tags
+     * @param url
+     */
+    public void sendTags(ArrayList<String> tags, String url) {
+        Event event = new Event();
+        event.addTags(tags);
+        event.setUrl(url);
+        EventTask eventTask = new EventTask(event);
+        eventTaskQueue.get().add(eventTask);
     }
 }

@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="javax.inject-1">
+  <library name="gson-2.2.4-javadoc">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/sdk/libs/javax.inject-1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sdk/libs/gson-2.2.4-javadoc.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

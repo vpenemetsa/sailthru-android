@@ -17,12 +17,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  *
  * Util methods to construct data for App Register request
  */
-public class AppRegister {
+public class AppRegisterUtils {
+
+    static DeviceUtils deviceUtils;
+
+    public AppRegisterUtils() {
+    }
 
     //Builds request for App Register
     public static Map<String, String> buildRequest(Context context, String appId, String apiKey, String uid,
@@ -33,6 +40,8 @@ public class AppRegister {
         params.put(Constants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
         params.put(Constants.UR_SIG_KEY, generateSig(appId, params));
 
+        deviceUtils = new DeviceUtils(context);
+
 //        ST_Logger.sendLog(params.get(API_Constants.UR_SIG_KEY));
 //        Log.d("**********SIG************", params.get(API_Constants.UR_SIG_KEY));
 
@@ -40,9 +49,6 @@ public class AppRegister {
     }
 
     private static String generateRegisterJson(Context context, String uid, Sailthru.Identification userType) {
-        Device UTILSDevice = Device.getInstance();
-        UTILSDevice.setContext(context);
-
         Map<String, String> data = new HashMap<String, String>();
         data.put(Constants.UR_JSON_PLATFORM_APP_VERSION_KEY, Constants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
         if (userType == null) {
@@ -59,12 +65,12 @@ public class AppRegister {
             data.put(Constants.UR_JSON_KEY_KEY, userType.toString());
         }
 
-        data.put(Constants.UR_JSON_DEVICE_ID_KEY, UTILSDevice.getDeviceId());
-        data.put(Constants.UR_JSON_OS_VERSION_KEY, UTILSDevice.getOsVersion());
+        data.put(Constants.UR_JSON_DEVICE_ID_KEY, deviceUtils.getDeviceId());
+        data.put(Constants.UR_JSON_OS_VERSION_KEY, deviceUtils.getOsVersion());
         data.put(Constants.UR_JSON_ENV_KEY, Constants.UR_JSON_ENV_VALUE);
         data.put(Constants.UR_JSON_PLATFORM_APP_ID_KEY, Constants.UR_JSON_PLATFORM_APP_ID_VALUE);
-        data.put(Constants.UR_JSON_DEVICE_TYPE_KEY, UTILSDevice.getDeviceType());
-        data.put(Constants.UR_JSON_DEVICE_VERSION_KEY, UTILSDevice.getDeviceVersion());
+        data.put(Constants.UR_JSON_DEVICE_TYPE_KEY, deviceUtils.getDeviceType());
+        data.put(Constants.UR_JSON_DEVICE_VERSION_KEY, deviceUtils.getDeviceVersion());
 
         Log.d("***********************", data.get(Constants.UR_JSON_DEVICE_ID_KEY));
 

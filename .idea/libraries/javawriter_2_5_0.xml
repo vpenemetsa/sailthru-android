@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="javax.inject-1">
+  <library name="javawriter-2.5.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/sdk/libs/javax.inject-1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sdk/libs/javawriter-2.5.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

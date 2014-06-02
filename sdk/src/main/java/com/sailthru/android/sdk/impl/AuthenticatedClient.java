@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.sailthru.android.sdk.impl.utils.SecurePreferences;
 
+import javax.inject.Inject;
+
 /**
  * Created by Vijay Penemetsa on 5/20/14.
  *
@@ -13,6 +15,7 @@ public class AuthenticatedClient {
 
     private static AuthenticatedClient authenticatedClient;
 
+    @Inject
     static SecurePreferences prefs;
     static Context context;
 
@@ -49,6 +52,7 @@ public class AuthenticatedClient {
         return authenticatedClient;
     }
 
+    @Inject
     public AuthenticatedClient(Context context) {
         prefs = new SecurePreferences(context);
         this.context = context;

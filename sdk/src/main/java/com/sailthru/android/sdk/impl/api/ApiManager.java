@@ -5,7 +5,7 @@ import android.content.Context;
 import com.sailthru.android.sdk.impl.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
-import com.sailthru.android.sdk.impl.utils.AppRegister;
+import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 
 import java.util.Map;
 
@@ -27,10 +27,12 @@ public class ApiManager {
     private static final String TAG = ApiManager.class.getSimpleName();
     private static AuthenticatedClient authenticatedClient;
 
-    @Inject
     public ApiManager(AuthenticatedClient authenticatedClient) {
         this.authenticatedClient = authenticatedClient;
     }
+
+    @Inject
+    static AppRegisterUtils appRegisterUtils;
 
 //    public static API_Manager getInstance(AuthenticatedClient client) {
 //        mAuthenticatedClient = client;
@@ -58,10 +60,8 @@ public class ApiManager {
                 .build();
         RegisterUserService service = adapter.create(RegisterUserService.class);
 
-        Map<String, String> params = AppRegister.buildRequest(context, appId, apiKey,
+        Map<String, String> params = appRegisterUtils.buildRequest(context, appId, apiKey,
                 uid, userType);
-
-        UserRegisterAppResponse response = new UserRegisterAppResponse();
 
         service.registerUser(
                 params.get(Constants.UR_SIG_KEY),

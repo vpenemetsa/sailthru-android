@@ -2,6 +2,7 @@ package com.sailthru.android.sdk.impl.event;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.squareup.tape.FileObjectQueue;
@@ -10,6 +11,8 @@ import com.squareup.tape.TaskQueue;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 /**
  * Created by Vijay Penemetsa on 5/28/14.
@@ -26,6 +29,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
 
     private final Context context;
 
+    @Inject
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
         super(delegate);
         this.context = context;
@@ -45,6 +49,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
         if (size() == MAX_QUEUE_SIZE) {
             remove();
         }
+        Log.d("Added Event task", size() + "");
 
         super.add(entry);
 
@@ -56,10 +61,12 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
 
     @Override
     public void remove() {
+        Log.d("Removed Event Task", size() + "");
         super.remove();
     }
 
     public static EventTaskQueue create(Context context, Gson gson) {
+        Log.d("***********************************", "Creating task queue");
         FileObjectQueue.Converter<EventTask> converter = new GsonConverter<EventTask>(gson, EventTask.class);
         File queueFile = new File(context.getFilesDir(), FILENAME);
         FileObjectQueue<EventTask> delegate;

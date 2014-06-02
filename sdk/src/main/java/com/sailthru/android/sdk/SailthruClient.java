@@ -7,9 +7,11 @@ import android.widget.Toast;
 import com.sailthru.android.sdk.impl.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
-import com.sailthru.android.sdk.impl.utils.AppRegister;
+import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 
 import org.apache.http.HttpStatus;
+
+import javax.inject.Inject;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -18,44 +20,20 @@ import retrofit.client.Response;
 /**
  * Created by Vijay Penemetsa on 5/20/14.
  */
-class AbstractSailthru {
+class SailthruClient {
 
-    Context context;
-    RegisterAsyncTask appRegisterAsyncTask = null;
-    AuthenticatedClient authenticatedClient;
+    static Context context;
+    static RegisterAsyncTask appRegisterAsyncTask = null;
 
-    /**
-     * Defines User type for registration
-     */
-    public enum Identification {
-        EMAIL("email"), ANONYMOUS("anonymous");
+    @Inject
+    static AuthenticatedClient authenticatedClient;
 
-        private final String name;
+    @Inject
+    static AppRegisterUtils appRegisterUtils;
 
-        private Identification(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
-
-    /**
-     * Defines registration environment
-     */
-    public enum RegistrationMode {
-        DEV("dev"), PROD("prod");
-
-        private final String name;
-
-        private RegistrationMode(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return name;
-        }
+    public SailthruClient(Context context, AuthenticatedClient authenticatedClient) {
+        this.authenticatedClient = authenticatedClient;
+        this.context = context;
     }
 
     /**
@@ -69,8 +47,8 @@ class AbstractSailthru {
      * @param uid
      * @param token
      */
-    protected void saveCredentials(String mode, String domain, String apiKey, String appId,
-                                   String identification, String uid, String token) {
+    protected static void saveCredentials(String mode, String domain, String apiKey, String appId,
+                                          String identification, String uid, String token) {
         authenticatedClient.setMode(mode);
         authenticatedClient.setDomain(domain);
         authenticatedClient.setApiKey(apiKey);
@@ -92,9 +70,9 @@ class AbstractSailthru {
      * @param token
      * @return
      */
-    protected boolean passedSanityChecks(RegistrationMode mode, String domain, String apiKey,
-                                         String appId, Identification identification, String uid,
-                                         String token) {
+    protected static boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain, String apiKey,
+                                                String appId, Sailthru.Identification identification, String uid,
+                                                String token) {
 
         boolean passedChecks = true;
 
@@ -119,7 +97,7 @@ class AbstractSailthru {
             passedChecks = false;
         }
 
-        if (identification == Identification.EMAIL && uid == null) {
+        if (identification == Sailthru.Identification.EMAIL && uid == null) {
             passedChecks = false;
             Log.e("SailthruSDK", "UID cannot be null when Identification is set to EMAIL");
         }
@@ -135,8 +113,8 @@ class AbstractSailthru {
      * @param uid
      * @param userType
      */
-    protected void makeRegistrationRequest(String appId, String apiKey, String uid,
-                                         Identification userType) {
+    protected static void makeRegistrationRequest(String appId, String apiKey, String uid,
+                                                  Sailthru.Identification userType) {
         String storedHid = authenticatedClient.getHid();
 
         if (appRegisterAsyncTask != null) {
@@ -144,8 +122,8 @@ class AbstractSailthru {
         }
 
 //        API_Manager apiManager = new API_Manager(mAuthenticatedClient);
-        if (AppRegister.notNullOrEmpty(storedHid) &&
-                !userType.equals(AbstractSailthru.Identification.ANONYMOUS)) {
+        if (appRegisterUtils.notNullOrEmpty(storedHid) &&
+                !userType.equals(Sailthru.Identification.ANONYMOUS)) {
             Log.d("stored Hid", storedHid);
             appRegisterAsyncTask = new RegisterAsyncTask(context, appId, apiKey, storedHid, userType,
                     authenticatedClient, mRegisterCallback);
@@ -162,7 +140,7 @@ class AbstractSailthru {
     /**
      * Callback for Registration request
      */
-    protected Callback<UserRegisterAppResponse> mRegisterCallback = new Callback<UserRegisterAppResponse>() {
+    protected static Callback<UserRegisterAppResponse> mRegisterCallback = new Callback<UserRegisterAppResponse>() {
         @Override
         public void success(UserRegisterAppResponse registerAppResponse, Response response) {
             if (response.getStatus() == HttpStatus.SC_OK) {

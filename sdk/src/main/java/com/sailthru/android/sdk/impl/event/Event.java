@@ -8,7 +8,7 @@ import java.util.List;
  *
  * Model for sending an Event request
  */
-class Event {
+public class Event {
 
     private List<String> tags = new ArrayList<String>();
 

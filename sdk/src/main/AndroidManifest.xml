@@ -19,6 +19,8 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".impl.event.EventTaskService" />
+
     </application>
 
 </manifest>
