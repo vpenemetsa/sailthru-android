@@ -24,11 +24,11 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     private static final int MAX_QUEUE_SIZE = 50;
     private static final int QUEUE_SIZE_THRESHOLD = 20;
 
-    private final Context mContext;
+    private final Context context;
 
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
         super(delegate);
-        mContext = context;
+        this.context = context;
 
         if (size() > 0) {
             startService();
@@ -36,7 +36,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     }
 
     private void startService() {
-        mContext.startService(new Intent(mContext, EventTaskService.class));
+        context.startService(new Intent(context, EventTaskService.class));
     }
 
     @Override

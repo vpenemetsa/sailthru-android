@@ -20,37 +20,37 @@ import retrofit.Callback;
  */
 public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
 
-    Context mContext;
-    String mAppId;
-    String mApiKey;
-    String mUid;
-    Sailthru.Identification mUserType;
-    AuthenticatedClient mAuthenticatedClient;
-    Callback<UserRegisterAppResponse> mCallback;
+    Context context;
+    String appId;
+    String apiKey;
+    String uid;
+    Sailthru.Identification userType;
+    AuthenticatedClient authenticatedClient;
+    Callback<UserRegisterAppResponse> callback;
 
     public RegisterAsyncTask(Context context, String appId, String apiKey, String uid,
                              Sailthru.Identification userType,
                              AuthenticatedClient authenticatedClient,
                              Callback<UserRegisterAppResponse> callback) {
-        mContext = context;
-        mAppId = appId;
-        mApiKey = apiKey;
-        mUid = uid;
-        mUserType = userType;
-        mAuthenticatedClient = authenticatedClient;
-        mCallback = callback;
+        this.context = context;
+        this.appId = appId;
+        this.apiKey = apiKey;
+        this.uid = uid;
+        this.userType = userType;
+        this.authenticatedClient = authenticatedClient;
+        this.callback = callback;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        String storedHid = mAuthenticatedClient.getHid();
+        String storedHid = authenticatedClient.getHid();
 
         if (AppRegister.notNullOrEmpty(storedHid) &&
-                !mUserType.equals(Sailthru.Identification.ANONYMOUS)) {
+                !userType.equals(Sailthru.Identification.ANONYMOUS)) {
             Log.d("stored Hid", storedHid);
-            ApiManager.registerUser(mContext, mAppId, mApiKey, storedHid, null, mCallback);
+            ApiManager.registerUser(context, appId, apiKey, storedHid, null, callback);
         } else {
-            ApiManager.registerUser(mContext, mAppId, mApiKey, mUid, mUserType, mCallback);
+            ApiManager.registerUser(context, appId, apiKey, uid, userType, callback);
         }
 
         return null;

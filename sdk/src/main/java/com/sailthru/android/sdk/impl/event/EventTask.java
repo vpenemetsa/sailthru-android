@@ -11,11 +11,11 @@ import com.squareup.tape.Task;
  *
  * A task which is enqueued in EventTaskQueue and executed by EventTaskService.
  */
-public class EventTask implements Task<EventTask.Callback> {
+class EventTask implements Task<EventTask.Callback> {
 
-    Event mEvent;
+    Event event;
 
-    private static final Handler mMainThread = new Handler(Looper.getMainLooper());
+    private static final Handler mainThread = new Handler(Looper.getMainLooper());
 
     public interface Callback {
         void onSuccess ();
@@ -23,7 +23,7 @@ public class EventTask implements Task<EventTask.Callback> {
     }
 
     public EventTask(Event event) {
-        mEvent = event;
+        this.event = event;
     }
 
     @Override
@@ -38,14 +38,14 @@ public class EventTask implements Task<EventTask.Callback> {
                     boolean success = ApiManager.sendEvents();
 
                     if (success) {
-                        mMainThread.post(new Runnable() {
+                        mainThread.post(new Runnable() {
                             @Override
                             public void run() {
                                 callback.onSuccess();
                             }
                         });
                     } else {
-                        mMainThread.post(new Runnable() {
+                        mainThread.post(new Runnable() {
                             @Override
                             public void run() {
                                 callback.onFailure();

@@ -23,7 +23,7 @@ import java.io.Writer;
  * {@code T} then you need to also include the concrete class name in the serialized byte array so that you can
  * deserialize to the appropriate type.
  */
-public class GsonConverter<T> implements FileObjectQueue.Converter<T> {
+class GsonConverter<T> implements FileObjectQueue.Converter<T> {
     private final Gson gson;
     private final Class<T> type;
 

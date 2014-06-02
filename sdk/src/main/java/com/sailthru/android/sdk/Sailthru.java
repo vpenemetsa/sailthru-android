@@ -5,16 +5,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.sailthru.android.sdk.impl.AuthenticatedClient;
-import com.sailthru.android.sdk.impl.api.ApiManager;
-import com.sailthru.android.sdk.impl.api.ApiModule;
+import com.sailthru.android.sdk.impl.event.EventModule;
+import com.sailthru.android.sdk.impl.event.EventTaskQueue;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  */
-public class Sailthru extends SailthruClient {
+public class Sailthru extends AbstractSailthru {
+
+    @Inject
+    EventTaskQueue eventTaskQueue;
+
+    private ObjectGraph objectGraph;
 
     /**
      * Initializes Sailthru Client
@@ -22,17 +31,19 @@ public class Sailthru extends SailthruClient {
      * @param context
      */
     public Sailthru(Context context) {
-        mContext = context;
-        mAuthenticatedClient = AuthenticatedClient.getInstance(context);
+        this.context = context;
+        authenticatedClient = AuthenticatedClient.getInstance(context);
 
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo == null) {
-            mAuthenticatedClient.setConnectedToNetwork(false);
+            authenticatedClient.setConnectedToNetwork(false);
         } else {
-            mAuthenticatedClient.setConnectedToNetwork(true);
+            authenticatedClient.setConnectedToNetwork(true);
         }
+
+        objectGraph = ObjectGraph.create(new EventModule(context));
     }
 
     /**
@@ -50,12 +61,12 @@ public class Sailthru extends SailthruClient {
                          String apiKey, String appId, Identification identification,
                          String uid, String token) {
         if (passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
-            if (mAuthenticatedClient.isConnectedToNetwork()) {
+            if (authenticatedClient.isConnectedToNetwork()) {
                 Log.d("************", "Registering");
                 makeRegistrationRequest(appId, apiKey, uid, identification);
             } else {
                 Log.d("************", "No network");
-                mAuthenticatedClient.setCachedRegisterAttempt();
+                authenticatedClient.setCachedRegisterAttempt();
             }
 
             saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
@@ -66,6 +77,10 @@ public class Sailthru extends SailthruClient {
      * Public method to unregister current client from Sailthru
      */
     public void unregister() {
-        mAuthenticatedClient.deleteHid();
+        authenticatedClient.deleteHid();
+    }
+
+    public void sendTags(ArrayList<String> tags, String email) {
+
     }
 }

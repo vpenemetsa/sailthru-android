@@ -11,10 +11,10 @@ import com.sailthru.android.sdk.impl.utils.SecurePreferences;
  */
 public class AuthenticatedClient {
 
-    private static AuthenticatedClient mAuthenticatedClient;
+    private static AuthenticatedClient authenticatedClient;
 
-    static SecurePreferences mPrefs;
-    static Context mContext;
+    static SecurePreferences prefs;
+    static Context context;
 
     //Shared prefs keys
     private static final String ST_PREFS_CACHED_HID = "ST_PREFS_CACHED_HID";
@@ -28,164 +28,164 @@ public class AuthenticatedClient {
     private static final String ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT = "ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT";
 
     //Stored variables
-    private static String mHid;
-    private static String mMode;
-    private static String mDomain;
-    private static String mApiKey;
-    private static String mAppId;
-    private static String mIdentification;
-    private static String mUid;
-    private static String mToken;
+    private static String hid;
+    private static String mode;
+    private static String domain;
+    private static String apiKey;
+    private static String appId;
+    private static String identification;
+    private static String uid;
+    private static String token;
 
-    private boolean mConnectedToNetwork;
-    private static boolean mCachedRegisterAttempt;
+    private boolean connectedToNetwork;
+    private static boolean cachedRegisterAttempt;
 
 
     public static AuthenticatedClient getInstance(Context context) {
-        if (mAuthenticatedClient == null) {
-            mAuthenticatedClient = new AuthenticatedClient(context);
+        if (authenticatedClient == null) {
+            authenticatedClient = new AuthenticatedClient(context);
         }
 
-        return mAuthenticatedClient;
+        return authenticatedClient;
     }
 
     public AuthenticatedClient(Context context) {
-        mPrefs = new SecurePreferences(context);
-        mContext = context;
+        prefs = new SecurePreferences(context);
+        this.context = context;
         loadData();
     }
 
     //Loads cached data into memory from Secure Prefs
     private static synchronized void loadData() {
-        if (mPrefs.containsKey(ST_PREFS_CACHED_HID)) {
-            mHid = mPrefs.getString(ST_PREFS_CACHED_HID);
+        if (prefs.containsKey(ST_PREFS_CACHED_HID)) {
+            hid = prefs.getString(ST_PREFS_CACHED_HID);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_REGISTRATION_MODE)) {
-            mMode = mPrefs.getString(ST_SECURE_PREFS_REGISTRATION_MODE);
+        if (prefs.containsKey(ST_SECURE_PREFS_REGISTRATION_MODE)) {
+            mode = prefs.getString(ST_SECURE_PREFS_REGISTRATION_MODE);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_DOMAIN)) {
-            mDomain = mPrefs.getString(ST_SECURE_PREFS_DOMAIN);
+        if (prefs.containsKey(ST_SECURE_PREFS_DOMAIN)) {
+            domain = prefs.getString(ST_SECURE_PREFS_DOMAIN);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_API_KEY)) {
-            mApiKey = mPrefs.getString(ST_SECURE_PREFS_API_KEY);
+        if (prefs.containsKey(ST_SECURE_PREFS_API_KEY)) {
+            apiKey = prefs.getString(ST_SECURE_PREFS_API_KEY);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_APP_ID)) {
-            mAppId = mPrefs.getString(ST_SECURE_PREFS_APP_ID);
+        if (prefs.containsKey(ST_SECURE_PREFS_APP_ID)) {
+            appId = prefs.getString(ST_SECURE_PREFS_APP_ID);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_IDENTIFICATION)) {
-            mIdentification = mPrefs.getString(ST_SECURE_PREFS_IDENTIFICATION);
+        if (prefs.containsKey(ST_SECURE_PREFS_IDENTIFICATION)) {
+            identification = prefs.getString(ST_SECURE_PREFS_IDENTIFICATION);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_UID)) {
-            mUid = mPrefs.getString(ST_SECURE_PREFS_UID);
+        if (prefs.containsKey(ST_SECURE_PREFS_UID)) {
+            uid = prefs.getString(ST_SECURE_PREFS_UID);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_TOKEN)) {
-            mToken = mPrefs.getString(ST_SECURE_PREFS_TOKEN);
+        if (prefs.containsKey(ST_SECURE_PREFS_TOKEN)) {
+            token = prefs.getString(ST_SECURE_PREFS_TOKEN);
         }
-        if (mPrefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
-            mCachedRegisterAttempt = true;
+        if (prefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
+            cachedRegisterAttempt = true;
         }
     }
 
     public String getHid() {
-        return mHid;
+        return hid;
     }
 
     public synchronized void saveHid(String hid) {
-        mPrefs.put(ST_PREFS_CACHED_HID, hid);
-        mHid = hid;
+        prefs.put(ST_PREFS_CACHED_HID, hid);
+        this.hid = hid;
     }
 
     public synchronized void deleteHid() {
-        if (mPrefs.containsKey(ST_PREFS_CACHED_HID)) {
-            mPrefs.removeValue(ST_PREFS_CACHED_HID);
+        if (prefs.containsKey(ST_PREFS_CACHED_HID)) {
+            prefs.removeValue(ST_PREFS_CACHED_HID);
         }
-        mHid = null;
+        hid = null;
     }
 
     public static String getMode() {
-        return mMode;
+        return mode;
     }
 
     public void setMode(String mode) {
-        mPrefs.put(ST_SECURE_PREFS_REGISTRATION_MODE, mode);
-        mMode = mode;
+        prefs.put(ST_SECURE_PREFS_REGISTRATION_MODE, mode);
+        this.mode = mode;
     }
 
     public String getDomain() {
-        return mDomain;
+        return domain;
     }
 
     public void setDomain(String domain) {
-        mPrefs.put(ST_SECURE_PREFS_DOMAIN, domain);
-        mDomain = domain;
+        prefs.put(ST_SECURE_PREFS_DOMAIN, domain);
+        this.domain = domain;
     }
 
     public String getApiKey() {
-        return mApiKey;
+        return apiKey;
     }
 
     public void setApiKey(String apiKey) {
-        mPrefs.put(ST_SECURE_PREFS_API_KEY, apiKey);
-        mApiKey = apiKey;
+        prefs.put(ST_SECURE_PREFS_API_KEY, apiKey);
+        this.apiKey = apiKey;
     }
 
     public String getAppId() {
-        return mAppId;
+        return appId;
     }
 
     public void setAppId(String appId) {
-        mPrefs.put(ST_SECURE_PREFS_APP_ID, appId);
-        mAppId = appId;
+        prefs.put(ST_SECURE_PREFS_APP_ID, appId);
+        this.appId = appId;
     }
 
     public String getIdentification() {
-        return mIdentification;
+        return identification;
     }
 
     public void setIdentification(String identification) {
-        mPrefs.put(ST_SECURE_PREFS_IDENTIFICATION, identification);
-        mIdentification = identification;
+        prefs.put(ST_SECURE_PREFS_IDENTIFICATION, identification);
+        this.identification = identification;
     }
 
     public  String getUid() {
-        return mUid;
+        return uid;
     }
 
     public void setUid(String uid) {
-        mPrefs.put(ST_SECURE_PREFS_UID, uid);
-        mUid = uid;
+        prefs.put(ST_SECURE_PREFS_UID, uid);
+        this.uid = uid;
     }
 
     public String getToken() {
-        return mToken;
+        return token;
     }
 
     public void setToken(String token) {
-        mPrefs.put(ST_SECURE_PREFS_TOKEN, token);
-        mToken = token;
+        prefs.put(ST_SECURE_PREFS_TOKEN, token);
+        this.token = token;
     }
 
     public boolean isConnectedToNetwork() {
-        return mConnectedToNetwork;
+        return connectedToNetwork;
     }
 
     public void setConnectedToNetwork(boolean connectedToNetwork) {
-        mConnectedToNetwork = connectedToNetwork;
+        this.connectedToNetwork = connectedToNetwork;
     }
 
     public boolean isCachedRegisterAttempt() {
-        return mCachedRegisterAttempt;
+        return cachedRegisterAttempt;
     }
 
     public void setCachedRegisterAttempt() {
-        mCachedRegisterAttempt = true;
-        mPrefs.put(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT, "true");
+        cachedRegisterAttempt = true;
+        prefs.put(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT, "true");
     }
 
     public void deleteCachedRegisterAttempt() {
-        if (mPrefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
-            mPrefs.removeValue(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT);
-            mCachedRegisterAttempt = false;
+        if (prefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
+            prefs.removeValue(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT);
+            cachedRegisterAttempt = false;
         }
     }
 }

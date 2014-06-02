@@ -13,9 +13,9 @@ import javax.inject.Inject;
  */
 public class EventTaskService extends Service implements EventTask.Callback {
 
-    @Inject EventTaskQueue mQueue;
+    @Inject EventTaskQueue queue;
 
-    private boolean mRunning;
+    private boolean running;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -24,14 +24,14 @@ public class EventTaskService extends Service implements EventTask.Callback {
     }
 
     private void execute() {
-        if (mRunning) {
+        if (running) {
             return;
         }
 
-        EventTask task = mQueue.peek();
+        EventTask task = queue.peek();
 
         if (task != null) {
-            mRunning = true;
+            running = true;
             task.execute(this);
         } else {
             stopSelf();
@@ -40,8 +40,8 @@ public class EventTaskService extends Service implements EventTask.Callback {
 
     @Override
     public void onSuccess() {
-        mRunning = false;
-        mQueue.remove();
+        running = false;
+        queue.remove();
         execute();
     }
 

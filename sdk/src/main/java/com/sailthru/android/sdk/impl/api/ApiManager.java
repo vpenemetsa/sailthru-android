@@ -2,13 +2,14 @@ package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
 
-import com.google.inject.Inject;
 import com.sailthru.android.sdk.impl.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegister;
 
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -24,11 +25,11 @@ import retrofit.http.POST;
 public class ApiManager {
 
     private static final String TAG = ApiManager.class.getSimpleName();
-    private static AuthenticatedClient mAuthenticatedClient;
+    private static AuthenticatedClient authenticatedClient;
 
     @Inject
-    public ApiManager(AuthenticatedClient client) {
-        mAuthenticatedClient = client;
+    public ApiManager(AuthenticatedClient authenticatedClient) {
+        this.authenticatedClient = authenticatedClient;
     }
 
 //    public static API_Manager getInstance(AuthenticatedClient client) {
