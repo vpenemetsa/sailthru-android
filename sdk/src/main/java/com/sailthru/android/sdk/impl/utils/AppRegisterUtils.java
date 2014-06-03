@@ -18,16 +18,20 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  *
  * Util methods to construct data for App Register request
  */
+@Singleton
 public class AppRegisterUtils {
 
+    @Inject
     static DeviceUtils deviceUtils;
 
+    @Inject
     public AppRegisterUtils() {
     }
 
@@ -39,8 +43,6 @@ public class AppRegisterUtils {
         params.put(Constants.UR_FORMAT_KEY, Constants.UR_FORMAT_VALUE);
         params.put(Constants.UR_JSON_KEY, generateRegisterJson(context, uid, userType));
         params.put(Constants.UR_SIG_KEY, generateSig(appId, params));
-
-        deviceUtils = new DeviceUtils(context);
 
 //        ST_Logger.sendLog(params.get(API_Constants.UR_SIG_KEY));
 //        Log.d("**********SIG************", params.get(API_Constants.UR_SIG_KEY));

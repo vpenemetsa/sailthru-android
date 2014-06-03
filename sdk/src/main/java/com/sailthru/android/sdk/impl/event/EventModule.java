@@ -33,12 +33,14 @@ public class EventModule {
         this.context = context;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     EventTaskQueue provideTaskQueue(Gson gson) {
         return EventTaskQueue.create(context, gson);
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     Gson provideGson() {
         return new GsonBuilder().create();
     }

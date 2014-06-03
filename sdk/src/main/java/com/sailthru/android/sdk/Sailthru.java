@@ -5,12 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.sailthru.android.sdk.impl.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventModule;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
-import com.sailthru.android.sdk.impl.event.EventTaskService;
 import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
 import java.util.ArrayList;
@@ -31,9 +30,8 @@ public class Sailthru {
     Lazy<EventTaskQueue> eventTaskQueue;
 
     Context context;
-    AuthenticatedClient authenticatedClient;
-    private ObjectGraph objectGraph;
     private static SailthruClient sailthruClient;
+    AuthenticatedClient authenticatedClient;
 
     /**
      * Defines User type for registration
@@ -77,7 +75,6 @@ public class Sailthru {
     public Sailthru(Context context) {
         this.context = context;
         authenticatedClient = AuthenticatedClient.getInstance(context);
-
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -91,19 +88,19 @@ public class Sailthru {
             sailthruClient = new SailthruClient(context, authenticatedClient);
         }
 
-        objectGraph = ObjectGraph.create(getModules().toArray());
-        inject(this);
+        ObjectGraph.create(getModules().toArray()).inject(this);
     }
 
+    /**
+     * Returns a list of modules to inject.
+     *
+     * @return
+     */
     private List<Object> getModules() {
         return Arrays.asList(
             new EventModule(context),
             new UtilsModule(context)
         );
-    }
-
-    public void inject(Object object) {
-        objectGraph.inject(object);
     }
 
     /**

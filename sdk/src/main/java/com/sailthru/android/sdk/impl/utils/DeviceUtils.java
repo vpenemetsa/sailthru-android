@@ -3,15 +3,20 @@ package com.sailthru.android.sdk.impl.utils;
 import android.content.Context;
 import android.provider.Settings;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  *
  * Helper methods to get device information
  */
+@Singleton
 public class DeviceUtils {
 
     private static Context context;
 
+    @Inject
     public DeviceUtils(Context context) {
         this.context = context;
     }

@@ -4,14 +4,20 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sailthru.android.sdk.impl.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.api.ApiModule;
+import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
+import com.sailthru.android.sdk.impl.utils.UtilsModule;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.ObjectGraph;
 import retrofit.Callback;
 
 
@@ -44,20 +50,22 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         this.userType = userType;
         this.authenticatedClient = authenticatedClient;
         this.callback = callback;
+
+        ObjectGraph.create(new UtilsModule(context)).inject(this);
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        String storedHid = authenticatedClient.getHid();
+    String storedHid = authenticatedClient.getHid();
 
-        if (appRegisterUtils.notNullOrEmpty(storedHid) &&
-                !userType.equals(Sailthru.Identification.ANONYMOUS)) {
-            Log.d("stored Hid", storedHid);
-            ApiManager.registerUser(context, appId, apiKey, storedHid, null, callback);
-        } else {
-            ApiManager.registerUser(context, appId, apiKey, uid, userType, callback);
-        }
-
-        return null;
+    if (appRegisterUtils.notNullOrEmpty(storedHid) &&
+            !userType.equals(Sailthru.Identification.ANONYMOUS)) {
+        Log.d("stored Hid", storedHid);
+        ApiManager.registerUser(context, appId, apiKey, storedHid, null, callback);
+    } else {
+        ApiManager.registerUser(context, appId, apiKey, uid, userType, callback);
     }
+
+    return null;
+}
 }

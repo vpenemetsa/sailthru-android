@@ -2,7 +2,7 @@ package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
 
-import com.sailthru.android.sdk.impl.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
@@ -10,6 +10,7 @@ import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -22,11 +23,13 @@ import retrofit.http.POST;
  *
  * A Central class to handle all API transactions
  */
+@Singleton
 public class ApiManager {
 
     private static final String TAG = ApiManager.class.getSimpleName();
     private static AuthenticatedClient authenticatedClient;
 
+    @Inject
     public ApiManager(AuthenticatedClient authenticatedClient) {
         this.authenticatedClient = authenticatedClient;
     }

@@ -16,7 +16,8 @@ import dagger.ObjectGraph;
  */
 public class EventTaskService extends Service implements EventTask.Callback {
 
-    @Inject EventTaskQueue queue;
+    @Inject
+    EventTaskQueue queue;
 
     private boolean running;
 

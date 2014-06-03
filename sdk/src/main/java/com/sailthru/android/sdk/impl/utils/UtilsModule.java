@@ -3,7 +3,9 @@ package com.sailthru.android.sdk.impl.utils;
 import android.content.Context;
 
 import com.sailthru.android.sdk.Sailthru;
+import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.impl.event.EventModule;
+import com.sailthru.android.sdk.impl.tests.AppRegisterUtilsTest;
 
 import javax.inject.Singleton;
 
@@ -15,7 +17,12 @@ import dagger.Provides;
  */
 
 @Module (
-    injects = Sailthru.class,
+    injects = {
+            Sailthru.class,
+            AppRegisterUtils.class,
+            AppRegisterUtilsTest.class,
+            RegisterAsyncTask.class
+    },
     complete = false,
     library = true
 )

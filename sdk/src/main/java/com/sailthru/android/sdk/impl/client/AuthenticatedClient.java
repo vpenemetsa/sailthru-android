@@ -1,10 +1,11 @@
-package com.sailthru.android.sdk.impl;
+package com.sailthru.android.sdk.impl.client;
 
 import android.content.Context;
 
 import com.sailthru.android.sdk.impl.utils.SecurePreferences;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Vijay Penemetsa on 5/20/14.
@@ -52,7 +53,6 @@ public class AuthenticatedClient {
         return authenticatedClient;
     }
 
-    @Inject
     public AuthenticatedClient(Context context) {
         prefs = new SecurePreferences(context);
         this.context = context;

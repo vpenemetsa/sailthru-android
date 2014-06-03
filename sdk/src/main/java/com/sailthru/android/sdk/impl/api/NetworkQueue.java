@@ -2,7 +2,7 @@ package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
 
-import com.sailthru.android.sdk.impl.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 
 /**

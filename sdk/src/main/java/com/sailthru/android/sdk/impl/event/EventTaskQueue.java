@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Vijay Penemetsa on 5/28/14.
@@ -20,6 +21,7 @@ import javax.inject.Inject;
  * Queue managing events that were reported. The max queue size is 50
  * and the events are sent out in batches
  */
+@Singleton
 public class EventTaskQueue extends TaskQueue<EventTask> {
 
     private static final String TAG = EventTaskQueue.class.getSimpleName();

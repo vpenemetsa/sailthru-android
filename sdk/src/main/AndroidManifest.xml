@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme" >
 
         <receiver
-            android:name=".impl.receivers.NetworkStatus"
+            android:name=".impl.receivers.NetworkReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

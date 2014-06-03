@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.sailthru.android.sdk.impl.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
@@ -24,8 +24,6 @@ class SailthruClient {
 
     static Context context;
     static RegisterAsyncTask appRegisterAsyncTask = null;
-
-    @Inject
     static AuthenticatedClient authenticatedClient;
 
     @Inject
