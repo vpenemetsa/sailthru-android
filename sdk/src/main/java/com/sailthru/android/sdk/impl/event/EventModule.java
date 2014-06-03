@@ -1,11 +1,11 @@
 package com.sailthru.android.sdk.impl.event;
 
-
 import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sailthru.android.sdk.Sailthru;
+import com.sailthru.android.sdk.impl.tests.EventTaskQueueTest;
 
 import javax.inject.Singleton;
 
@@ -17,7 +17,11 @@ import dagger.Provides;
  */
 
 @Module(
-    injects = EventTaskService.class,
+    injects = {
+            EventTaskService.class,
+            EventTaskQueueTest.class,
+            Sailthru.class
+    },
     complete = false,
     library = true
 )

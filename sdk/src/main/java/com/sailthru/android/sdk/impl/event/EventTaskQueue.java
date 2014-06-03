@@ -22,12 +22,16 @@ import javax.inject.Inject;
  */
 public class EventTaskQueue extends TaskQueue<EventTask> {
 
-    private static final String FILENAME = "event_task_queue";
+    private static final String TAG = EventTaskQueue.class.getSimpleName();
+
+    private static final String FILENAME = "sailthru_event_task_queue";
 
     private static final int MAX_QUEUE_SIZE = 50;
     private static final int QUEUE_SIZE_THRESHOLD = 20;
 
     private final Context context;
+
+    private static EventTaskQueue queue;
 
     @Inject
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
@@ -49,33 +53,39 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
         if (size() == MAX_QUEUE_SIZE) {
             remove();
         }
-        Log.d("Added Event task", size() + "");
 
         super.add(entry);
+        Log.d(TAG, "Added Event task ---- " + size() + "");
 
         //Only sends tags if the size of queue exceeds 20 elements
         if (size() >= QUEUE_SIZE_THRESHOLD) {
             startService();
+            Log.d(TAG, "Started service");
         }
     }
 
     @Override
     public void remove() {
-        Log.d("Removed Event Task", size() + "");
+        Log.d(TAG, "Removed Event Task ----- " + size() + "");
         super.remove();
+
     }
 
     public static EventTaskQueue create(Context context, Gson gson) {
-        Log.d("***********************************", "Creating task queue");
-        FileObjectQueue.Converter<EventTask> converter = new GsonConverter<EventTask>(gson, EventTask.class);
-        File queueFile = new File(context.getFilesDir(), FILENAME);
-        FileObjectQueue<EventTask> delegate;
-        try {
-            delegate = new FileObjectQueue<EventTask>(queueFile, converter);
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to create queue", e);
+        Log.d(TAG, "Creating task queue");
+        if (queue == null) {
+            FileObjectQueue.Converter<EventTask> converter = new GsonConverter<EventTask>(gson, EventTask.class);
+            File queueFile = new File(context.getFilesDir(), FILENAME);
+            FileObjectQueue<EventTask> delegate;
+            try {
+                delegate = new FileObjectQueue<EventTask>(queueFile, converter);
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to create queue", e);
+            }
+
+            queue = new EventTaskQueue(delegate, context);
         }
 
-        return new EventTaskQueue(delegate, context);
+        return queue;
     }
 }

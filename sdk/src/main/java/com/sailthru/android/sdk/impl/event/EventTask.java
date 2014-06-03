@@ -16,6 +16,8 @@ public class EventTask implements Task<EventTask.Callback> {
 
     Event event;
 
+    private static final String TAG = EventTask.class.getSimpleName();
+
     private static final Handler mainThread = new Handler(Looper.getMainLooper());
 
     public interface Callback {
@@ -37,7 +39,7 @@ public class EventTask implements Task<EventTask.Callback> {
                     //TODO: MAKE REQUEST
 
                     boolean success = ApiManager.sendEvents();
-                    Log.d("****************************", "Executing task ----------- 2");
+                    Log.d(TAG, "Executing task ----------- 2");
                     if (success) {
                         mainThread.post(new Runnable() {
                             @Override

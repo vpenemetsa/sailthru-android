@@ -16,7 +16,6 @@ import dagger.Provides;
 
 @Module (
     injects = Sailthru.class,
-    includes = EventModule.class,
     complete = false,
     library = true
 )

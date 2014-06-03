@@ -20,6 +20,8 @@ public class EventTaskService extends Service implements EventTask.Callback {
 
     private boolean running;
 
+    private static final String TAG = EventTaskService.class.getSimpleName();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -38,10 +40,10 @@ public class EventTaskService extends Service implements EventTask.Callback {
         }
 
         EventTask task = queue.peek();
-        Log.d("****************************", "Executing service");
+        Log.d(TAG, "Executing service");
         if (task != null) {
             running = true;
-            Log.d("****************************", "Executing task");
+            Log.d(TAG, "Executing task");
             task.execute(this);
         } else {
             stopSelf();
@@ -50,10 +52,13 @@ public class EventTaskService extends Service implements EventTask.Callback {
 
     @Override
     public void onSuccess() {
-        Log.d("****************************", "Removing task from queue");
+        Log.d(TAG, "Removing task from queue");
         running = false;
         queue.remove();
-        execute();
+        Log.d(TAG, "Size after remove ----- " + queue.size());
+        if (queue.size() > 0) {
+            execute();
+        }
     }
 
     @Override
