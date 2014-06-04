@@ -2,12 +2,15 @@ package com.sailthru.android.sdk.impl.tests;
 
 import android.test.InstrumentationTestCase;
 
+import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
+import com.sailthru.android.sdk.impl.client.AuthenticatedClientModule;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventModule;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,6 +24,8 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
 
     @Inject
     EventTaskQueue queue;
+    @Inject
+    AuthenticatedClient authenticatedClient;
 
     List<String> tags = new ArrayList<String>();
     Event event = new Event();
@@ -31,13 +36,20 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        ObjectGraph.create(new EventModule(getInstrumentation().getContext())).inject(this);
+        ObjectGraph.create(getModules().toArray()).inject(this);
         for (int i = 0; i < 100; i++) {
             tags.add("kdljhflkjsghsldkjfhlskjdfgslkdjfglskjdfgslkjdfsdkljfg");
         }
         event.addTags(tags);
         event.setUrl("google.com");
         eventTask = new EventTask(event);
+    }
+
+    private List<Object> getModules() {
+        return Arrays.asList(
+                new EventModule(getInstrumentation().getContext()),
+                new AuthenticatedClientModule(getInstrumentation().getContext())
+        );
     }
 
     public void testAddToQueue() throws Exception {

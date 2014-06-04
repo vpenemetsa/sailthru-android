@@ -12,6 +12,7 @@ import javax.inject.Singleton;
  *
  * Stores and manages client data using Secure Preferences
  */
+@Singleton
 public class AuthenticatedClient {
 
     private static AuthenticatedClient authenticatedClient;
@@ -44,7 +45,6 @@ public class AuthenticatedClient {
     private boolean connectedToNetwork;
     private static boolean cachedRegisterAttempt;
 
-
     public static AuthenticatedClient getInstance(Context context) {
         if (authenticatedClient == null) {
             authenticatedClient = new AuthenticatedClient(context);
@@ -53,6 +53,7 @@ public class AuthenticatedClient {
         return authenticatedClient;
     }
 
+    @Inject
     public AuthenticatedClient(Context context) {
         prefs = new SecurePreferences(context);
         this.context = context;

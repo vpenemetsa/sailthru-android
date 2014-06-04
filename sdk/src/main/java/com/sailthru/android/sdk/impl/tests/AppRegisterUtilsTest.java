@@ -3,8 +3,7 @@ package com.sailthru.android.sdk.impl.tests;
 import android.test.InstrumentationTestCase;
 
 import com.sailthru.android.sdk.Sailthru;
-import com.sailthru.android.sdk.impl.api.Constants;
-import com.sailthru.android.sdk.impl.event.EventModule;
+import com.sailthru.android.sdk.impl.api.ApiConstants;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
@@ -39,7 +38,7 @@ public class AppRegisterUtilsTest extends InstrumentationTestCase {
                 getInstrumentation().getContext(), mAppId, mApiKey, mEmail,
                 Sailthru.Identification.EMAIL);
 
-        assertEquals(request.get(Constants.UR_SIG_KEY), expectedEmailSig);
+        assertEquals(request.get(ApiConstants.UR_SIG_KEY), expectedEmailSig);
     }
 
     public void testAnonymousRequest() throws Exception {
@@ -47,7 +46,7 @@ public class AppRegisterUtilsTest extends InstrumentationTestCase {
 
         Map<String, String> request = appRegisterUtils.buildRequest(getInstrumentation().getContext(),
                 mAppId, mApiKey, null, Sailthru.Identification.ANONYMOUS);
-        assertEquals(request.get(Constants.UR_SIG_KEY), expectedAnonSig);
+        assertEquals(request.get(ApiConstants.UR_SIG_KEY), expectedAnonSig);
     }
 
     public void testAnonymousToEmailTransitionRequest() throws Exception {
@@ -56,7 +55,7 @@ public class AppRegisterUtilsTest extends InstrumentationTestCase {
         Map<String, String> request = appRegisterUtils.buildRequest(getInstrumentation().getContext(),
                 mAppId, mApiKey, "5d42324e438731906c9d238d30ad9da7537bb5aba256ab85110000e47e351477d51d7a5f21f17ac4e0c3927a",
                 null);
-        assertEquals(request.get(Constants.UR_SIG_KEY), expectedTransitionSig);
+        assertEquals(request.get(ApiConstants.UR_SIG_KEY), expectedTransitionSig);
     }
 
 

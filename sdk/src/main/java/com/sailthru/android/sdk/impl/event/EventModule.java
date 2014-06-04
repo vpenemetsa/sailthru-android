@@ -29,18 +29,22 @@ public class EventModule {
 
     private final Context context;
 
+    private static EventTaskQueue eventTaskQueue;
+
     public EventModule(Context context) {
         this.context = context;
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     EventTaskQueue provideTaskQueue(Gson gson) {
-        return EventTaskQueue.create(context, gson);
+        if (eventTaskQueue == null) {
+            eventTaskQueue = EventTaskQueue.create(context, gson);
+        }
+
+        return eventTaskQueue;
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     Gson provideGson() {
         return new GsonBuilder().create();
     }

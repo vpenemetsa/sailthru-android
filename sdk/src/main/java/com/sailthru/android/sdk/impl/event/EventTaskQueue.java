@@ -1,10 +1,12 @@
 package com.sailthru.android.sdk.impl.event;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.sailthru.android.sdk.impl.Constants;
 import com.squareup.tape.FileObjectQueue;
 import com.squareup.tape.ObjectQueue;
 import com.squareup.tape.TaskQueue;
@@ -25,15 +27,19 @@ import javax.inject.Singleton;
 public class EventTaskQueue extends TaskQueue<EventTask> {
 
     private static final String TAG = EventTaskQueue.class.getSimpleName();
-
     private static final String FILENAME = "sailthru_event_task_queue";
 
-    private static final int MAX_QUEUE_SIZE = 50;
-    private static final int QUEUE_SIZE_THRESHOLD = 20;
-
     private final Context context;
-
     private static EventTaskQueue queue;
+
+    private boolean isConnectedToNetwork;
+
+    BroadcastReceiver networkStatusReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isConnectedToNetwork = intent.getBooleanExtra(Constants.INTENT_EXTRA_NETWORK_STATUS, false);
+        }
+    };
 
     @Inject
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
@@ -52,7 +58,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     @Override
     public void add(EventTask entry) {
         // Always maintain a queue of size less than 50 elements
-        if (size() == MAX_QUEUE_SIZE) {
+        if (size() == Constants.MAX_QUEUE_SIZE) {
             remove();
         }
 
@@ -60,7 +66,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
         Log.d(TAG, "Added Event task ---- " + size() + "");
 
         //Only sends tags if the size of queue exceeds 20 elements
-        if (size() >= QUEUE_SIZE_THRESHOLD) {
+        if (size() >= Constants.QUEUE_SIZE_THRESHOLD) {
             startService();
             Log.d(TAG, "Started service");
         }

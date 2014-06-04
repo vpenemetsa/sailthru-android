@@ -5,9 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
+import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.api.NetworkQueue;
+import com.sailthru.android.sdk.impl.event.EventTaskService;
 
 import javax.inject.Inject;
 
@@ -36,5 +40,14 @@ public class NetworkReceiver extends BroadcastReceiver {
             NetworkQueue.registerCachedAttemptIfAvailable(context.getApplicationContext(),
                     client);
         }
+
+        broadcastNetworkStatus(context, client.isConnectedToNetwork());
+    }
+
+    private void broadcastNetworkStatus(Context context, boolean value) {
+        Log.d("Network receiver value", value + "");
+        Intent i = new Intent(Constants.BROADCAST_NETWORK_STATUS);
+        i.putExtra(Constants.INTENT_EXTRA_NETWORK_STATUS, value);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(i);
     }
 }

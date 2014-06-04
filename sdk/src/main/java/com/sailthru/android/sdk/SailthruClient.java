@@ -113,25 +113,14 @@ class SailthruClient {
      */
     protected static void makeRegistrationRequest(String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType) {
-        String storedHid = authenticatedClient.getHid();
 
+        // Cancel any running AppRegister calls
         if (appRegisterAsyncTask != null) {
             appRegisterAsyncTask.cancel(true);
         }
 
-//        API_Manager apiManager = new API_Manager(mAuthenticatedClient);
-        if (appRegisterUtils.notNullOrEmpty(storedHid) &&
-                !userType.equals(Sailthru.Identification.ANONYMOUS)) {
-            Log.d("stored Hid", storedHid);
-            appRegisterAsyncTask = new RegisterAsyncTask(context, appId, apiKey, storedHid, userType,
-                    authenticatedClient, mRegisterCallback);
-//            apiManager.registerUser(mContext, appId, apiKey, storedHid, null, mRegisterCallback);
-        } else {
-            Log.d("stored Hid", "****************");
-            appRegisterAsyncTask = new RegisterAsyncTask(context, appId, apiKey, uid, userType,
-                    authenticatedClient, mRegisterCallback);
-//            apiManager.registerUser(mContext, appId, apiKey, uid, userType, mRegisterCallback);
-        }
+        appRegisterAsyncTask = new RegisterAsyncTask(context, appId, apiKey, uid, userType,
+                authenticatedClient, mRegisterCallback);
         appRegisterAsyncTask.execute((Void) null);
     }
 

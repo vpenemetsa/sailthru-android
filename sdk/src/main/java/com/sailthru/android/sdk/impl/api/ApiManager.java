@@ -1,6 +1,7 @@
 package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
@@ -23,13 +24,11 @@ import retrofit.http.POST;
  *
  * A Central class to handle all API transactions
  */
-@Singleton
 public class ApiManager {
 
     private static final String TAG = ApiManager.class.getSimpleName();
     private static AuthenticatedClient authenticatedClient;
 
-    @Inject
     public ApiManager(AuthenticatedClient authenticatedClient) {
         this.authenticatedClient = authenticatedClient;
     }
@@ -45,10 +44,10 @@ public class ApiManager {
     public interface RegisterUserService {
         @FormUrlEncoded
         @POST("/userregisterapp")
-        void registerUser(@Field(Constants.UR_SIG_KEY) String sig,
-                                                   @Field(Constants.UR_JSON_KEY) String json,
-                                                   @Field(Constants.UR_API_KEY) String apiKey,
-                                                   @Field(Constants.UR_FORMAT_KEY) String format,
+        void registerUser(@Field(ApiConstants.UR_SIG_KEY) String sig,
+                                                   @Field(ApiConstants.UR_JSON_KEY) String json,
+                                                   @Field(ApiConstants.UR_API_KEY) String apiKey,
+                                                   @Field(ApiConstants.UR_FORMAT_KEY) String format,
                                                    Callback<UserRegisterAppResponse> callback);
     }
 
@@ -58,7 +57,7 @@ public class ApiManager {
                                                       Callback<UserRegisterAppResponse> callback) {
 
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.API_ENDPOINT)
+                .setEndpoint(ApiConstants.API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         RegisterUserService service = adapter.create(RegisterUserService.class);
@@ -66,11 +65,15 @@ public class ApiManager {
         Map<String, String> params = appRegisterUtils.buildRequest(context, appId, apiKey,
                 uid, userType);
 
+        Log.d("**********SIG****************", params.get(ApiConstants.UR_SIG_KEY));
+        Log.d("**********JSON***************", params.get(ApiConstants.UR_JSON_KEY));
+        Log.d("**********API KEY***********", apiKey);
+
         service.registerUser(
-                params.get(Constants.UR_SIG_KEY),
-                params.get(Constants.UR_JSON_KEY),
+                params.get(ApiConstants.UR_SIG_KEY),
+                params.get(ApiConstants.UR_JSON_KEY),
                 apiKey,
-                Constants.UR_FORMAT_VALUE,
+                ApiConstants.UR_FORMAT_VALUE,
                 callback);
     }
 

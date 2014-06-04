@@ -1,11 +1,15 @@
 package com.sailthru.android.sdk.impl.event;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import com.sailthru.android.sdk.impl.api.ApiManager;
+import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.squareup.tape.Task;
+
+import javax.inject.Inject;
 
 /**
  * Created by Vijay Penemetsa on 5/28/14.
@@ -15,10 +19,9 @@ import com.squareup.tape.Task;
 public class EventTask implements Task<EventTask.Callback> {
 
     Event event;
+    int executeCount = 0;
 
     private static final String TAG = EventTask.class.getSimpleName();
-
-    private static final Handler mainThread = new Handler(Looper.getMainLooper());
 
     public interface Callback {
         void onSuccess ();
@@ -31,35 +34,26 @@ public class EventTask implements Task<EventTask.Callback> {
 
     @Override
     public void execute(final Callback callback) {
+        try {
+            executeCount++;
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //TODO: MAKE REQUEST
+            //TODO: CREATE REQUEST
 
-                    boolean success = ApiManager.sendEvents();
-                    Log.d(TAG, "Executing task ----------- 2");
-                    if (success) {
-                        mainThread.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.onSuccess();
-                            }
-                        });
-                    } else {
-                        mainThread.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.onFailure();
-                            }
-                        });
-                    }
+                boolean success = ApiManager.sendEvents();
+                Log.d(TAG, "Executing task ----------- 2");
+                if (success) {
+                    callback.onSuccess();
 
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
+                } else {
+                    callback.onFailure();
                 }
-            }
-        }).start();
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getExecuteCount() {
+        return executeCount;
     }
 }
