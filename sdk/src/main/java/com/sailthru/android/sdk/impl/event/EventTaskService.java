@@ -86,15 +86,17 @@ public class EventTaskService extends Service implements EventTask.Callback {
 
     private void execute() {
         Log.d("***********Service Execute*************", isConnectedToNetwork + "");
-        if (isConnectedToNetwork && queue.size() > 0) {
-            currentTask = queue.peek();
-            Log.d(TAG, "Executing service");
-            if (currentTask != null) {
-                Log.d(TAG, "Executing task");
-                currentTask.execute(this);
-            } else {
-                queue.remove();
-                execute();
+        if (queue.size() > 0) {
+            if (isConnectedToNetwork) {
+                currentTask = queue.peek();
+                Log.d(TAG, "Executing service");
+                if (currentTask != null) {
+                    Log.d(TAG, "Executing task");
+                    currentTask.execute(this);
+                } else {
+                    queue.remove();
+                    execute();
+                }
             }
         } else {
             stopSelf();
@@ -108,13 +110,15 @@ public class EventTaskService extends Service implements EventTask.Callback {
         Log.d(TAG, "Size after remove ----- " + queue.size());
         if (queue.size() > 0) {
             execute();
+        } else {
+            stopSelf();
         }
     }
 
     @Override
     public void onFailure() {
         queue.remove();
-        if (currentTask.getExecuteCount() <= EVENT_TASK_MAX_EXECUTIONS) {
+        if (currentTask.getExecuteCount() < EVENT_TASK_MAX_EXECUTIONS) {
             queue.add(currentTask);
         }
         execute();
