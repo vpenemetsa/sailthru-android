@@ -2,18 +2,13 @@ package com.sailthru.android.sdk.impl.async;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.sailthru.android.sdk.impl.api.ApiModule;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 import com.sailthru.android.sdk.impl.utils.UtilsModule;
-
-import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,8 +24,6 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Inject
     AppRegisterUtils appRegisterUtils;
-    @Inject
-    ApiManager apiManager;
 
     Context context;
     String appId;
@@ -52,12 +45,7 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         this.authenticatedClient = authenticatedClient;
         this.callback = callback;
 
-        ObjectGraph.create(getModules().toArray()).inject(this);
-    }
-
-    private List<Object> getModules() {
-        return Arrays.asList(new UtilsModule(context),
-                new ApiModule(context));
+        ObjectGraph.create(new UtilsModule(context)).inject(this);
     }
 
     @Override
@@ -76,6 +64,7 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
             id = uid;
         }
 
+        ApiManager apiManager = ApiManager.getInstance(context);
         apiManager.registerUser(context, appId, apiKey, id, userType, callback);
 
 //        if (appRegisterUtils.notNullOrEmpty(storedHid) &&

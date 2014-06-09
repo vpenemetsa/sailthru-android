@@ -152,18 +152,8 @@ public class Sailthru {
      * @param tags
      * @param url
      */
-    public void sendTags(List<String> tags, String url, double latitude, double longitude) {
+    public void sendTags(List<String> tags, String url, String latitude, String longitude) {
         Log.d("***********SEND TAGS*************", authenticatedClient.isConnectedToNetwork() + "");
-        Event event = new Event();
-        event.addTags(tags);
-        event.setUrl(url);
-        event.setLatitude(latitude);
-        event.setLongitude(longitude);
-        event.setTimestamp(System.currentTimeMillis());
-        event.setHid(authenticatedClient.getHid());
-        event.setAppId(authenticatedClient.getAppId());
-        event.setDomain(authenticatedClient.getDomain());
-        EventTask eventTask = new EventTask(event);
-        eventTaskQueue.get().add(eventTask);
+        SailthruClient.addEventToQueue(context, tags, url, latitude, longitude, eventTaskQueue.get());
     }
 }

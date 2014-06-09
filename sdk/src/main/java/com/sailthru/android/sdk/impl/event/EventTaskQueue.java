@@ -1,6 +1,5 @@
 package com.sailthru.android.sdk.impl.event;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -34,21 +33,14 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
 
     private boolean isConnectedToNetwork;
 
-    BroadcastReceiver networkStatusReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            isConnectedToNetwork = intent.getBooleanExtra(Constants.INTENT_EXTRA_NETWORK_STATUS, false);
-        }
-    };
-
     @Inject
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
         super(delegate);
         this.context = context;
 
-        if (size() > 0) {
-            startService();
-        }
+//        if (size() > 0) {
+//            startService();
+//        }
     }
 
     private void startService() {
@@ -57,41 +49,52 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
 
     @Override
     public void add(EventTask entry) {
-        // Always maintain a queue of size less than 50 elements
-        if (size() == Constants.MAX_QUEUE_SIZE) {
-            remove();
-        }
+        try {
+            // Always maintain a queue of size less than 50 elements
+            if (size() == Constants.MAX_QUEUE_SIZE) {
+                remove();
+            }
 
-        super.add(entry);
-        Log.d(TAG, "Added Event task ---- " + size() + "");
+            super.add(entry);
+            Log.d(TAG, "Added Event task ---- " + size() + "");
 
-        //Only sends tags if the size of queue exceeds 20 elements
-        if (size() >= Constants.QUEUE_SIZE_THRESHOLD) {
-            startService();
-            Log.d(TAG, "Started service");
+            //Only sends tags if the size of queue exceeds 20 elements
+            if (size() >= Constants.QUEUE_SIZE_THRESHOLD) {
+                startService();
+                Log.d(TAG, "Started service");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void remove() {
         Log.d(TAG, "Removed Event Task ----- " + size() + "");
-        super.remove();
-
+        try {
+            super.remove();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static EventTaskQueue create(Context context, Gson gson) {
         Log.d(TAG, "Creating task queue");
-        if (queue == null) {
-            FileObjectQueue.Converter<EventTask> converter = new GsonConverter<EventTask>(gson, EventTask.class);
-            File queueFile = new File(context.getFilesDir(), FILENAME);
-            FileObjectQueue<EventTask> delegate;
-            try {
-                delegate = new FileObjectQueue<EventTask>(queueFile, converter);
-            } catch (IOException e) {
-                throw new RuntimeException("Unable to create queue", e);
-            }
+        try {
+            if (queue == null) {
+                FileObjectQueue.Converter<EventTask> converter = new GsonConverter<EventTask>(gson, EventTask.class);
+                File queueFile = new File(context.getFilesDir(), FILENAME);
+                FileObjectQueue<EventTask> delegate;
+                try {
+                    delegate = new FileObjectQueue<EventTask>(queueFile, converter);
+                } catch (IOException e) {
+                    throw new RuntimeException("Unable to create queue", e);
+                }
 
-            queue = new EventTaskQueue(delegate, context);
+                queue = new EventTaskQueue(delegate, context);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return queue;

@@ -6,10 +6,15 @@ import android.widget.Toast;
 
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
+import com.sailthru.android.sdk.impl.event.Event;
+import com.sailthru.android.sdk.impl.event.EventTask;
+import com.sailthru.android.sdk.impl.event.EventTaskQueue;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 
 import org.apache.http.HttpStatus;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -122,6 +127,44 @@ class SailthruClient {
         appRegisterAsyncTask = new RegisterAsyncTask(context, appId, apiKey, uid, userType,
                 authenticatedClient, mRegisterCallback);
         appRegisterAsyncTask.execute((Void) null);
+    }
+
+    /**
+     * Builds an Event with given parameters and adds it to the TaskQueue
+     *
+     * @param tags
+     * @param url
+     * @param latitude
+     * @param longitude
+     * @param eventTaskQueue
+     */
+    protected static void addEventToQueue(Context context, List<String> tags, String url, String latitude,
+                                          String longitude, EventTaskQueue eventTaskQueue) {
+        //Checking to make sure hid, appId and domain are not null.
+        if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
+                authenticatedClient.getDomain() == null) {
+            Log.d("Add Event", "One of the Authentication parameters is null");
+            return;
+        }
+
+        //Checking to make sure both tags and url are not part of the request
+        if ((tags == null || tags.size() == 0) && url == null) {
+            Log.d("Add Event", "Invalid input. No tags or url");
+            return;
+        }
+
+        Event event = new Event();
+        event.addTags(tags);
+        event.setUrl(url);
+        event.setLatitude(latitude);
+        event.setLongitude(longitude);
+        event.setTimestamp(System.currentTimeMillis());
+        event.setHid(authenticatedClient.getHid());
+        event.setAppId(authenticatedClient.getAppId());
+        event.setDomain(authenticatedClient.getDomain());
+        event.setContext(context);
+        EventTask eventTask = new EventTask(event);
+        eventTaskQueue.add(eventTask);
     }
 
     /**

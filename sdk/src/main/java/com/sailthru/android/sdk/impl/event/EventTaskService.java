@@ -28,7 +28,7 @@ import dagger.ObjectGraph;
  *
  * Background service to execute EventTasks in EventTaskQueue sequentially
  */
-public class EventTaskService extends Service implements EventTask.Callback {
+public class EventTaskService extends Service implements EventTask.EventCallback {
 
     @Inject
     EventTaskQueue queue;
@@ -53,7 +53,6 @@ public class EventTaskService extends Service implements EventTask.Callback {
             }
         }
     };
-
 
     @Override
     public void onCreate() {
@@ -89,42 +88,54 @@ public class EventTaskService extends Service implements EventTask.Callback {
 
     private void execute() {
         Log.d("***********Service Execute*************", isConnectedToNetwork + "");
-        if (queue.size() > 0) {
-            if (isConnectedToNetwork) {
-                currentTask = queue.peek();
-                Log.d(TAG, "Executing service");
-                if (currentTask != null) {
-                    Log.d(TAG, "Executing task");
-                    currentTask.execute(this);
-                } else {
-                    queue.remove();
-                    execute();
+        try {
+            if (queue.size() > 0) {
+                if (isConnectedToNetwork) {
+                    currentTask = queue.peek();
+                    Log.d(TAG, "Executing service");
+                    if (currentTask != null) {
+                        Log.d(TAG, "Executing task");
+                        currentTask.execute(this);
+                    } else {
+                        queue.remove();
+                        execute();
+                    }
                 }
+            } else {
+                stopSelf();
             }
-        } else {
-            stopSelf();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onSuccess() {
         Log.d(TAG, "Removing task from queue");
-        queue.remove();
-        Log.d(TAG, "Size after remove ----- " + queue.size());
-        if (queue.size() > 0) {
-            execute();
-        } else {
-            stopSelf();
+        try {
+            queue.remove();
+            Log.d(TAG, "Size after remove ----- " + queue.size());
+            if (queue.size() > 0) {
+                execute();
+            } else {
+                stopSelf();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onFailure() {
-        queue.remove();
-        if (currentTask.getExecuteCount() < EVENT_TASK_MAX_EXECUTIONS) {
-            queue.add(currentTask);
+        try {
+            queue.remove();
+            if (currentTask.getExecuteCount() < EVENT_TASK_MAX_EXECUTIONS) {
+                queue.add(currentTask);
+            }
+            execute();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        execute();
     }
 
     @Override

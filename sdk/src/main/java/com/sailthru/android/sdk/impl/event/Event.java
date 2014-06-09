@@ -1,5 +1,7 @@
 package com.sailthru.android.sdk.impl.event;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +18,9 @@ public class Event {
 
     private long timestamp;
 
-    private double latitude;
+    private String latitude;
 
-    private double longitude;
+    private String longitude;
 
     private int retryCount;
 
@@ -27,6 +29,8 @@ public class Event {
     private String appId;
 
     private String domain;
+
+    private Context context;
 
     public List<String> getTags() {
         return tags;
@@ -52,19 +56,19 @@ public class Event {
         this.timestamp = timestamp;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
@@ -98,5 +102,13 @@ public class Event {
 
     public void setDomain(String domain) {
         this.domain = domain;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

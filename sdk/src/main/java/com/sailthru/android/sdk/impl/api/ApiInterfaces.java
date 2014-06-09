@@ -1,7 +1,6 @@
 package com.sailthru.android.sdk.impl.api;
 
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
-import com.sailthru.android.sdk.impl.response.BaseResponse;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 
 import java.util.Map;
@@ -30,7 +29,6 @@ public class ApiInterfaces {
 
     public interface AppTrackService {
         @GET(ApiConstants.API_APPTRACK_PATH)
-        void sendTags(@QueryMap Map<String, String> parameters,
-                      Callback<AppTrackResponse> callback);
+        AppTrackResponse sendTags(@QueryMap Map<String, String> parameters);
     }
 }

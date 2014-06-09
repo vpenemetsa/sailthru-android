@@ -6,6 +6,7 @@ package com.sailthru.android.sdk.impl.event;
 // Copyright 2012 Square, Inc.
 
 import com.google.gson.Gson;
+import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 import com.squareup.tape.FileObjectQueue;
 
 import java.io.ByteArrayInputStream;

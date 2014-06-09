@@ -3,7 +3,7 @@ package com.sailthru.android.sdk.impl.api;
 import android.content.Context;
 import android.util.Log;
 
-import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
+import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
@@ -12,7 +12,6 @@ import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.utils.AppTrackUtils;
 import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -20,23 +19,34 @@ import javax.inject.Singleton;
 
 import dagger.ObjectGraph;
 import retrofit.Callback;
+import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.converter.GsonConverter;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  *
  * A Central class to handle all API transactions
  */
-@Singleton
 public class ApiManager {
 
     private static final String TAG = ApiManager.class.getSimpleName();
-    private static AuthenticatedClient authenticatedClient;
 
-    @Inject
+    private static ApiManager apiManager;
+    private static GsonConverter gsonConverter;
+
     public ApiManager(Context context) {
-        this.authenticatedClient = AuthenticatedClient.getInstance(context);
-        ObjectGraph.create(UtilsModule.class).inject(this);
+        ObjectGraph.create(new UtilsModule(context)).inject(this);
+        gsonConverter = new GsonConverter(new Gson());
+    }
+
+    public static ApiManager getInstance(Context context) {
+        if (apiManager == null) {
+            apiManager = new ApiManager(context);
+        }
+
+        return apiManager;
     }
 
     @Inject
@@ -51,6 +61,7 @@ public class ApiManager {
 
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.ST_API_ENDPOINT)
+                .setConverter(gsonConverter)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         ApiInterfaces.RegisterUserService service = adapter.create(
@@ -71,16 +82,34 @@ public class ApiManager {
                 callback);
     }
 
-    public static void sendEvent(Event event, Callback<AppTrackResponse> callback) {
+    public static AppTrackResponse sendEvent(Event event) {
 
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(gsonConverter)
+                .setErrorHandler(new AppTrackErrorHandler())
                 .build();
         ApiInterfaces.AppTrackService service = adapter.create(ApiInterfaces.AppTrackService.class);
 
-        Map<String, String> parameters = AppTrackUtils.buildRequest(event);
+        Map<String, String> parameters = appTrackUtils.buildRequest(event);
 
-        service.sendTags(parameters, callback);
+        AppTrackResponse response = null;
+        try {
+            response = service.sendTags(parameters);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    private static class AppTrackErrorHandler implements ErrorHandler {
+
+        @Override
+        public Throwable handleError(RetrofitError cause) {
+            cause.printStackTrace();
+            return null;
+        }
     }
 }

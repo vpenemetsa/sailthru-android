@@ -1,10 +1,10 @@
 package com.sailthru.android.sdk.impl.utils;
 
+import android.util.Log;
+
 import com.sailthru.android.sdk.impl.api.ApiConstants;
-import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +35,12 @@ public class AppTrackUtils {
         if (tags != null && tags.size() > 0) {
             String tagsString = "";
             for (String tag : tags) {
-                tagsString = tagsString + tag + ",";
+                tagsString += tag + ",";
             }
 
             tagsString = tagsString.substring(0, tagsString.length() - 1);
+            tagsString = tagsString.replaceAll(" ", "");
+            Log.d("*^&%#$%^&*)(^%#$^&*()&^%#$%&^*(&^%#$%&^*()&^%#$&^*(^%$#%&^*%#$", tagsString);
             parameters.put(ApiConstants.APPTRACK_TAGS_KEY, tagsString);
         }
 
@@ -47,8 +49,8 @@ public class AppTrackUtils {
             parameters.put(ApiConstants.APPTRACK_DATE_KEY, timestamp);
         }
 
-        String latitude = String.valueOf(event.getLatitude());
-        String longitude = String.valueOf(event.getLongitude());
+        String latitude = event.getLatitude();
+        String longitude = event.getLongitude();
         if (latitude != null && longitude != null) {
             parameters.put(ApiConstants.APPTRACK_LATITUDE_KEY, latitude);
             parameters.put(ApiConstants.APPTRACK_LONGITUDE_KEY, longitude);
