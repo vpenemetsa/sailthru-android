@@ -11,9 +11,6 @@ import android.util.Log;
 import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.api.NetworkQueue;
-import com.sailthru.android.sdk.impl.event.EventTaskService;
-
-import javax.inject.Inject;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.

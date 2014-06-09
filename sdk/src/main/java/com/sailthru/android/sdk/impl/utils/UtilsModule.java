@@ -3,8 +3,10 @@ package com.sailthru.android.sdk.impl.utils;
 import android.content.Context;
 
 import com.sailthru.android.sdk.Sailthru;
+import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.impl.event.EventModule;
+import com.sailthru.android.sdk.impl.event.EventTaskService;
 import com.sailthru.android.sdk.impl.tests.AppRegisterUtilsTest;
 
 import javax.inject.Singleton;
@@ -21,7 +23,8 @@ import dagger.Provides;
             Sailthru.class,
             AppRegisterUtils.class,
             AppRegisterUtilsTest.class,
-            RegisterAsyncTask.class
+            RegisterAsyncTask.class,
+            ApiManager.class
     },
     complete = false,
     library = true
@@ -37,6 +40,11 @@ public class UtilsModule {
     @Provides @Singleton
     AppRegisterUtils provideAppRegisterUtils() {
         return new AppRegisterUtils();
+    }
+
+    @Provides @Singleton
+    AppTrackUtils provideAppTrackUtils() {
+        return new AppTrackUtils();
     }
 
     @Provides @Singleton

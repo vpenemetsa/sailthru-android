@@ -14,6 +14,7 @@ import android.util.Log;
 import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClientModule;
+import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +54,7 @@ public class EventTaskService extends Service implements EventTask.Callback {
         }
     };
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -73,7 +75,8 @@ public class EventTaskService extends Service implements EventTask.Callback {
     private List<Object> getModules() {
         return Arrays.asList(
                 new EventModule(getApplicationContext()),
-                new AuthenticatedClientModule(getApplicationContext())
+                new AuthenticatedClientModule(getApplicationContext()),
+                new UtilsModule(getApplicationContext())
         );
     }
 
