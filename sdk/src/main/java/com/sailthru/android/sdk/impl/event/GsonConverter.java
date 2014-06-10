@@ -5,6 +5,8 @@ package com.sailthru.android.sdk.impl.event;
  */
 // Copyright 2012 Square, Inc.
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 import com.squareup.tape.FileObjectQueue;
@@ -29,18 +31,30 @@ class GsonConverter<T> implements FileObjectQueue.Converter<T> {
     private final Class<T> type;
 
     public GsonConverter(Gson gson, Class<T> type) {
+        Log.d("Gson Converter", "1");
         this.gson = gson;
         this.type = type;
+        Log.d("Gson Converter", "2");
     }
 
     @Override public T from(byte[] bytes) {
+        Log.d("Gson Converter", "3");
         Reader reader = new InputStreamReader(new ByteArrayInputStream(bytes));
+        Log.d("Gson Converter", "4");
         return gson.fromJson(reader, type);
     }
 
-    @Override public void toStream(T object, OutputStream bytes) throws IOException {
-        Writer writer = new OutputStreamWriter(bytes);
-        gson.toJson(object, writer);
-        writer.close();
+    @Override public void toStream(T object, OutputStream bytes) {
+        try {
+            Log.d("Gson Converter", "5");
+            Writer writer = new OutputStreamWriter(bytes);
+            Log.d("Gson Converter", "6");
+            gson.toJson(object, writer);
+            Log.d("Gson Converter", "7");
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

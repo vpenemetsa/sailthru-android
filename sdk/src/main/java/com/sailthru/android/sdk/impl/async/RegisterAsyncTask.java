@@ -8,11 +8,7 @@ import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
-import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
-import javax.inject.Inject;
-
-import dagger.ObjectGraph;
 import retrofit.Callback;
 
 /**
@@ -22,9 +18,6 @@ import retrofit.Callback;
  */
 public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
 
-    @Inject
-    AppRegisterUtils appRegisterUtils;
-
     Context context;
     String appId;
     String apiKey;
@@ -32,6 +25,8 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
     Sailthru.Identification userType;
     AuthenticatedClient authenticatedClient;
     Callback<UserRegisterAppResponse> callback;
+    AppRegisterUtils appRegisterUtils;
+    ApiManager apiManager;
 
     public RegisterAsyncTask(Context context, String appId, String apiKey, String uid,
                              Sailthru.Identification userType,
@@ -44,8 +39,8 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         this.userType = userType;
         this.authenticatedClient = authenticatedClient;
         this.callback = callback;
-
-        ObjectGraph.create(new UtilsModule(context)).inject(this);
+        appRegisterUtils = new AppRegisterUtils();
+        apiManager = new ApiManager(context);
     }
 
     @Override
@@ -64,16 +59,7 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
             id = uid;
         }
 
-        ApiManager apiManager = ApiManager.getInstance(context);
         apiManager.registerUser(context, appId, apiKey, id, userType, callback);
-
-//        if (appRegisterUtils.notNullOrEmpty(storedHid) &&
-//                !userType.equals(Sailthru.Identification.ANONYMOUS)) {
-//            Log.d("stored Hid", storedHid);
-//            ApiManager.registerUser(context, appId, apiKey, storedHid, null, callback);
-//        } else {
-//            ApiManager.registerUser(context, appId, apiKey, uid, userType, callback);
-//        }
 
         return null;
     }

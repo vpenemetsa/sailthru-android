@@ -6,15 +6,9 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
-import com.sailthru.android.sdk.impl.client.AuthenticatedClientModule;
-import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventModule;
-import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
-import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,11 +24,10 @@ public class Sailthru {
     @Inject
     Lazy<EventTaskQueue> eventTaskQueue;
 
-    @Inject
     AuthenticatedClient authenticatedClient;
 
     Context context;
-    private static SailthruClient sailthruClient;
+    private SailthruClient sailthruClient;
 
     /**
      * Defines User type for registration
@@ -77,8 +70,8 @@ public class Sailthru {
      */
     public Sailthru(Context context) {
         this.context = context;
-        ObjectGraph.create(getModules().toArray()).inject(this);
-
+        ObjectGraph.create(new EventModule(context)).inject(this);
+        authenticatedClient = AuthenticatedClient.getInstance(context);
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -88,24 +81,9 @@ public class Sailthru {
             authenticatedClient.setConnectedToNetwork(true);
         }
 
-        if (sailthruClient == null) {
-            sailthruClient = new SailthruClient(context, authenticatedClient);
-        }
+        sailthruClient = new SailthruClient(context, authenticatedClient);
 
         Log.d("***********Constructor*************", authenticatedClient.isConnectedToNetwork() + "");
-    }
-
-    /**
-     * Returns a list of modules to inject.
-     *
-     * @return
-     */
-    private List<Object> getModules() {
-        return Arrays.asList(
-            new EventModule(context),
-            new UtilsModule(context),
-            new AuthenticatedClientModule(context)
-        );
     }
 
 //    acabd25475bfbdb927ca989ef5cba4d0eefb9655d33d127dc8e01432dc01e8ca
@@ -125,16 +103,16 @@ public class Sailthru {
     public void register(RegistrationMode mode, String domain,
                          String apiKey, String appId, Identification identification,
                          String uid, String token) {
-        if (SailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
+        if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
                 Log.d("************", "Registering");
-                SailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
+                sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
             } else {
                 Log.d("************", "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
-            SailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
+            sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
         }
         Log.d("***********register*************", authenticatedClient.isConnectedToNetwork() + "");
     }
@@ -154,6 +132,6 @@ public class Sailthru {
      */
     public void sendTags(List<String> tags, String url, String latitude, String longitude) {
         Log.d("***********SEND TAGS*************", authenticatedClient.isConnectedToNetwork() + "");
-        SailthruClient.addEventToQueue(context, tags, url, latitude, longitude, eventTaskQueue.get());
+        sailthruClient.addEventToQueue(context, tags, url, latitude, longitude, eventTaskQueue.get());
     }
 }

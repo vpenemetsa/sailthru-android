@@ -1,5 +1,6 @@
 package com.sailthru.android.sdk.impl.event;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.sailthru.android.sdk.impl.async.AppTrackAsyncTask;
@@ -25,15 +26,12 @@ public class EventTask implements Task<EventTask.EventCallback> {
     }
 
     Event event;
-    int executeCount = 0;
-    EventCallback callback;
 
     @Override
     public void execute(EventCallback callback) {
         try {
-            executeCount++;
-            this.callback = callback;
-            AppTrackAsyncTask task = new AppTrackAsyncTask(event, this.callback);
+            event.setExecuteCount(event.getExecuteCount() + 1);
+            AppTrackAsyncTask task = new AppTrackAsyncTask(event, callback);
             task.execute((Void) null);
             Log.d(TAG, "Executing task ----------- 2");
         } catch (RuntimeException e) {
@@ -41,7 +39,7 @@ public class EventTask implements Task<EventTask.EventCallback> {
         }
     }
 
-    public int getExecuteCount() {
-        return executeCount;
+    public Event getEvent() {
+        return event;
     }
 }

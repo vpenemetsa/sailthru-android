@@ -3,26 +3,20 @@ package com.sailthru.android.sdk.impl.api;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
+import com.google.android.gms.common.api.Api;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.utils.AppTrackUtils;
-import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import dagger.ObjectGraph;
 import retrofit.Callback;
 import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
-import retrofit.converter.GsonConverter;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -33,39 +27,30 @@ public class ApiManager {
 
     private static final String TAG = ApiManager.class.getSimpleName();
 
-    private static ApiManager apiManager;
-    private static GsonConverter gsonConverter;
+    Context context;
+
+    public ApiManager() {
+
+    }
 
     public ApiManager(Context context) {
-        ObjectGraph.create(new UtilsModule(context)).inject(this);
-        gsonConverter = new GsonConverter(new Gson());
+        this.context = context;
     }
 
-    public static ApiManager getInstance(Context context) {
-        if (apiManager == null) {
-            apiManager = new ApiManager(context);
-        }
-
-        return apiManager;
-    }
-
-    @Inject
-    static AppRegisterUtils appRegisterUtils;
-    @Inject
-    static AppTrackUtils appTrackUtils;
-
-    public static void registerUser(Context context, String appId,
+    public void registerUser(Context context, String appId,
                                     String apiKey, String uid,
                                     Sailthru.Identification userType,
                                     Callback<UserRegisterAppResponse> callback) {
 
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.ST_API_ENDPOINT)
-                .setConverter(gsonConverter)
+
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         ApiInterfaces.RegisterUserService service = adapter.create(
                 ApiInterfaces.RegisterUserService.class);
+
+        AppRegisterUtils appRegisterUtils = new AppRegisterUtils();
 
         Map<String, String> params = appRegisterUtils.buildRequest(context, appId, apiKey,
                 uid, userType);
@@ -82,25 +67,29 @@ public class ApiManager {
                 callback);
     }
 
-    public static AppTrackResponse sendEvent(Event event) {
-
+    public AppTrackResponse sendEvent(Event event) {
+        Log.d("ApiManager", "1");
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setConverter(gsonConverter)
                 .setErrorHandler(new AppTrackErrorHandler())
                 .build();
+        Log.d("ApiManager", "2");
         ApiInterfaces.AppTrackService service = adapter.create(ApiInterfaces.AppTrackService.class);
+        Log.d("ApiManager", "3");
 
-        Map<String, String> parameters = appTrackUtils.buildRequest(event);
+        AppTrackUtils utils = new AppTrackUtils();
+        Map<String, String> parameters = utils.buildRequest(event);
 
+        Log.d("ApiManager", "4");
         AppTrackResponse response = null;
         try {
+            Log.d("ApiManager", "5");
             response = service.sendTags(parameters);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        Log.d("ApiManager", "7");
         return response;
     }
 
@@ -109,7 +98,8 @@ public class ApiManager {
         @Override
         public Throwable handleError(RetrofitError cause) {
             cause.printStackTrace();
-            return null;
+            Log.d("ApiManager", "8");
+            return cause;
         }
     }
 }

@@ -34,7 +34,8 @@ public class NetworkReceiver extends BroadcastReceiver {
                 networkInfo.isConnectedOrConnecting());
 
         if (client.isConnectedToNetwork()) {
-            NetworkQueue.registerCachedAttemptIfAvailable(context.getApplicationContext(),
+            NetworkQueue networkQueue = new NetworkQueue();
+            networkQueue.registerCachedAttemptIfAvailable(context.getApplicationContext(),
                     client);
         }
 

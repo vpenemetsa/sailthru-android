@@ -5,13 +5,8 @@ import android.test.InstrumentationTestCase;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiConstants;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
-import com.sailthru.android.sdk.impl.utils.UtilsModule;
 
 import java.util.Map;
-
-import javax.inject.Inject;
-
-import dagger.ObjectGraph;
 
 /**
  * Created by Vijay Penemetsa on 5/21/14.
@@ -22,13 +17,12 @@ public class AppRegisterUtilsTest extends InstrumentationTestCase {
     String mAppId = "5362a304fdd5ac3611000481";
     String mEmail = "dhoerl+testa009@sailthru.com";
 
-    @Inject
     AppRegisterUtils appRegisterUtils;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        ObjectGraph.create(new UtilsModule(getInstrumentation().getContext())).inject(this);
+        appRegisterUtils = new AppRegisterUtils();
     }
 
     public void testEmailRequest() throws Exception {

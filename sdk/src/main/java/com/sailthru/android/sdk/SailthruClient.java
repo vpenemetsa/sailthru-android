@@ -10,13 +10,10 @@ import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
-import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 
 import org.apache.http.HttpStatus;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -27,12 +24,9 @@ import retrofit.client.Response;
  */
 class SailthruClient {
 
-    static Context context;
-    static RegisterAsyncTask appRegisterAsyncTask = null;
-    static AuthenticatedClient authenticatedClient;
-
-    @Inject
-    static AppRegisterUtils appRegisterUtils;
+    Context context;
+    RegisterAsyncTask appRegisterAsyncTask = null;
+    AuthenticatedClient authenticatedClient;
 
     public SailthruClient(Context context, AuthenticatedClient authenticatedClient) {
         this.authenticatedClient = authenticatedClient;
@@ -50,7 +44,7 @@ class SailthruClient {
      * @param uid
      * @param token
      */
-    protected static void saveCredentials(String mode, String domain, String apiKey, String appId,
+    protected void saveCredentials(String mode, String domain, String apiKey, String appId,
                                           String identification, String uid, String token) {
         authenticatedClient.setMode(mode);
         authenticatedClient.setDomain(domain);
@@ -73,7 +67,7 @@ class SailthruClient {
      * @param token
      * @return
      */
-    protected static boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain, String apiKey,
+    protected boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain, String apiKey,
                                                 String appId, Sailthru.Identification identification, String uid,
                                                 String token) {
 
@@ -116,7 +110,7 @@ class SailthruClient {
      * @param uid
      * @param userType
      */
-    protected static void makeRegistrationRequest(String appId, String apiKey, String uid,
+    protected void makeRegistrationRequest(String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType) {
 
         // Cancel any running AppRegister calls
@@ -138,7 +132,7 @@ class SailthruClient {
      * @param longitude
      * @param eventTaskQueue
      */
-    protected static void addEventToQueue(Context context, List<String> tags, String url, String latitude,
+    protected void addEventToQueue(Context context, List<String> tags, String url, String latitude,
                                           String longitude, EventTaskQueue eventTaskQueue) {
         //Checking to make sure hid, appId and domain are not null.
         if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
@@ -162,7 +156,6 @@ class SailthruClient {
         event.setHid(authenticatedClient.getHid());
         event.setAppId(authenticatedClient.getAppId());
         event.setDomain(authenticatedClient.getDomain());
-        event.setContext(context);
         EventTask eventTask = new EventTask(event);
         eventTaskQueue.add(eventTask);
     }
@@ -170,7 +163,7 @@ class SailthruClient {
     /**
      * Callback for Registration request
      */
-    protected static Callback<UserRegisterAppResponse> mRegisterCallback = new Callback<UserRegisterAppResponse>() {
+    protected Callback<UserRegisterAppResponse> mRegisterCallback = new Callback<UserRegisterAppResponse>() {
         @Override
         public void success(UserRegisterAppResponse registerAppResponse, Response response) {
             if (response.getStatus() == HttpStatus.SC_OK) {

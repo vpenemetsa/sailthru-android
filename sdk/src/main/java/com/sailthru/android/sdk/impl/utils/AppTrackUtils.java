@@ -9,20 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Created by Vijay Penemetsa on 6/6/14.
  */
-@Singleton
 public class AppTrackUtils {
 
-    @Inject
-    public AppTrackUtils() {
-    }
-
-    public static Map<String, String> buildRequest(Event event) {
+    public Map<String, String> buildRequest(Event event) {
 
         Map<String, String> parameters = new HashMap<String, String>();
 

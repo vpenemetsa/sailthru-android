@@ -34,8 +34,6 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -44,7 +42,6 @@ import android.util.Base64;
 /**
  * Adds encryption layer on top of Shared Preferences
  */
-@Singleton
 public class SecurePreferences {
 
     public static class SecurePreferencesException extends RuntimeException {
@@ -74,7 +71,6 @@ public class SecurePreferences {
      * @param context your current context.
      * @throws SecurePreferencesException
      */
-    @Inject
     public SecurePreferences(Context context) throws SecurePreferencesException {
         try {
             this.writer = Cipher.getInstance(TRANSFORMATION);

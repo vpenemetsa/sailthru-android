@@ -30,7 +30,7 @@ public class Event {
 
     private String domain;
 
-    private Context context;
+    private int executeCount = 0;
 
     public List<String> getTags() {
         return tags;
@@ -104,11 +104,11 @@ public class Event {
         this.domain = domain;
     }
 
-    public Context getContext() {
-        return context;
+    public int getExecuteCount() {
+        return executeCount;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    public void setExecuteCount(int executeCount) {
+        this.executeCount = executeCount;
     }
 }

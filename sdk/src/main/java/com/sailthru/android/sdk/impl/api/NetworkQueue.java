@@ -16,14 +16,6 @@ public class NetworkQueue {
         APPREGISTER, EVENT
     }
 
-    public static NetworkQueue getInstance() {
-        if (mQueue == null) {
-            mQueue = new NetworkQueue();
-        }
-
-        return mQueue;
-    }
-
     public void addTask() {
         //TODO
     }
@@ -32,7 +24,7 @@ public class NetworkQueue {
         //TODO
     }
 
-    public static void registerCachedAttemptIfAvailable(Context context,
+    public void registerCachedAttemptIfAvailable(Context context,
                                                            AuthenticatedClient client) {
         if (client.isCachedRegisterAttempt()) {
             Sailthru stClient = new Sailthru(context);

@@ -1,36 +1,33 @@
 package com.sailthru.android.sdk.impl.utils;
 
 import android.content.Context;
+import android.os.Build;
 import android.provider.Settings;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  *
  * Helper methods to get device information
  */
-@Singleton
 public class DeviceUtils {
 
-    private static Context context;
+    private Context context;
 
-    @Inject
     public DeviceUtils(Context context) {
         this.context = context;
     }
 
-    public static String getDeviceId() {
-        return "1234567890";
+    public String getDeviceId() {
+//        return "1234567890";
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-    public static String getOsVersion() {
+    public String getOsVersion() {
         return "7.1";
 //        return String.valueOf(Build.VERSION.SDK_INT);
     }
 
-    public static String getDeviceType() {
+    public String getDeviceType() {
         return "iphone";
 //        return Build.MANUFACTURER;
     }

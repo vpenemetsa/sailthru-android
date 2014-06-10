@@ -6,6 +6,7 @@ import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import java.util.Map;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;

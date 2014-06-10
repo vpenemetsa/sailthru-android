@@ -26,10 +26,10 @@ public class AppTrackAsyncTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
-            ApiManager apiManager = ApiManager.getInstance(event.getContext());
+            ApiManager apiManager = new ApiManager();
             AppTrackResponse response = apiManager.sendEvent(event);
             if (response != null && response.getOk()) {
-                return true;
+                    return true;
             }
         } catch (Exception e) {
             e.printStackTrace();

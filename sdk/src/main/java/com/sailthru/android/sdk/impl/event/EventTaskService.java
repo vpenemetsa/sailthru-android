@@ -12,12 +12,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.sailthru.android.sdk.impl.Constants;
-import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
-import com.sailthru.android.sdk.impl.client.AuthenticatedClientModule;
-import com.sailthru.android.sdk.impl.utils.UtilsModule;
-
-import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -57,7 +51,7 @@ public class EventTaskService extends Service implements EventTask.EventCallback
     @Override
     public void onCreate() {
         super.onCreate();
-        ObjectGraph.create(getModules().toArray()).inject(this);
+        ObjectGraph.create(new EventModule(getApplicationContext())).inject(this);
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -69,14 +63,6 @@ public class EventTaskService extends Service implements EventTask.EventCallback
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(
                 networkStatusReceiver, new IntentFilter(Constants.BROADCAST_NETWORK_STATUS));
-    }
-
-    private List<Object> getModules() {
-        return Arrays.asList(
-                new EventModule(getApplicationContext()),
-                new AuthenticatedClientModule(getApplicationContext()),
-                new UtilsModule(getApplicationContext())
-        );
     }
 
     @Override
@@ -129,7 +115,7 @@ public class EventTaskService extends Service implements EventTask.EventCallback
     public void onFailure() {
         try {
             queue.remove();
-            if (currentTask.getExecuteCount() < EVENT_TASK_MAX_EXECUTIONS) {
+            if (currentTask.getEvent().getExecuteCount() < EVENT_TASK_MAX_EXECUTIONS) {
                 queue.add(currentTask);
             }
             execute();
