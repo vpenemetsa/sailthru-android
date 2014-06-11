@@ -2,11 +2,11 @@ package com.sailthru.android.sdk.impl.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiConstants;
+import com.sailthru.android.sdk.impl.logger.STLog;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -26,9 +26,12 @@ public class AppRegisterUtils {
 
     private static final String TAG = AppRegisterUtils.class.getSimpleName();
 
+    STLog log;
+
     //Builds request for App Register
     public Map<String, String> buildRequest(Context context, String appId, String apiKey, String id,
                                             Sailthru.Identification userType) {
+        log = STLog.getInstance();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ApiConstants.UR_API_KEY, apiKey);
         params.put(ApiConstants.UR_FORMAT_KEY, ApiConstants.UR_FORMAT_VALUE);
@@ -46,15 +49,15 @@ public class AppRegisterUtils {
         data.put(ApiConstants.UR_JSON_PLATFORM_APP_VERSION_KEY, ApiConstants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
 
         if (userType == null) {
-            Log.d(TAG, "Existing anonymous user");
+            log.d(TAG, "Existing anonymous user");
             data.put(ApiConstants.UR_JSON_ID_KEY, uid);
             data.put(ApiConstants.UR_JSON_KEY_KEY, "hid");
         } else if (userType.equals(Sailthru.Identification.EMAIL)) {
-            Log.d(TAG, "Email user");
+            log.d(TAG, "Email user");
             data.put(ApiConstants.UR_JSON_ID_KEY, uid);
             data.put(ApiConstants.UR_JSON_KEY_KEY, userType.toString());
         } else {
-            Log.d(TAG, "Anonymous user");
+            log.d(TAG, "Anonymous user");
         }
 
         DeviceUtils deviceUtils = new DeviceUtils(context);
@@ -65,7 +68,7 @@ public class AppRegisterUtils {
         data.put(ApiConstants.UR_JSON_DEVICE_TYPE_KEY, deviceUtils.getDeviceType());
         data.put(ApiConstants.UR_JSON_DEVICE_VERSION_KEY, deviceUtils.getDeviceVersion());
 
-        Log.d("***********************", data.get(ApiConstants.UR_JSON_DEVICE_ID_KEY));
+        log.d("***********************", data.get(ApiConstants.UR_JSON_DEVICE_ID_KEY));
 
         Gson gson = new Gson();
         return gson.toJson(data);
@@ -101,7 +104,7 @@ public class AppRegisterUtils {
 
             return md5;
         } catch (NoSuchAlgorithmException e) {
-            Log.e("MD5", e.getLocalizedMessage());
+            log.e("MD5", e.getLocalizedMessage());
             return null;
         }
     }

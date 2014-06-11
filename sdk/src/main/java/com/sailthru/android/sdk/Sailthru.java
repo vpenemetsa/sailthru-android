@@ -3,11 +3,12 @@ package com.sailthru.android.sdk;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.EventModule;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
+import com.sailthru.android.sdk.impl.logger.Logger;
+import com.sailthru.android.sdk.impl.logger.STLog;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Sailthru {
 
     Context context;
     private SailthruClient sailthruClient;
+    STLog log;
 
     /**
      * Defines User type for registration
@@ -71,6 +73,7 @@ public class Sailthru {
     public Sailthru(Context context) {
         this.context = context;
         ObjectGraph.create(new EventModule(context)).inject(this);
+        log = STLog.getInstance();
         authenticatedClient = AuthenticatedClient.getInstance(context);
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
@@ -83,7 +86,7 @@ public class Sailthru {
 
         sailthruClient = new SailthruClient(context, authenticatedClient);
 
-        Log.d("***********Constructor*************", authenticatedClient.isConnectedToNetwork() + "");
+        log.d("***********Constructor*************", authenticatedClient.isConnectedToNetwork() + "");
     }
 
 //    acabd25475bfbdb927ca989ef5cba4d0eefb9655d33d127dc8e01432dc01e8ca
@@ -105,23 +108,23 @@ public class Sailthru {
                          String uid, String token) {
         if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
-                Log.d("************", "Registering");
+                log.d("************", "Registering");
                 sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
             } else {
-                Log.d("************", "No network");
+                log.d("************", "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
             sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
         }
-        Log.d("***********register*************", authenticatedClient.isConnectedToNetwork() + "");
+        log.d("***********register*************", authenticatedClient.isConnectedToNetwork() + "");
     }
 
     /**
      * Public method to unregister current client from Sailthru
      */
     public void unregister() {
-        Log.d("***********Unregister*************", authenticatedClient.isConnectedToNetwork() + "");
+        log.d("***********Unregister*************", authenticatedClient.isConnectedToNetwork() + "");
         authenticatedClient.deleteHid();
     }
 
@@ -131,7 +134,16 @@ public class Sailthru {
      * @param url
      */
     public void sendTags(List<String> tags, String url, String latitude, String longitude) {
-        Log.d("***********SEND TAGS*************", authenticatedClient.isConnectedToNetwork() + "");
+        log.d("***********SEND TAGS*************", authenticatedClient.isConnectedToNetwork() + "");
         sailthruClient.addEventToQueue(context, tags, url, latitude, longitude, eventTaskQueue.get());
+    }
+
+    /**
+     * Used to set an external logger to intercept all log messages
+     *
+     * @param logger
+     */
+    public void setLogger(Logger logger) {
+        log.setExternalLogger(logger);
     }
 }

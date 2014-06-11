@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.api.NetworkQueue;
+import com.sailthru.android.sdk.impl.logger.STLog;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -19,8 +19,10 @@ import com.sailthru.android.sdk.impl.api.NetworkQueue;
  */
 public class NetworkReceiver extends BroadcastReceiver {
 
-    public NetworkReceiver() {
+    STLog log;
 
+    public NetworkReceiver() {
+        log = STLog.getInstance();
     }
 
     @Override
@@ -43,7 +45,7 @@ public class NetworkReceiver extends BroadcastReceiver {
     }
 
     private void broadcastNetworkStatus(Context context, boolean value) {
-        Log.d("Network receiver value", value + "");
+        log.d("Network receiver value", value + "");
         Intent i = new Intent(Constants.BROADCAST_NETWORK_STATUS);
         i.putExtra(Constants.INTENT_EXTRA_NETWORK_STATUS, value);
         LocalBroadcastManager.getInstance(context).sendBroadcast(i);

@@ -9,9 +9,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.sailthru.android.sdk.impl.Constants;
+import com.sailthru.android.sdk.impl.logger.STLog;
 
 import javax.inject.Inject;
 
@@ -27,6 +27,7 @@ public class EventTaskService extends Service implements EventTask.EventCallback
     @Inject
     EventTaskQueue queue;
 
+    STLog log;
     private EventTask currentTask;
 
     private static final String TAG = EventTaskService.class.getSimpleName();
@@ -38,10 +39,10 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         public void onReceive(Context context, Intent intent) {
             isConnectedToNetwork = intent.getBooleanExtra(
                     Constants.INTENT_EXTRA_NETWORK_STATUS, false);
-            Log.d(TAG + " BR Received", isConnectedToNetwork + "");
+            log.d(TAG + " BR Received", isConnectedToNetwork + "");
 
             if (isConnectedToNetwork && queue != null) {
-                if (queue.size() > Constants.QUEUE_SIZE_THRESHOLD) {
+                if (queue.size() >= Constants.QUEUE_SIZE_THRESHOLD) {
                     execute();
                 }
             }
@@ -52,6 +53,7 @@ public class EventTaskService extends Service implements EventTask.EventCallback
     public void onCreate() {
         super.onCreate();
         ObjectGraph.create(new EventModule(getApplicationContext())).inject(this);
+        log = STLog.getInstance();
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -67,20 +69,20 @@ public class EventTaskService extends Service implements EventTask.EventCallback
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("SERVICCCCEEEEEE", "STart command received");
+        log.d("SERVICCCCEEEEEE", "STart command received");
         execute();
         return START_STICKY;
     }
 
     private void execute() {
-        Log.d("***********Service Execute*************", isConnectedToNetwork + "");
+        log.d("***********Service Execute*************", isConnectedToNetwork + "");
         try {
             if (queue.size() > 0) {
                 if (isConnectedToNetwork) {
                     currentTask = queue.peek();
-                    Log.d(TAG, "Executing service");
+                    log.d(TAG, "Executing service");
                     if (currentTask != null) {
-                        Log.d(TAG, "Executing task");
+                        log.d(TAG, "Executing task");
                         currentTask.execute(this);
                     } else {
                         queue.remove();
@@ -97,11 +99,10 @@ public class EventTaskService extends Service implements EventTask.EventCallback
 
     @Override
     public void onSuccess() {
-        Log.d(TAG, "Removing task from queue");
         try {
-            queue.remove();
-            Log.d(TAG, "Size after remove ----- " + queue.size());
             if (queue.size() > 0) {
+                log.d(TAG, "Size after remove ----- " + queue.size());
+                queue.remove();
                 execute();
             } else {
                 stopSelf();

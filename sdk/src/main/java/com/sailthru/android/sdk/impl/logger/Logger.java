@@ -1,50 +1,30 @@
 package com.sailthru.android.sdk.impl.logger;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
 /**
  * Created by Vijay Penemetsa on 5/22/14.
  */
 public abstract class Logger {
 
-    public static final String LOGGER_DATA_EXTRA = "LOGGER_DATA_EXTRA";
+    public static final String BASE_TAG = "com.sailthru.";
 
     public enum LogLevel {
-        EVERYTHING, DEBUG, CRASHES
+        NONE, FULL, BASIC
     }
 
-    protected Context mContext;
-    protected LogLevel mLogLevel;
+    protected LogLevel logLevel;
 
-    protected static boolean mInterceptLogs = false;
+    protected static boolean interceptLogs = false;
 
-    protected abstract void onReceivedLog(String logMessage);
-
-    public Logger(Context context, boolean interceptLogs) {
-        mContext = context;
-        mInterceptLogs = interceptLogs;
+    public Logger() {
     }
 
     public void setLogLevel(LogLevel logLevel) {
-        mLogLevel = logLevel;
+        this.logLevel = logLevel;
     }
 
-    private BroadcastReceiver mLogReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String logMessage = intent.getStringExtra(LOGGER_DATA_EXTRA);
-            onReceivedLog(logMessage);
-        }
-    };
+    protected abstract void d(String tag, String message);
 
-    public void sendLog(String logMessage) {
-        if (mInterceptLogs) {
-            onReceivedLog(logMessage);
-        } else {
-            Log.i("SailthruSDK", logMessage);
-        }
-    }
+    protected abstract void w(String tag, String message);
+
+    protected abstract void e(String tag, String message);
 }

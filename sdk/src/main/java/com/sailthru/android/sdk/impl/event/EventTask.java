@@ -1,9 +1,7 @@
 package com.sailthru.android.sdk.impl.event;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.sailthru.android.sdk.impl.async.AppTrackAsyncTask;
+import com.sailthru.android.sdk.impl.logger.STLog;
 import com.squareup.tape.Task;
 
 /**
@@ -16,6 +14,8 @@ public class EventTask implements Task<EventTask.EventCallback> {
 
     private static final String TAG = EventTask.class.getSimpleName();
 
+    STLog log;
+
     public interface EventCallback {
         void onSuccess ();
         void onFailure();
@@ -24,6 +24,7 @@ public class EventTask implements Task<EventTask.EventCallback> {
 
     public EventTask(Event event) {
         this.event = event;
+        log = STLog.getInstance();
     }
 
     Event event;
@@ -34,7 +35,7 @@ public class EventTask implements Task<EventTask.EventCallback> {
             event.setExecuteCount(event.getExecuteCount() + 1);
             AppTrackAsyncTask task = new AppTrackAsyncTask(event, callback);
             task.execute((Void) null);
-            Log.d(TAG, "Executing task ----------- 2");
+            log.d(TAG, "Executing task ----------- 2");
         } catch (RuntimeException e) {
             e.printStackTrace();
         }

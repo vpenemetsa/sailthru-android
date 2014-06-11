@@ -2,10 +2,10 @@ package com.sailthru.android.sdk.impl.event;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.Constants;
+import com.sailthru.android.sdk.impl.logger.STLog;
 import com.squareup.tape.FileObjectQueue;
 import com.squareup.tape.ObjectQueue;
 import com.squareup.tape.TaskQueue;
@@ -31,16 +31,15 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     private final Context context;
     private static EventTaskQueue queue;
 
+    STLog log;
+
     private boolean isConnectedToNetwork;
 
     @Inject
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
         super(delegate);
         this.context = context;
-
-//        if (size() > 0) {
-//            startService();
-//        }
+        log = STLog.getInstance();
     }
 
     private void startService() {
@@ -56,12 +55,12 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
             }
 
             super.add(entry);
-            Log.d(TAG, "Added Event task ---- " + size() + "");
+            log.d(TAG, "Added Event task ---- " + size() + "");
 
             //Only sends tags if the size of queue exceeds 20 elements
             if (size() >= Constants.QUEUE_SIZE_THRESHOLD) {
                 startService();
-                Log.d(TAG, "Started service");
+                log.d(TAG, "Started service");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +69,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
 
     @Override
     public void remove() {
-        Log.d(TAG, "Removed Event Task ----- " + size() + "");
+        log.d(TAG, "Removed Event Task ----- " + size() + "");
         try {
             super.remove();
         } catch (Exception e) {
@@ -79,7 +78,6 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     }
 
     public static EventTaskQueue create(Context context, Gson gson) {
-        Log.d(TAG, "Creating task queue");
         try {
             if (queue == null) {
                 FileObjectQueue.Converter<EventTask> converter = new GsonConverter<EventTask>(gson, EventTask.class);

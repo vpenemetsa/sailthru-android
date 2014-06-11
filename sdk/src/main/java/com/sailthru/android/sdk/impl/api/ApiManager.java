@@ -1,10 +1,9 @@
 package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.android.gms.common.api.Api;
 import com.sailthru.android.sdk.impl.event.Event;
+import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
@@ -16,7 +15,6 @@ import org.apache.http.HttpStatus;
 import java.util.Map;
 
 import retrofit.Callback;
-import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
@@ -30,13 +28,18 @@ public class ApiManager {
     private static final String TAG = ApiManager.class.getSimpleName();
 
     Context context;
+    STLog log;
+    RetrofitLogger retrofitLogger;
 
     public ApiManager() {
-
+        log = STLog.getInstance();
+        retrofitLogger = RetrofitLogger.getInstance();
     }
 
     public ApiManager(Context context) {
         this.context = context;
+        log = STLog.getInstance();
+        retrofitLogger = RetrofitLogger.getInstance();
     }
 
     public void registerUser(Context context, String appId,
@@ -46,7 +49,7 @@ public class ApiManager {
 
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.ST_API_ENDPOINT)
-
+                .setLog(retrofitLogger)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         ApiInterfaces.RegisterUserService service = adapter.create(
@@ -57,9 +60,9 @@ public class ApiManager {
         Map<String, String> params = appRegisterUtils.buildRequest(context, appId, apiKey,
                 uid, userType);
 
-        Log.d("**********SIG****************", params.get(ApiConstants.UR_SIG_KEY));
-        Log.d("**********JSON***************", params.get(ApiConstants.UR_JSON_KEY));
-        Log.d("**********API KEY***********", apiKey);
+        log.d("**********SIG****************", params.get(ApiConstants.UR_SIG_KEY));
+        log.d("**********JSON***************", params.get(ApiConstants.UR_JSON_KEY));
+        log.d("**********API KEY***********", apiKey);
 
         service.registerUser(
                 params.get(ApiConstants.UR_SIG_KEY),
@@ -70,22 +73,23 @@ public class ApiManager {
     }
 
     public AppTrackResponse sendEvent(Event event) {
-        Log.d("ApiManager", "1");
+        log.d("ApiManager", "1");
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)
-                .setLogLevel(RestAdapter.LogLevel.NONE)
+                .setLog(retrofitLogger)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        Log.d("ApiManager", "2");
+        log.d("ApiManager", "2");
         ApiInterfaces.AppTrackService service = adapter.create(ApiInterfaces.AppTrackService.class);
-        Log.d("ApiManager", "3");
+        log.d("ApiManager", "3");
 
         AppTrackUtils utils = new AppTrackUtils();
         Map<String, String> parameters = utils.buildRequest(event);
 
-        Log.d("ApiManager", "4");
+        log.d("ApiManager", "4");
         AppTrackResponse response = null;
         try {
-            Log.d("ApiManager", "5");
+            log.d("ApiManager", "5");
             response = service.sendTags(parameters);
 
         } catch (RetrofitError e) {
@@ -93,10 +97,10 @@ public class ApiManager {
             if (e.isNetworkError()) {
                 response = new AppTrackResponse();
                 response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                Log.d("**************************************", "" + response.getStatusCode());
+                log.d("**************************************", "" + response.getStatusCode());
             }
         }
-        Log.d("ApiManager", "7");
+        log.d("ApiManager", "7");
         return response;
     }
 }

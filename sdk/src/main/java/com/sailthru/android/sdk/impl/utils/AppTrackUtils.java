@@ -1,9 +1,8 @@
 package com.sailthru.android.sdk.impl.utils;
 
-import android.util.Log;
-
 import com.sailthru.android.sdk.impl.api.ApiConstants;
 import com.sailthru.android.sdk.impl.event.Event;
+import com.sailthru.android.sdk.impl.logger.STLog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +14,8 @@ import java.util.Map;
 public class AppTrackUtils {
 
     public Map<String, String> buildRequest(Event event) {
+
+        STLog log = STLog.getInstance();
 
         Map<String, String> parameters = new HashMap<String, String>();
 
@@ -32,7 +33,7 @@ public class AppTrackUtils {
 
             tagsString = tagsString.substring(0, tagsString.length() - 1);
             tagsString = tagsString.replaceAll(" ", "");
-            Log.d("*^&%#$%^&*)(^%#$^&*()&^%#$%&^*(&^%#$%&^*()&^%#$&^*(^%$#%&^*%#$", tagsString);
+            log.d("*^&%#$%^&*)(^%#$^&*()&^%#$%&^*(&^%#$%&^*()&^%#$&^*(^%$#%&^*%#$", tagsString);
             parameters.put(ApiConstants.APPTRACK_TAGS_KEY, tagsString);
         }
 
