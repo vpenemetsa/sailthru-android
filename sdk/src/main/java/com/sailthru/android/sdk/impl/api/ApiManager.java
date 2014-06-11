@@ -11,6 +11,8 @@ import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.utils.AppTrackUtils;
 
+import org.apache.http.HttpStatus;
+
 import java.util.Map;
 
 import retrofit.Callback;
@@ -71,8 +73,7 @@ public class ApiManager {
         Log.d("ApiManager", "1");
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setErrorHandler(new AppTrackErrorHandler())
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .build();
         Log.d("ApiManager", "2");
         ApiInterfaces.AppTrackService service = adapter.create(ApiInterfaces.AppTrackService.class);
@@ -86,20 +87,16 @@ public class ApiManager {
         try {
             Log.d("ApiManager", "5");
             response = service.sendTags(parameters);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (RetrofitError e) {
+//            e.printStackTrace();
+            if (e.isNetworkError()) {
+                response = new AppTrackResponse();
+                response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+                Log.d("**************************************", "" + response.getStatusCode());
+            }
         }
         Log.d("ApiManager", "7");
         return response;
-    }
-
-    private static class AppTrackErrorHandler implements ErrorHandler {
-
-        @Override
-        public Throwable handleError(RetrofitError cause) {
-            cause.printStackTrace();
-            Log.d("ApiManager", "8");
-            return cause;
-        }
     }
 }

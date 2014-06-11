@@ -8,10 +8,12 @@ import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 
+import org.apache.http.HttpStatus;
+
 /**
  * Created by Vijay Penemetsa on 6/9/14.
  */
-public class AppTrackAsyncTask extends AsyncTask<Void, Void, Boolean> {
+public class AppTrackAsyncTask extends AsyncTask<Void, Void, AppTrackResponse> {
 
     private static final String TAG = AppTrackAsyncTask.class.getSimpleName();
 
@@ -24,27 +26,27 @@ public class AppTrackAsyncTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected AppTrackResponse doInBackground(Void... params) {
+        AppTrackResponse response = new AppTrackResponse();
         try {
             ApiManager apiManager = new ApiManager();
-            AppTrackResponse response = apiManager.sendEvent(event);
-            if (response != null && response.getOk()) {
-                    return true;
-            }
+            response = apiManager.sendEvent(event);
         } catch (Exception e) {
             e.printStackTrace();
             cancel(true);
         }
 
-        return false;
+        return response;
     }
 
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        if (aBoolean) {
-            callback.onSuccess();
-        } else {
+    protected void onPostExecute(AppTrackResponse response) {
+        if (response == null) {
             callback.onFailure();
+        } else if (response.getOk()){
+            callback.onSuccess();
+        } else if (response.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+            callback.onNotReachable();
         }
     }
 }

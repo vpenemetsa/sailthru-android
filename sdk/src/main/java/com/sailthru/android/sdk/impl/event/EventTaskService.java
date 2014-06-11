@@ -114,11 +114,29 @@ public class EventTaskService extends Service implements EventTask.EventCallback
     @Override
     public void onFailure() {
         try {
-            queue.remove();
-            if (currentTask.getEvent().getExecuteCount() < EVENT_TASK_MAX_EXECUTIONS) {
-                queue.add(currentTask);
+            if (queue.size() > 0) {
+                queue.remove();
+
+                if (currentTask.getEvent().getExecuteCount() < EVENT_TASK_MAX_EXECUTIONS) {
+                    queue.add(currentTask);
+                }
+
+                if (isConnectedToNetwork) {
+                    execute();
+                }
+            } else {
+                stopSelf();
             }
-            execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onNotReachable() {
+        try {
+            isConnectedToNetwork = false;
+            onFailure();
         } catch (Exception e) {
             e.printStackTrace();
         }

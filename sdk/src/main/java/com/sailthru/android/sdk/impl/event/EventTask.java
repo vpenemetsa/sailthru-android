@@ -19,6 +19,7 @@ public class EventTask implements Task<EventTask.EventCallback> {
     public interface EventCallback {
         void onSuccess ();
         void onFailure();
+        void onNotReachable();
     }
 
     public EventTask(Event event) {
