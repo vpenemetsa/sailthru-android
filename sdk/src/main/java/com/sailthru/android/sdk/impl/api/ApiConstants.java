@@ -6,11 +6,13 @@ package com.sailthru.android.sdk.impl.api;
 public class ApiConstants {
 
     //API ENDPOINTS
-    public static final String ST_API_ENDPOINT = "https://api.sailthru.com/mobile";
-    public static final String HORIZON_API_ENDPOINT = "https://horizon.sailthru.com/horizon";
+    public static final String UR_API_ENDPOINT = "https://api.sailthru.com/mobile";
+    public static final String HORIZON_API_ENDPOINT = "https://horizon.sailthru.com";
 
     public static final String API_USER_REGISTER_PATH = "/userregisterapp";
+    public static final String API_HORIZON_PATH = "/horizon";
     public static final String API_APPTRACK_PATH = "/apptrack";
+    public static final String API_RECOMMEND_PATH = "/recommend";
 
     //User Registration request keys
     public static final String UR_API_KEY = "api_key";
@@ -42,6 +44,12 @@ public class ApiConstants {
     public static final String APPTRACK_LATITUDE_KEY = "lat";
     public static final String APPTRACK_LONGITUDE_KEY = "lng";
     public static final String APPTRACK_DOMAIN_KEY = "d";
+
+    //Recommend keys
+    public static final String REC_DOMAIN_KEY = "d";
+    public static final String REC_HID_KEY = "hid";
+    public static final String REC_COUNT_KEY = "number";
+    public static final String REC_FILTER_TAGS_KEY = "filter[tags]";
 
     public static final String ST_CACHED_UR_ATTEMPTED = "ST_CACHED_UR_ATTEMPTED";
 

@@ -9,14 +9,20 @@ import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.utils.AppTrackUtils;
+import com.sailthru.android.sdk.impl.utils.RecommendUtils;
 
 import org.apache.http.HttpStatus;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
@@ -48,7 +54,7 @@ public class ApiManager {
                                     Callback<UserRegisterAppResponse> callback) {
 
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ApiConstants.ST_API_ENDPOINT)
+                .setEndpoint(ApiConstants.UR_API_ENDPOINT)
                 .setLog(retrofitLogger)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
@@ -73,27 +79,21 @@ public class ApiManager {
     }
 
     public AppTrackResponse sendEvent(Event event) {
-        log.d("ApiManager", "1");
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)
+                .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT + ApiConstants.API_HORIZON_PATH)
                 .setLog(retrofitLogger)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        log.d("ApiManager", "2");
         ApiInterfaces.AppTrackService service = adapter.create(ApiInterfaces.AppTrackService.class);
-        log.d("ApiManager", "3");
 
         AppTrackUtils utils = new AppTrackUtils();
         Map<String, String> parameters = utils.buildRequest(event);
 
-        log.d("ApiManager", "4");
         AppTrackResponse response = null;
         try {
-            log.d("ApiManager", "5");
             response = service.sendTags(parameters);
 
         } catch (RetrofitError e) {
-//            e.printStackTrace();
             if (e.isNetworkError()) {
                 response = new AppTrackResponse();
                 response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
@@ -101,6 +101,51 @@ public class ApiManager {
             }
         }
         log.d("ApiManager", "7");
+        return response;
+    }
+
+    public String getRecommendations(String domain, String hid, int count, List<String> tags) {
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)
+                .setLog(retrofitLogger)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        ApiInterfaces.RecommendService service = adapter.create(
+                ApiInterfaces.RecommendService.class);
+
+        RecommendUtils recommendUtils = new RecommendUtils();
+        Map<String, String> parameters = recommendUtils.buildRequest(domain, hid, count, tags);
+
+        String response = "";
+        try {
+            Response recommendResponse = service.getRecommendations(parameters);
+            BufferedReader reader = null;
+            StringBuilder sb = new StringBuilder();
+            try {
+                reader = new BufferedReader(new InputStreamReader(
+                        recommendResponse.getBody().in()));
+
+                String line = null;
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                } catch (IOException e) {
+                    log.e("RecommendParse", e.getMessage());
+                }
+            } catch (IOException e) {
+                log.e("RecommendParse", e.getMessage());
+            }
+
+            response = sb.toString();
+        } catch (RetrofitError e) {
+            if (e.isNetworkError()) {
+                log.d("Network", "No connection.");
+            } else if (e.getResponse().getStatus() == HttpStatus.SC_NOT_FOUND) {
+                log.d("Recommend", "No recommendations available");
+            }
+        }
+
         return response;
     }
 }

@@ -1,7 +1,6 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
@@ -9,6 +8,7 @@ import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
+import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 
 import org.apache.http.HttpStatus;
@@ -27,10 +27,12 @@ class SailthruClient {
     Context context;
     RegisterAsyncTask appRegisterAsyncTask = null;
     AuthenticatedClient authenticatedClient;
+    STLog log;
 
     public SailthruClient(Context context, AuthenticatedClient authenticatedClient) {
         this.authenticatedClient = authenticatedClient;
         this.context = context;
+        log = STLog.getInstance();
     }
 
     /**
@@ -75,28 +77,28 @@ class SailthruClient {
 
         if (mode == null) {
             passedChecks = false;
-            Log.e("SailthruSDK", "Mode cannot be set to null");
+            log.e("SailthruSDK", "Mode cannot be set to null");
         }
         if (domain == null) {
             passedChecks = false;
-            Log.e("SailthruSDK", "Domain cannot be null");
+            log.e("SailthruSDK", "Domain cannot be null");
         }
         if (apiKey == null) {
             passedChecks = false;
-            Log.e("SailthruSDK", "API Key cannot be null");
+            log.e("SailthruSDK", "API Key cannot be null");
         }
         if (appId == null) {
             passedChecks = false;
-            Log.e("SailthruSDK", "APP ID cannot be null");
+            log.e("SailthruSDK", "APP ID cannot be null");
         }
         if (identification == null) {
-            Log.e("SailthruSDK", "Identification cannot be null");
+            log.e("SailthruSDK", "Identification cannot be null");
             passedChecks = false;
         }
 
         if (identification == Sailthru.Identification.EMAIL && uid == null) {
             passedChecks = false;
-            Log.e("SailthruSDK", "UID cannot be null when Identification is set to EMAIL");
+            log.e("SailthruSDK", "UID cannot be null when Identification is set to EMAIL");
         }
 
         return passedChecks;
@@ -137,13 +139,13 @@ class SailthruClient {
         //Checking to make sure hid, appId and domain are not null.
         if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
                 authenticatedClient.getDomain() == null) {
-            Log.d("Add Event", "One of the Authentication parameters is null");
+            log.d("Add Event", "One of the Authentication parameters is null");
             return;
         }
 
         //Checking to make sure both tags and url are not part of the request
         if ((tags == null || tags.size() == 0) && url == null) {
-            Log.d("Add Event", "Invalid input. No tags or url");
+            log.d("Add Event", "Invalid input. No tags or url");
             return;
         }
 
@@ -177,4 +179,16 @@ class SailthruClient {
             error.printStackTrace();
         }
     };
+
+    protected boolean canGetRecommendations() {
+        if (authenticatedClient.getHid() == null) {
+            log.e("Recommend", "Not registered. Try registering to get recommendations");
+            return false;
+        } else if (authenticatedClient.getDomain() == null) {
+            log.e("Recommend", "Invalid domain - " + authenticatedClient.getDomain());
+            return false;
+        }
+
+        return true;
+    }
 }

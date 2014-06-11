@@ -11,6 +11,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.QueryMap;
 
 /**
@@ -31,5 +32,10 @@ public class ApiInterfaces {
     public interface AppTrackService {
         @GET(ApiConstants.API_APPTRACK_PATH)
         AppTrackResponse sendTags(@QueryMap Map<String, String> parameters);
+    }
+
+    public interface RecommendService {
+        @GET(ApiConstants.API_HORIZON_PATH + ApiConstants.API_RECOMMEND_PATH)
+        Response getRecommendations(@QueryMap Map<String, String> parameters);
     }
 }

@@ -9,6 +9,7 @@ import com.sailthru.android.sdk.impl.event.EventModule;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
+import com.sailthru.android.sdk.impl.recommend.RecommendService;
 
 import java.util.List;
 
@@ -145,5 +146,15 @@ public class Sailthru {
      */
     public void setLogger(Logger logger) {
         log.setExternalLogger(logger);
+    }
+
+    public String getRecommendations(int count, List<String> tags) {
+        String recommendations = "";
+        if (sailthruClient.canGetRecommendations()) {
+            recommendations = RecommendService.getRecommendations(authenticatedClient.getDomain(),
+                    authenticatedClient.getHid(), count, tags);
+        }
+
+        return recommendations;
     }
 }
