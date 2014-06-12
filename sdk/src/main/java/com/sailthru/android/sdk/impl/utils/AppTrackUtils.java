@@ -10,9 +10,17 @@ import java.util.Map;
 
 /**
  * Created by Vijay Penemetsa on 6/6/14.
+ *
+ * Helper methods for AppTrack request
  */
 public class AppTrackUtils {
 
+    /**
+     * Builds request parameters for an AppTrack request
+     *
+     * @param event {@link com.sailthru.android.sdk.impl.event.Event}
+     * @return Map<String,String>
+     */
     public Map<String, String> buildRequest(Event event) {
 
         STLog log = STLog.getInstance();

@@ -8,9 +8,20 @@ import java.util.Map;
 
 /**
  * Created by Vijay Penemetsa on 6/11/14.
+ *
+ * Utility methods for getting recommendations
  */
 public class RecommendUtils {
 
+    /**
+     * Builds request to be sent out to the Recommend endpoint.
+     *
+     * @param domain String
+     * @param hid String
+     * @param count int
+     * @param tags List<String>
+     * @return Map<String,String>
+     */
     public Map<String, String> buildRequest(String domain, String hid, int count, List<String> tags) {
         Map<String, String> parameters = new HashMap<String, String>();
 

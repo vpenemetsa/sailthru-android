@@ -17,8 +17,19 @@ public class EventTask implements Task<EventTask.EventCallback> {
     STLog log;
 
     public interface EventCallback {
+        /**
+         * Callback for a successful execution
+         */
         void onSuccess ();
+
+        /**
+         * Callback for a unsuccessful execution
+         */
         void onFailure();
+
+        /**
+         * Callback for a ENETUNREACH is encountered
+         */
         void onNotReachable();
     }
 
@@ -29,6 +40,9 @@ public class EventTask implements Task<EventTask.EventCallback> {
 
     Event event;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute(EventCallback callback) {
         try {
@@ -41,6 +55,11 @@ public class EventTask implements Task<EventTask.EventCallback> {
         }
     }
 
+    /**
+     * Returns {@link com.sailthru.android.sdk.impl.event.Event} object held by current task
+     *
+     * @return {@link com.sailthru.android.sdk.impl.event.Event}
+     */
     public Event getEvent() {
         return event;
     }

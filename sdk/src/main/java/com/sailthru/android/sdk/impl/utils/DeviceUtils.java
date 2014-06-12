@@ -17,21 +17,41 @@ public class DeviceUtils {
         this.context = context;
     }
 
+    /**
+     * Returns device ID
+     *
+     * @return String
+     */
     public String getDeviceId() {
 //        return "1234567890";
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
+    /**
+     * Returns OS Version
+     *
+     * @return String
+     */
     public String getOsVersion() {
         return "7.1";
 //        return String.valueOf(Build.VERSION.SDK_INT);
     }
 
+    /**
+     * Returns Device manufacturer
+     *
+     * @return String
+     */
     public String getDeviceType() {
         return "iphone";
 //        return Build.MANUFACTURER;
     }
 
+    /**
+     * Returns Device model
+     *
+     * @return String
+     */
     public static String getDeviceVersion() {
         return "4.3";
 //        return Build.MODEL;

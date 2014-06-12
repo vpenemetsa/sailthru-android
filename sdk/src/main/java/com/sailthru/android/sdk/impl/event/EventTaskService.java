@@ -34,6 +34,7 @@ public class EventTaskService extends Service implements EventTask.EventCallback
     private static final long EVENT_TASK_MAX_EXECUTIONS = 3;
     private boolean isConnectedToNetwork;
 
+    //Broadcast Receiver listens for network status broadcasts
     BroadcastReceiver networkStatusReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -49,6 +50,9 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         }
     };
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,6 +71,9 @@ public class EventTaskService extends Service implements EventTask.EventCallback
                 networkStatusReceiver, new IntentFilter(Constants.BROADCAST_NETWORK_STATUS));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         log.d("SERVICCCCEEEEEE", "STart command received");
@@ -74,6 +81,9 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         return START_STICKY;
     }
 
+    /**
+     * Executes the next task in {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
+     */
     private void execute() {
         log.d("***********Service Execute*************", isConnectedToNetwork + "");
         try {
@@ -97,6 +107,9 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onSuccess() {
         try {
@@ -112,6 +125,9 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onFailure() {
         try {
@@ -133,6 +149,9 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onNotReachable() {
         try {
@@ -143,11 +162,17 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onDestroy() {
         LocalBroadcastManager.getInstance(getApplicationContext()).

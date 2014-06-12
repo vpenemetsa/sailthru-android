@@ -20,9 +20,13 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
+ * Helper methods used by the main Sailthru class
+ *
  * Created by Vijay Penemetsa on 5/20/14.
  */
 class SailthruClient {
+
+    private static final String TAG = SailthruClient.class.getSimpleName();
 
     Context context;
     RegisterAsyncTask appRegisterAsyncTask = null;
@@ -38,13 +42,13 @@ class SailthruClient {
     /**
      * Saves credentials from client to Shared Preferences
      *
-     * @param mode
-     * @param domain
-     * @param apiKey
-     * @param appId
-     * @param identification
-     * @param uid
-     * @param token
+     * @param mode String
+     * @param domain String
+     * @param apiKey String
+     * @param appId String
+     * @param identification String
+     * @param uid String
+     * @param token String
      */
     protected void saveCredentials(String mode, String domain, String apiKey, String appId,
                                           String identification, String uid, String token) {
@@ -60,14 +64,14 @@ class SailthruClient {
     /**
      * Checks to see if input for registration conforms with standards
      *
-     * @param mode
-     * @param domain
-     * @param apiKey
-     * @param appId
-     * @param identification
-     * @param uid
-     * @param token
-     * @return
+     * @param mode {@link com.sailthru.android.sdk.Sailthru.RegistrationMode}
+     * @param domain String
+     * @param apiKey String
+     * @param appId String
+     * @param identification {@link com.sailthru.android.sdk.Sailthru.Identification}
+     * @param uid String
+     * @param token String
+     * @return boolean
      */
     protected boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain, String apiKey,
                                                 String appId, Sailthru.Identification identification, String uid,
@@ -77,28 +81,28 @@ class SailthruClient {
 
         if (mode == null) {
             passedChecks = false;
-            log.e("SailthruSDK", "Mode cannot be set to null");
+            log.e(TAG, "Mode cannot be set to null");
         }
         if (domain == null) {
             passedChecks = false;
-            log.e("SailthruSDK", "Domain cannot be null");
+            log.e(TAG, "Domain cannot be null");
         }
         if (apiKey == null) {
             passedChecks = false;
-            log.e("SailthruSDK", "API Key cannot be null");
+            log.e(TAG, "API Key cannot be null");
         }
         if (appId == null) {
             passedChecks = false;
-            log.e("SailthruSDK", "APP ID cannot be null");
+            log.e(TAG, "APP ID cannot be null");
         }
         if (identification == null) {
-            log.e("SailthruSDK", "Identification cannot be null");
+            log.e(TAG, "Identification cannot be null");
             passedChecks = false;
         }
 
         if (identification == Sailthru.Identification.EMAIL && uid == null) {
             passedChecks = false;
-            log.e("SailthruSDK", "UID cannot be null when Identification is set to EMAIL");
+            log.e(TAG, "UID cannot be null when Identification is set to EMAIL");
         }
 
         return passedChecks;
@@ -107,10 +111,10 @@ class SailthruClient {
     /**
      * Makes a call to the ApiManager with input credentials based on UserType
      *
-     * @param appId
-     * @param apiKey
-     * @param uid
-     * @param userType
+     * @param appId String
+     * @param apiKey String
+     * @param uid String
+     * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      */
     protected void makeRegistrationRequest(String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType) {
@@ -128,24 +132,24 @@ class SailthruClient {
     /**
      * Builds an Event with given parameters and adds it to the TaskQueue
      *
-     * @param tags
-     * @param url
-     * @param latitude
-     * @param longitude
-     * @param eventTaskQueue
+     * @param tags List<String>
+     * @param url String
+     * @param latitude String
+     * @param longitude String
+     * @param eventTaskQueue {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
-    protected void addEventToQueue(Context context, List<String> tags, String url, String latitude,
+    protected void addEventToQueue(List<String> tags, String url, String latitude,
                                           String longitude, EventTaskQueue eventTaskQueue) {
         //Checking to make sure hid, appId and domain are not null.
         if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
                 authenticatedClient.getDomain() == null) {
-            log.d("Add Event", "One of the Authentication parameters is null");
+            log.d(TAG, "One of the Authentication parameters is null");
             return;
         }
 
         //Checking to make sure both tags and url are not part of the request
         if ((tags == null || tags.size() == 0) && url == null) {
-            log.d("Add Event", "Invalid input. No tags or url");
+            log.d(TAG, "Invalid input. No tags or url");
             return;
         }
 
@@ -180,12 +184,17 @@ class SailthruClient {
         }
     };
 
+    /**
+     * Checks to see if all parameters required for getting recommendations exist.
+     *
+     * @return boolean
+     */
     protected boolean canGetRecommendations() {
         if (authenticatedClient.getHid() == null) {
-            log.e("Recommend", "Not registered. Try registering to get recommendations");
+            log.e(TAG, "Not registered. Try registering to get recommendations");
             return false;
         } else if (authenticatedClient.getDomain() == null) {
-            log.e("Recommend", "Invalid domain - " + authenticatedClient.getDomain());
+            log.e(TAG, "No domain registered.");
             return false;
         }
 

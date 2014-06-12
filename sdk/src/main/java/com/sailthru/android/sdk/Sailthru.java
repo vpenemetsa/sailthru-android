@@ -20,8 +20,12 @@ import dagger.ObjectGraph;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
+ *
+ * Base access class for SDK
  */
 public class Sailthru {
+
+    private static final String TAG = Sailthru.class.getSimpleName();
 
     @Inject
     Lazy<EventTaskQueue> eventTaskQueue;
@@ -69,7 +73,7 @@ public class Sailthru {
     /**
      * Initializes Sailthru Client
      *
-     * @param context
+     * @param context {@link android.content.Context}
      */
     public Sailthru(Context context) {
         this.context = context;
@@ -86,68 +90,74 @@ public class Sailthru {
         }
 
         sailthruClient = new SailthruClient(context, authenticatedClient);
-
-        log.d("***********Constructor*************", authenticatedClient.isConnectedToNetwork() + "");
     }
-
-//    acabd25475bfbdb927ca989ef5cba4d0eefb9655d33d127dc8e01432dc01e8ca
-//    acabd25475bfbdb927ca989ef5cba4d0eefb9655d33d127dc8e01432dc01e8ca
 
     /**
      * Public method to register a client to Sailthru
      *
-     * @param mode
-     * @param domain
-     * @param apiKey
-     * @param appId
-     * @param identification
-     * @param uid
-     * @param token
+     * @param mode {@link com.sailthru.android.sdk.Sailthru.RegistrationMode}
+     * @param domain String
+     * @param apiKey String
+     * @param appId String
+     * @param identification {@link com.sailthru.android.sdk.Sailthru.Identification}
+     * @param uid String
+     * @param token String
      */
     public void register(RegistrationMode mode, String domain,
                          String apiKey, String appId, Identification identification,
                          String uid, String token) {
         if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
-                log.d("************", "Registering");
+                log.d(TAG, "Registering");
                 sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
             } else {
-                log.d("************", "No network");
+                log.d(TAG, "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
             sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
         }
-        log.d("***********register*************", authenticatedClient.isConnectedToNetwork() + "");
+        log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
     }
 
     /**
      * Public method to unregister current client from Sailthru
      */
     public void unregister() {
-        log.d("***********Unregister*************", authenticatedClient.isConnectedToNetwork() + "");
+        log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
         authenticatedClient.deleteHid();
     }
 
     /**
+     * Used to send prameters to AppTrack
      *
-     * @param tags
-     * @param url
+     * @param tags List<String>
+     * @param url String
+     * @param latitude String
+     * @param longitude String
      */
     public void sendTags(List<String> tags, String url, String latitude, String longitude) {
-        log.d("***********SEND TAGS*************", authenticatedClient.isConnectedToNetwork() + "");
+        log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
         sailthruClient.addEventToQueue(context, tags, url, latitude, longitude, eventTaskQueue.get());
     }
 
     /**
      * Used to set an external logger to intercept all log messages
      *
-     * @param logger
+     * @param logger {@link com.sailthru.android.sdk.impl.logger.Logger}
      */
     public void setLogger(Logger logger) {
         log.setExternalLogger(logger);
     }
 
+    /**
+     * Returns a JSON String with recommendations which can be filtered by input tags
+     * Leave tags as null to receive all recommendations
+     *
+     * @param count int
+     * @param tags List<String>
+     * @return String
+     */
     public String getRecommendations(int count, List<String> tags) {
         String recommendations = "";
         if (sailthruClient.canGetRecommendations()) {

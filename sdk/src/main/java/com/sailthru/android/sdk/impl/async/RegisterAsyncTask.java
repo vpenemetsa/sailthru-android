@@ -43,6 +43,9 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         apiManager = new ApiManager(context);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Void doInBackground(Void... params) {
         String storedHid = authenticatedClient.getHid();

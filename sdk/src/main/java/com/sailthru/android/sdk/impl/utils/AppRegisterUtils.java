@@ -28,7 +28,16 @@ public class AppRegisterUtils {
 
     STLog log;
 
-    //Builds request for App Register
+    /**
+     * Builds request parameters for AppRegister
+     *
+     * @param context {@link android.content.Context}
+     * @param appId Stirng
+     * @param apiKey String
+     * @param id String
+     * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
+     * @return Map<String,String>
+     */
     public Map<String, String> buildRequest(Context context, String appId, String apiKey, String id,
                                             Sailthru.Identification userType) {
         log = STLog.getInstance();
@@ -38,12 +47,17 @@ public class AppRegisterUtils {
         params.put(ApiConstants.UR_JSON_KEY, generateRegisterJson(context, id, userType));
         params.put(ApiConstants.UR_SIG_KEY, generateSig(appId, params));
 
-//        ST_Logger.sendLog(params.get(API_Constants.UR_SIG_KEY));
-//        Log.d("**********SIG************", params.get(API_Constants.UR_SIG_KEY));
-
         return params;
     }
 
+    /**
+     * Generates json string parameter needed for AppRegister
+     *
+     * @param context {@link android.content.Context}
+     * @param uid String
+     * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
+     * @return String
+     */
     private String generateRegisterJson(Context context, String uid, Sailthru.Identification userType) {
         Map<String, String> data = new HashMap<String, String>();
         data.put(ApiConstants.UR_JSON_PLATFORM_APP_VERSION_KEY, ApiConstants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
@@ -74,6 +88,13 @@ public class AppRegisterUtils {
         return gson.toJson(data);
     }
 
+    /**
+     * Generates hash signature parameter needed for AppRegister
+     *
+     * @param appId String
+     * @param params Map<String,String>
+     * @return String
+     */
     private String generateSig(String appId, Map<String, String> params) {
         List<String> values = new ArrayList<String>();
 
@@ -92,6 +113,10 @@ public class AppRegisterUtils {
         return getMd5(builder.toString());
     }
 
+    /**
+     * @param data String
+     * @return String
+     */
     private String getMd5(String data) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -109,6 +134,12 @@ public class AppRegisterUtils {
         }
     }
 
+    /**
+     * Helper method to check if input String is not null or empty
+     *
+     * @param input String
+     * @return boolean
+     */
     public boolean notNullOrEmpty(String input) {
         if (input != null ) {
             if (!TextUtils.isEmpty(input)) {
@@ -119,6 +150,13 @@ public class AppRegisterUtils {
         return false;
     }
 
+    /**
+     * Helper method to check if input string is not null and has given value
+     *
+     * @param input String
+     * @param match String
+     * @return boolean
+     */
     public boolean notNullAndHasValue(String input, String match) {
         if (input != null) {
             if (input.equals(match)) {

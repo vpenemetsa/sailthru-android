@@ -12,6 +12,8 @@ import org.apache.http.HttpStatus;
 
 /**
  * Created by Vijay Penemetsa on 6/9/14.
+ *
+ * Async task to send AppTrack tags
  */
 public class AppTrackAsyncTask extends AsyncTask<Void, Void, AppTrackResponse> {
 
@@ -25,6 +27,9 @@ public class AppTrackAsyncTask extends AsyncTask<Void, Void, AppTrackResponse> {
         this.callback = callback;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected AppTrackResponse doInBackground(Void... params) {
         AppTrackResponse response = new AppTrackResponse();
@@ -39,6 +44,9 @@ public class AppTrackAsyncTask extends AsyncTask<Void, Void, AppTrackResponse> {
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onPostExecute(AppTrackResponse response) {
         if (response == null) {

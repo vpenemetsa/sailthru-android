@@ -6,6 +6,8 @@ import retrofit.RestAdapter;
 
 /**
  * Created by Vijay Penemetsa on 6/11/14.
+ *
+ * Custom logger to capture network logs
  */
 public class RetrofitLogger implements RestAdapter.Log {
 
@@ -26,6 +28,9 @@ public class RetrofitLogger implements RestAdapter.Log {
         return retrofitLogger;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void log(String message) {
         logger.d(TAG, message);

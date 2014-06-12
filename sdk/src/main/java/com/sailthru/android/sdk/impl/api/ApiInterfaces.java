@@ -16,9 +16,14 @@ import retrofit.http.QueryMap;
 
 /**
  * Created by Vijay Penemetsa on 6/6/14.
+ *
+ * Contains interfaces for all api calls
  */
 public class ApiInterfaces {
 
+    /**
+     * Interface for UserRegister api call
+     */
     public interface RegisterUserService {
         @FormUrlEncoded
         @POST(ApiConstants.API_USER_REGISTER_PATH)
@@ -29,11 +34,17 @@ public class ApiInterfaces {
                           Callback<UserRegisterAppResponse> callback);
     }
 
+    /**
+     * Interface for AppTrack api call
+     */
     public interface AppTrackService {
         @GET(ApiConstants.API_APPTRACK_PATH)
         AppTrackResponse sendTags(@QueryMap Map<String, String> parameters);
     }
 
+    /**
+     * Interface for Recommend endpoint
+     */
     public interface RecommendService {
         @GET(ApiConstants.API_HORIZON_PATH + ApiConstants.API_RECOMMEND_PATH)
         Response getRecommendations(@QueryMap Map<String, String> parameters);

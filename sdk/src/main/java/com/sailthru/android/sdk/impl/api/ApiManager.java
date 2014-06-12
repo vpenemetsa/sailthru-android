@@ -48,6 +48,16 @@ public class ApiManager {
         retrofitLogger = RetrofitLogger.getInstance();
     }
 
+    /**
+     * Makes call to AppRegister endpoint to register a user/device
+     *
+     * @param context {@link android.content.Context}
+     * @param appId String
+     * @param apiKey String
+     * @param uid String
+     * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
+     * @param callback {@link retrofit.Callback}
+     */
     public void registerUser(Context context, String appId,
                                     String apiKey, String uid,
                                     Sailthru.Identification userType,
@@ -78,6 +88,12 @@ public class ApiManager {
                 callback);
     }
 
+    /**
+     * Used to send individual events containing tags for AppTrack
+     *
+     * @param event {@link com.sailthru.android.sdk.impl.event.Event}
+     * @return {@link com.sailthru.android.sdk.impl.response.AppTrackResponse}
+     */
     public AppTrackResponse sendEvent(Event event) {
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT + ApiConstants.API_HORIZON_PATH)
@@ -104,6 +120,16 @@ public class ApiManager {
         return response;
     }
 
+    /**
+     * Calls Recommend endpoint with optional filter parameters and
+     * returns a JSON String of recommendations
+     *
+     * @param domain String
+     * @param hid String
+     * @param count int
+     * @param tags List<String>
+     * @return String
+     */
     public String getRecommendations(String domain, String hid, int count, List<String> tags) {
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)

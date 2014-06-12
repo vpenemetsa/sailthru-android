@@ -25,6 +25,9 @@ public class NetworkReceiver extends BroadcastReceiver {
         log = STLog.getInstance();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         ConnectivityManager cm = (ConnectivityManager) context.
@@ -44,6 +47,12 @@ public class NetworkReceiver extends BroadcastReceiver {
         broadcastNetworkStatus(context, client.isConnectedToNetwork());
     }
 
+    /**
+     * Broadcast network status to listeners
+     *
+     * @param context {@link android.content.Context}
+     * @param value boolean
+     */
     private void broadcastNetworkStatus(Context context, boolean value) {
         log.d("Network receiver value", value + "");
         Intent i = new Intent(Constants.BROADCAST_NETWORK_STATUS);

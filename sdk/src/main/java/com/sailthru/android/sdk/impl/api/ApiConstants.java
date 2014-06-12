@@ -2,6 +2,8 @@ package com.sailthru.android.sdk.impl.api;
 
 /**
  * Created by Vijay Penemetsa on 5/14/14.
+ *
+ * Contains static final Strings used in api calls
  */
 public class ApiConstants {
 
@@ -52,9 +54,4 @@ public class ApiConstants {
     public static final String REC_FILTER_TAGS_KEY = "filter[tags]";
 
     public static final String ST_CACHED_UR_ATTEMPTED = "ST_CACHED_UR_ATTEMPTED";
-
-
-
-//    public static final String TEMP_JSON = "{ \"platform_app_version\" : \"1.0\", \"id\" : \"dhoerl+testa009@sailthru.com\", \"device_id\" : \"acabd25475bfbdb927ca989ef5cba4d0eefb9655d33d127dc8e01432dc01e8ca\", \"os_version\" : \"7.1\", \"env\" : \"dev\", \"platform_app_id\" : \"com.sailthru.qa\", \"key\" : \"email\", \"device_type\" : \"iphone\", \"device_version\" : \"4.3\" }";
-
 }

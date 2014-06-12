@@ -33,8 +33,6 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
 
     STLog log;
 
-    private boolean isConnectedToNetwork;
-
     @Inject
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
         super(delegate);
@@ -42,10 +40,16 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
         log = STLog.getInstance();
     }
 
+    /**
+     * Starts {@link com.sailthru.android.sdk.impl.event.EventTaskService}
+     */
     private void startService() {
         context.startService(new Intent(context, EventTaskService.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add(EventTask entry) {
         try {
@@ -67,6 +71,9 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void remove() {
         log.d(TAG, "Removed Event Task ----- " + size() + "");
@@ -77,6 +84,13 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
         }
     }
 
+    /**
+     * Creates and initializes an {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
+     *
+     * @param context {@link android.content.Context}
+     * @param gson {@link com.google.gson.Gson}
+     * @return {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
+     */
     public static EventTaskQueue create(Context context, Gson gson) {
         try {
             if (queue == null) {
