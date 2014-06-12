@@ -10,27 +10,23 @@ import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.logger.STLog;
-
-import javax.inject.Inject;
-
-import dagger.ObjectGraph;
 
 /**
  * Created by Vijay Penemetsa on 5/28/14.
  *
  * Background service to execute EventTasks in EventTaskQueue sequentially
  */
-public class EventTaskService extends Service implements EventTask.EventCallback {
+public class SailthruAppTrackService extends Service implements EventTask.EventCallback {
 
-    @Inject
     EventTaskQueue queue;
 
     STLog log;
     private EventTask currentTask;
 
-    private static final String TAG = EventTaskService.class.getSimpleName();
+    private static final String TAG = SailthruAppTrackService.class.getSimpleName();
     private static final long EVENT_TASK_MAX_EXECUTIONS = 3;
     private boolean isConnectedToNetwork;
 
@@ -56,8 +52,8 @@ public class EventTaskService extends Service implements EventTask.EventCallback
     @Override
     public void onCreate() {
         super.onCreate();
-        ObjectGraph.create(new EventModule(getApplicationContext())).inject(this);
         log = STLog.getInstance();
+        queue = EventTaskQueue.create(getApplicationContext(), new Gson());
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -68,7 +64,7 @@ public class EventTaskService extends Service implements EventTask.EventCallback
         }
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(
-                networkStatusReceiver, new IntentFilter(Constants.BROADCAST_NETWORK_STATUS));
+                networkStatusReceiver, new IntentFilter(Constants.ST_BROADCAST_NETWORK_STATUS));
     }
 
     /**

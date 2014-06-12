@@ -17,11 +17,11 @@ import com.sailthru.android.sdk.impl.logger.STLog;
  *
  * Listens for system broadcasts about network status.
  */
-public class NetworkReceiver extends BroadcastReceiver {
+public class SailthruNetworkReceiver extends BroadcastReceiver {
 
     STLog log;
 
-    public NetworkReceiver() {
+    public SailthruNetworkReceiver() {
         log = STLog.getInstance();
     }
 
@@ -55,7 +55,7 @@ public class NetworkReceiver extends BroadcastReceiver {
      */
     private void broadcastNetworkStatus(Context context, boolean value) {
         log.d("Network receiver value", value + "");
-        Intent i = new Intent(Constants.BROADCAST_NETWORK_STATUS);
+        Intent i = new Intent(Constants.ST_BROADCAST_NETWORK_STATUS);
         i.putExtra(Constants.INTENT_EXTRA_NETWORK_STATUS, value);
         LocalBroadcastManager.getInstance(context).sendBroadcast(i);
     }

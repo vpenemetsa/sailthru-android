@@ -13,16 +13,12 @@ import com.squareup.tape.TaskQueue;
 import java.io.File;
 import java.io.IOException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Created by Vijay Penemetsa on 5/28/14.
  *
  * Queue managing events that were reported. The max queue size is 50
  * and the events are sent out in batches
  */
-@Singleton
 public class EventTaskQueue extends TaskQueue<EventTask> {
 
     private static final String TAG = EventTaskQueue.class.getSimpleName();
@@ -33,7 +29,6 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
 
     STLog log;
 
-    @Inject
     public EventTaskQueue(ObjectQueue<EventTask> delegate, Context context) {
         super(delegate);
         this.context = context;
@@ -41,10 +36,10 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     }
 
     /**
-     * Starts {@link com.sailthru.android.sdk.impl.event.EventTaskService}
+     * Starts {@link SailthruAppTrackService}
      */
     private void startService() {
-        context.startService(new Intent(context, EventTaskService.class));
+        context.startService(new Intent(context, SailthruAppTrackService.class));
     }
 
     /**

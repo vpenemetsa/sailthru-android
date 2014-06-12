@@ -7,7 +7,8 @@ import com.squareup.tape.Task;
 /**
  * Created by Vijay Penemetsa on 5/28/14.
  *
- * A task which is enqueued in EventTaskQueue and executed by EventTaskService.
+ * A task which is enqueued in EventTaskQueue and executed by
+ * {@link com.sailthru.android.sdk.impl.event.SailthruAppTrackService}.
  */
 
 public class EventTask implements Task<EventTask.EventCallback> {

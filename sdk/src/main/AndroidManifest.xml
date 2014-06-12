@@ -12,14 +12,14 @@
         android:theme="@style/AppTheme" >
 
         <receiver
-            android:name=".impl.receivers.NetworkReceiver"
+            android:name=".impl.receivers.SailthruNetworkReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".impl.event.EventTaskService" />
+        <service android:name=".impl.event.SailthruAppTrackService" />
 
     </application>
 

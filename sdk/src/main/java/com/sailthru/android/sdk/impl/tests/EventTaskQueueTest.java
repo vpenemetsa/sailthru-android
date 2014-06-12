@@ -2,26 +2,20 @@ package com.sailthru.android.sdk.impl.tests;
 
 import android.test.InstrumentationTestCase;
 
+import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
-import com.sailthru.android.sdk.impl.event.EventModule;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.inject.Inject;
-
-import dagger.ObjectGraph;
 
 /**
  * Created by Vijay Penemetsa on 5/31/14.
  */
 public class EventTaskQueueTest extends InstrumentationTestCase {
 
-    @Inject
     EventTaskQueue queue;
 
     AuthenticatedClient authenticatedClient;
@@ -35,7 +29,7 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        ObjectGraph.create(new EventModule(getInstrumentation().getContext())).inject(this);
+        queue = EventTaskQueue.create(getInstrumentation().getContext(), new Gson());
         for (int i = 0; i < 100; i++) {
             tags.add("kdljhflkjsghsldkjfhlskjdfgslkdjfglskjdfgslkjdfsdkljfg");
         }

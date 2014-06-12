@@ -21,6 +21,15 @@ android {
         versionCode 1
         versionName '1.0'
     }
+
+    sourceSets {
+        main  {
+            java {
+                srcDir 'src/main/java'
+            }
+        }
+    }
+
     buildTypes {
         debug {
             runProguard false
@@ -32,8 +41,17 @@ android {
             debuggable true
         }
     }
+
     productFlavors {
     }
+}
+
+android.libraryVariants.all { variant ->
+    def name = variant.buildType.name
+    def task = project.tasks.create "jar${name.capitalize()}", Jar
+    task.dependsOn variant.javaCompile
+    task.from variant.javaCompile.destinationDir
+    artifacts.add('archives', task);
 }
 
 dependencies {

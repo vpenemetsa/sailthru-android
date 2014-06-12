@@ -4,20 +4,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
-import com.sailthru.android.sdk.impl.event.EventModule;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.recommend.RecommendService;
 
 import java.util.List;
-
-import javax.inject.Inject;
-
-import dagger.Lazy;
-import dagger.ObjectGraph;
-
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  *
@@ -27,8 +21,7 @@ public class Sailthru {
 
     private static final String TAG = Sailthru.class.getSimpleName();
 
-    @Inject
-    Lazy<EventTaskQueue> eventTaskQueue;
+    EventTaskQueue eventTaskQueue;
 
     AuthenticatedClient authenticatedClient;
 
@@ -77,9 +70,9 @@ public class Sailthru {
      */
     public Sailthru(Context context) {
         this.context = context;
-        ObjectGraph.create(new EventModule(context)).inject(this);
         log = STLog.getInstance();
         authenticatedClient = AuthenticatedClient.getInstance(context);
+        eventTaskQueue = EventTaskQueue.create(context, new Gson());
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -138,7 +131,7 @@ public class Sailthru {
      */
     public void sendTags(List<String> tags, String url, String latitude, String longitude) {
         log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
-        sailthruClient.addEventToQueue(context, tags, url, latitude, longitude, eventTaskQueue.get());
+        sailthruClient.addEventToQueue(tags, url, latitude, longitude, eventTaskQueue);
     }
 
     /**
