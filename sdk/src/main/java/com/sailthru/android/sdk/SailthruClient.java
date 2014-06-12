@@ -190,10 +190,12 @@ class SailthruClient {
      * @return boolean
      */
     protected boolean canGetRecommendations() {
-        if (authenticatedClient.getHid() == null) {
+        String hid = authenticatedClient.getHid();
+        String domain = authenticatedClient.getDomain();
+        if (hid == null || hid.isEmpty()) {
             log.e(TAG, "Not registered. Try registering to get recommendations");
             return false;
-        } else if (authenticatedClient.getDomain() == null) {
+        } else if (domain == null || domain.isEmpty()) {
             log.e(TAG, "No domain registered.");
             return false;
         }
