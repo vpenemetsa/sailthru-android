@@ -138,7 +138,7 @@ class SailthruClient {
      * @param longitude String
      * @param eventTaskQueue {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
-    protected void addEventToQueue(List<String> tags, String url, String latitude,
+    protected void addEventToQueue(List<String> tags, List<String> url, String latitude,
                                           String longitude, EventTaskQueue eventTaskQueue) {
         //Checking to make sure hid, appId and domain are not null.
         if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
@@ -155,7 +155,7 @@ class SailthruClient {
 
         Event event = new Event();
         event.addTags(tags);
-        event.setUrl(url);
+        event.setUrls(url);
         event.setLatitude(latitude);
         event.setLongitude(longitude);
         event.setTimestamp(System.currentTimeMillis());

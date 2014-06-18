@@ -113,6 +113,14 @@ public class Sailthru {
         log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
     }
 
+    public boolean isRegistered() {
+        if (authenticatedClient.getHid() != null && !authenticatedClient.getHid().isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Public method to unregister current client from Sailthru
      */
@@ -129,7 +137,7 @@ public class Sailthru {
      * @param latitude String
      * @param longitude String
      */
-    public void sendTags(List<String> tags, String url, String latitude, String longitude) {
+    public void sendTags(List<String> tags, List<String> url, String latitude, String longitude) {
         log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
         sailthruClient.addEventToQueue(tags, url, latitude, longitude, eventTaskQueue);
     }

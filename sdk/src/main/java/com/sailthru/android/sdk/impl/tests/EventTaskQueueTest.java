@@ -34,7 +34,10 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
             tags.add("kdljhflkjsghsldkjfhlskjdfgslkdjfglskjdfgslkjdfsdkljfg");
         }
         event.addTags(tags);
-        event.setUrl("google.com");
+        List<String> urls = new ArrayList<String>();
+        urls.add("www.google.com");
+        urls.add("www.apple.com");
+        event.setUrls(urls);
         eventTask = new EventTask(event);
         authenticatedClient = AuthenticatedClient.getInstance(getInstrumentation().getContext());
     }

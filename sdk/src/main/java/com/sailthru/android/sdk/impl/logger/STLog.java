@@ -1,5 +1,7 @@
 package com.sailthru.android.sdk.impl.logger;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 /**
@@ -38,9 +40,16 @@ public class STLog extends Logger {
      * {@inheritDoc}
      */
     @Override
-    public void d(String tag, String message) {
+    public void d(final String tag, final String message) {
         if (interceptLogs && logger != null) {
-            logger.d(BASE_TAG + tag, message);
+            Handler handler = new Handler(Looper.getMainLooper());
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    logger.d(BASE_TAG + tag, message);
+                }
+            };
+            handler.post(runnable);
         } else {
             Log.d(BASE_TAG + tag, message);
         }
@@ -50,9 +59,16 @@ public class STLog extends Logger {
      * {@inheritDoc}
      */
     @Override
-    public void w(String tag, String message) {
+    public void w(final String tag, final String message) {
         if (interceptLogs && logger != null) {
-            logger.w(BASE_TAG + tag, message);
+            Handler handler = new Handler(Looper.getMainLooper());
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    logger.w(BASE_TAG + tag, message);
+                }
+            };
+            handler.post(runnable);
         } else {
             Log.w(BASE_TAG + tag, message);
         }
@@ -62,9 +78,16 @@ public class STLog extends Logger {
      * {@inheritDoc}
      */
     @Override
-    public void e(String tag, String message) {
+    public void e(final String tag, final String message) {
         if (interceptLogs && logger != null) {
-            logger.e(BASE_TAG + tag, message);
+            Handler handler = new Handler(Looper.getMainLooper());
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    logger.e(BASE_TAG + tag, message);
+                }
+            };
+            handler.post(runnable);
         } else {
             Log.e(BASE_TAG + tag, message);
         }

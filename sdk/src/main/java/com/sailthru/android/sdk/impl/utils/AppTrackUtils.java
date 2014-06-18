@@ -27,21 +27,13 @@ public class AppTrackUtils {
 
         Map<String, String> parameters = new HashMap<String, String>();
 
-        String url = event.getUrl();
-        if (url != null) {
-            parameters.put(ApiConstants.APPTRACK_URL_KEY, url);
+        String urlString = getCommaDelimitedString(event.getUrls());
+        if (urlString != null && !urlString.isEmpty()) {
+            parameters.put(ApiConstants.APPTRACK_URL_KEY, urlString);
         }
 
-        List<String> tags = event.getTags();
-        if (tags != null && tags.size() > 0) {
-            String tagsString = "";
-            for (String tag : tags) {
-                tagsString += tag + ",";
-            }
-
-            tagsString = tagsString.substring(0, tagsString.length() - 1);
-            tagsString = tagsString.replaceAll(" ", "");
-            log.d("*^&%#$%^&*)(^%#$^&*()&^%#$%&^*(&^%#$%&^*()&^%#$&^*(^%$#%&^*%#$", tagsString);
+        String tagsString = getCommaDelimitedString(event.getTags());
+        if (tagsString != null && !tagsString.isEmpty()) {
             parameters.put(ApiConstants.APPTRACK_TAGS_KEY, tagsString);
         }
 
@@ -73,5 +65,20 @@ public class AppTrackUtils {
         }
 
         return parameters;
+    }
+
+    private String getCommaDelimitedString(List<String> input) {
+        String output = "";
+
+        if (input != null && input.size() > 0) {
+            for (String tag : input) {
+                output += tag + ",";
+            }
+
+            output = output.substring(0, output.length() - 1);
+            output = output.replaceAll(" ", "");
+        }
+
+        return output;
     }
 }
