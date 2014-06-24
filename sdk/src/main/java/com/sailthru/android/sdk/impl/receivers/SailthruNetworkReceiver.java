@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.api.NetworkQueue;
+import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 
 /**
@@ -54,7 +55,7 @@ public class SailthruNetworkReceiver extends BroadcastReceiver {
      * @param value boolean
      */
     private void broadcastNetworkStatus(Context context, boolean value) {
-        log.d("Network receiver value", value + "");
+        log.d(Logger.LogLevel.FULL, "Network receiver value", value + "");
         Intent i = new Intent(Constants.ST_BROADCAST_NETWORK_STATUS);
         i.putExtra(Constants.INTENT_EXTRA_NETWORK_STATUS, value);
         LocalBroadcastManager.getInstance(context).sendBroadcast(i);

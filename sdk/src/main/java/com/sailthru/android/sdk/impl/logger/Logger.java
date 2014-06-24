@@ -1,5 +1,9 @@
 package com.sailthru.android.sdk.impl.logger;
 
+import com.sailthru.android.sdk.impl.api.RetrofitLogger;
+
+import retrofit.RestAdapter;
+
 /**
  * Created by Vijay Penemetsa on 5/22/14.
  *
@@ -14,13 +18,16 @@ public abstract class Logger {
     }
 
     protected LogLevel logLevel;
-
     protected static boolean interceptLogs = false;
 
     public Logger() {
+        logLevel = LogLevel.BASIC;
     }
 
     public void setLogLevel(LogLevel logLevel) {
+        if (logLevel == null) {
+            this.logLevel = LogLevel.NONE;
+        }
         this.logLevel = logLevel;
     }
 
@@ -30,7 +37,7 @@ public abstract class Logger {
      * @param tag String
      * @param message String
      */
-    protected abstract void d(String tag, String message);
+    protected abstract void d(LogLevel logLevel, String tag, String message);
 
     /**
      * Used to display warning log messages
@@ -38,7 +45,7 @@ public abstract class Logger {
      * @param tag String
      * @param message String
      */
-    protected abstract void w(String tag, String message);
+    protected abstract void w(LogLevel logLevel, String tag, String message);
 
     /**
      * Used to display error log messages
@@ -46,5 +53,5 @@ public abstract class Logger {
      * @param tag String
      * @param message String
      */
-    protected abstract void e(String tag, String message);
+    protected abstract void e(LogLevel logLevel, String tag, String message);
 }

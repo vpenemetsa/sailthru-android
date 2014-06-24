@@ -1,5 +1,6 @@
 package com.sailthru.android.sdk.impl.api;
 
+import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 
 import retrofit.RestAdapter;
@@ -13,7 +14,7 @@ public class RetrofitLogger implements RestAdapter.Log {
 
     private static final String TAG = "Network";
 
-    STLog logger;
+    static STLog logger;
     static RetrofitLogger retrofitLogger;
 
     public RetrofitLogger() {
@@ -28,11 +29,15 @@ public class RetrofitLogger implements RestAdapter.Log {
         return retrofitLogger;
     }
 
+    public void setLogLevel(RestAdapter.LogLevel level) {
+        retrofitLogger.setLogLevel(level);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void log(String message) {
-        logger.d(TAG, message);
+        logger.d(Logger.LogLevel.FULL, TAG, message);
     }
 }

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiConstants;
+import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 
 import java.math.BigInteger;
@@ -63,15 +64,15 @@ public class AppRegisterUtils {
         data.put(ApiConstants.UR_JSON_PLATFORM_APP_VERSION_KEY, ApiConstants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
 
         if (userType == null) {
-            log.d(TAG, "Existing anonymous user");
+            log.d(Logger.LogLevel.FULL, TAG, "Existing anonymous user");
             data.put(ApiConstants.UR_JSON_ID_KEY, uid);
             data.put(ApiConstants.UR_JSON_KEY_KEY, "hid");
         } else if (userType.equals(Sailthru.Identification.EMAIL)) {
-            log.d(TAG, "Email user");
+            log.d(Logger.LogLevel.FULL, TAG, "Email user");
             data.put(ApiConstants.UR_JSON_ID_KEY, uid);
             data.put(ApiConstants.UR_JSON_KEY_KEY, userType.toString());
         } else {
-            log.d(TAG, "Anonymous user");
+            log.d(Logger.LogLevel.FULL, TAG, "Anonymous user");
         }
 
         DeviceUtils deviceUtils = new DeviceUtils(context);
@@ -81,8 +82,6 @@ public class AppRegisterUtils {
         data.put(ApiConstants.UR_JSON_PLATFORM_APP_ID_KEY, ApiConstants.UR_JSON_PLATFORM_APP_ID_VALUE);
         data.put(ApiConstants.UR_JSON_DEVICE_TYPE_KEY, deviceUtils.getDeviceType());
         data.put(ApiConstants.UR_JSON_DEVICE_VERSION_KEY, deviceUtils.getDeviceVersion());
-
-        log.d("***********************", data.get(ApiConstants.UR_JSON_DEVICE_ID_KEY));
 
         Gson gson = new Gson();
         return gson.toJson(data);
@@ -129,7 +128,7 @@ public class AppRegisterUtils {
 
             return md5;
         } catch (NoSuchAlgorithmException e) {
-            log.e("MD5", e.getLocalizedMessage());
+            log.e(Logger.LogLevel.FULL, "MD5 hash error", e.getLocalizedMessage());
             return null;
         }
     }

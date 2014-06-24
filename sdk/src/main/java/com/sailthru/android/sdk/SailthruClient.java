@@ -8,6 +8,7 @@ import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
+import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 
@@ -81,28 +82,28 @@ class SailthruClient {
 
         if (mode == null) {
             passedChecks = false;
-            log.e(TAG, "Mode cannot be set to null");
+            log.e(Logger.LogLevel.BASIC, TAG, "Mode cannot be set to null");
         }
         if (domain == null) {
             passedChecks = false;
-            log.e(TAG, "Domain cannot be null");
+            log.e(Logger.LogLevel.BASIC, TAG, "Domain cannot be null");
         }
         if (apiKey == null) {
             passedChecks = false;
-            log.e(TAG, "API Key cannot be null");
+            log.e(Logger.LogLevel.BASIC, TAG, "API Key cannot be null");
         }
         if (appId == null) {
             passedChecks = false;
-            log.e(TAG, "APP ID cannot be null");
+            log.e(Logger.LogLevel.BASIC, TAG, "APP ID cannot be null");
         }
         if (identification == null) {
-            log.e(TAG, "Identification cannot be null");
+            log.e(Logger.LogLevel.BASIC, TAG, "Identification cannot be null");
             passedChecks = false;
         }
 
         if (identification == Sailthru.Identification.EMAIL && uid == null) {
             passedChecks = false;
-            log.e(TAG, "UID cannot be null when Identification is set to EMAIL");
+            log.e(Logger.LogLevel.BASIC, TAG, "UID cannot be null when Identification is set to EMAIL");
         }
 
         return passedChecks;
@@ -143,13 +144,13 @@ class SailthruClient {
         //Checking to make sure hid, appId and domain are not null.
         if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
                 authenticatedClient.getDomain() == null) {
-            log.d(TAG, "One of the Authentication parameters is null");
+            log.d(Logger.LogLevel.BASIC, TAG, "One of the Authentication parameters is null");
             return;
         }
 
         //Checking to make sure both tags and url are not part of the request
         if ((tags == null || tags.size() == 0) && url == null) {
-            log.d(TAG, "Invalid input. No tags or url");
+            log.d(Logger.LogLevel.BASIC, TAG, "Invalid input. No tags or url");
             return;
         }
 
@@ -175,12 +176,17 @@ class SailthruClient {
             if (response.getStatus() == HttpStatus.SC_OK) {
                 authenticatedClient.saveHid(registerAppResponse.getHid());
                 Toast.makeText(context, registerAppResponse.getHid(), Toast.LENGTH_SHORT).show();
+                log.d(Logger.LogLevel.BASIC, "Authentication Succesful", "hid - "
+                        + registerAppResponse.getHid());
+            } else {
+                log.d(Logger.LogLevel.BASIC, "Authentication Failure", response.getReason());
             }
         }
 
         @Override
         public void failure(RetrofitError error) {
-            error.printStackTrace();
+            log.d(Logger.LogLevel.BASIC, "Authentication Failure",
+                    error.toString());
         }
     };
 
@@ -193,10 +199,10 @@ class SailthruClient {
         String hid = authenticatedClient.getHid();
         String domain = authenticatedClient.getDomain();
         if (hid == null || hid.isEmpty()) {
-            log.e(TAG, "Not registered. Try registering to get recommendations");
+            log.e(Logger.LogLevel.BASIC, TAG, "Not registered. Try registering to get recommendations");
             return false;
         } else if (domain == null || domain.isEmpty()) {
-            log.e(TAG, "No domain registered.");
+            log.e(Logger.LogLevel.BASIC, TAG, "No domain registered.");
             return false;
         }
 

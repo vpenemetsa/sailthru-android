@@ -1,8 +1,11 @@
 package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 
 import com.sailthru.android.sdk.impl.event.Event;
+import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
@@ -76,10 +79,6 @@ public class ApiManager {
         Map<String, String> params = appRegisterUtils.buildRequest(context, appId, apiKey,
                 uid, userType);
 
-        log.d("**********SIG****************", params.get(ApiConstants.UR_SIG_KEY));
-        log.d("**********JSON***************", params.get(ApiConstants.UR_JSON_KEY));
-        log.d("**********API KEY***********", apiKey);
-
         service.registerUser(
                 params.get(ApiConstants.UR_SIG_KEY),
                 params.get(ApiConstants.UR_JSON_KEY),
@@ -95,8 +94,15 @@ public class ApiManager {
      * @return {@link com.sailthru.android.sdk.impl.response.AppTrackResponse}
      */
     public AppTrackResponse sendEvent(Event event) {
+        String horizonEndpoint;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+            horizonEndpoint = ApiConstants.HORIZON_API_ENDPOINT;
+        } else {
+            horizonEndpoint = ApiConstants.HORIZON_API_ENDPOINT_GINGERBREAD;
+        }
+
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT + ApiConstants.API_HORIZON_PATH)
+                .setEndpoint(horizonEndpoint + ApiConstants.API_HORIZON_PATH)
                 .setLog(retrofitLogger)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
@@ -113,10 +119,10 @@ public class ApiManager {
             if (e.isNetworkError()) {
                 response = new AppTrackResponse();
                 response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                log.d("**************************************", "" + response.getStatusCode());
+                log.d(Logger.LogLevel.FULL, "Network Error", "" + response.getStatusCode());
             }
         }
-        log.d("ApiManager", "7");
+
         return response;
     }
 
@@ -131,8 +137,15 @@ public class ApiManager {
      * @return String
      */
     public String getRecommendations(String domain, String hid, int count, List<String> tags) {
+        String horizonEndpoint;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+            horizonEndpoint = ApiConstants.HORIZON_API_ENDPOINT;
+        } else {
+            horizonEndpoint = ApiConstants.HORIZON_API_ENDPOINT_GINGERBREAD;
+        }
+
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ApiConstants.HORIZON_API_ENDPOINT)
+                .setEndpoint(horizonEndpoint)
                 .setLog(retrofitLogger)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
@@ -157,18 +170,19 @@ public class ApiManager {
                         sb.append(line);
                     }
                 } catch (IOException e) {
-                    log.e("RecommendParse", e.getMessage());
+                    log.e(Logger.LogLevel.FULL, "Error while reading recommend response",
+                            e.getMessage());
                 }
             } catch (IOException e) {
-                log.e("RecommendParse", e.getMessage());
+                log.e(Logger.LogLevel.FULL, "Error while reading recommend response", e.getMessage());
             }
 
             response = sb.toString();
         } catch (RetrofitError e) {
             if (e.isNetworkError()) {
-                log.d("Network", "No connection.");
+                log.d(Logger.LogLevel.BASIC, "Network", "No connection.");
             } else if (e.getResponse().getStatus() == HttpStatus.SC_NOT_FOUND) {
-                log.d("Recommend", "No recommendations available");
+                log.d(Logger.LogLevel.BASIC, "Recommend", "No recommendations available");
             }
         }
 

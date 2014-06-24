@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.Constants;
+import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 import com.squareup.tape.FileObjectQueue;
 import com.squareup.tape.ObjectQueue;
@@ -54,15 +55,14 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
             }
 
             super.add(entry);
-            log.d(TAG, "Added Event task ---- " + size() + "");
+            log.d(Logger.LogLevel.BASIC, "EventTaskQueue", "Added Event task ---- " + size() + "");
 
             //Only sends tags if the size of queue exceeds 20 elements
             if (size() >= Constants.QUEUE_SIZE_THRESHOLD) {
                 startService();
-                log.d(TAG, "Started service");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.d(Logger.LogLevel.FULL, "EventTaskQueue Add", e.toString());
         }
     }
 
@@ -71,11 +71,12 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
      */
     @Override
     public void remove() {
-        log.d(TAG, "Removed Event Task ----- " + size() + "");
         try {
             super.remove();
+            log.d(Logger.LogLevel.BASIC, "EventTaskQueue", "Removed Event Task. Current size : "
+                    + size());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.d(Logger.LogLevel.FULL, "EventTaskQueue Remove", e.toString());
         }
     }
 

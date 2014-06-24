@@ -10,6 +10,7 @@ public class ApiConstants {
     //API ENDPOINTS
     public static final String UR_API_ENDPOINT = "https://api.sailthru.com/mobile";
     public static final String HORIZON_API_ENDPOINT = "https://horizon.sailthru.com";
+    public static final String HORIZON_API_ENDPOINT_GINGERBREAD = "http://horizon.sailthru.com";
 
     public static final String API_USER_REGISTER_PATH = "/userregisterapp";
     public static final String API_HORIZON_PATH = "/horizon";

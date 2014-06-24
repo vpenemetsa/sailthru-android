@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.Constants;
+import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 
 /**
@@ -36,7 +37,7 @@ public class SailthruAppTrackService extends Service implements EventTask.EventC
         public void onReceive(Context context, Intent intent) {
             isConnectedToNetwork = intent.getBooleanExtra(
                     Constants.INTENT_EXTRA_NETWORK_STATUS, false);
-            log.d(TAG + " BR Received", isConnectedToNetwork + "");
+            log.d(Logger.LogLevel.FULL, TAG + " Broadcast Received", isConnectedToNetwork + "");
 
             if (isConnectedToNetwork && queue != null) {
                 if (queue.size() >= Constants.QUEUE_SIZE_THRESHOLD) {
@@ -72,7 +73,7 @@ public class SailthruAppTrackService extends Service implements EventTask.EventC
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        log.d("SERVICCCCEEEEEE", "STart command received");
+        log.d(Logger.LogLevel.FULL, "AppTrackService", "Start command received");
         execute();
         return START_STICKY;
     }
@@ -81,14 +82,13 @@ public class SailthruAppTrackService extends Service implements EventTask.EventC
      * Executes the next task in {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
     private void execute() {
-        log.d("***********Service Execute*************", isConnectedToNetwork + "");
         try {
             if (queue.size() > 0) {
                 if (isConnectedToNetwork) {
                     currentTask = queue.peek();
-                    log.d(TAG, "Executing service");
+                    log.d(Logger.LogLevel.FULL, "AppTrackService", "Executing service");
                     if (currentTask != null) {
-                        log.d(TAG, "Executing task");
+                        log.d(Logger.LogLevel.FULL, "AppTrackService", "Executing task");
                         currentTask.execute(this);
                     } else {
                         queue.remove();
@@ -110,7 +110,7 @@ public class SailthruAppTrackService extends Service implements EventTask.EventC
     public void onSuccess() {
         try {
             if (queue.size() > 0) {
-                log.d(TAG, "Size after remove ----- " + queue.size());
+                log.d(Logger.LogLevel.FULL, "AppTrackService", "Size after remove ----- " + queue.size());
                 queue.remove();
                 execute();
             } else {

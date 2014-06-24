@@ -36,20 +36,29 @@ public class STLog extends Logger {
         interceptLogs = true;
     }
 
+    public Logger getExternalLogger() {
+        return logger;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void d(final String tag, final String message) {
+    public void d(final LogLevel logLevel, final String tag, final String message) {
+        Log.d("!!!!!!!!!!!!", "log d");
         if (interceptLogs && logger != null) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    logger.d(BASE_TAG + tag, message);
-                }
-            };
-            handler.post(runnable);
+            Log.d("!!!!!!!!!!!!", "log d : intercept and logger");
+            if (checkLogLevel(logLevel)) {
+                Log.d("!!!!!!!!!!!!", "log d : checked and good");
+                Handler handler = new Handler(Looper.getMainLooper());
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        logger.d(logLevel, BASE_TAG + tag, message);
+                    }
+                };
+                handler.post(runnable);
+            }
         } else {
             Log.d(BASE_TAG + tag, message);
         }
@@ -59,16 +68,21 @@ public class STLog extends Logger {
      * {@inheritDoc}
      */
     @Override
-    public void w(final String tag, final String message) {
+    public void w(final LogLevel logLevel, final String tag, final String message) {
+        Log.d("!!!!!!!!!!!!", "log w");
         if (interceptLogs && logger != null) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    logger.w(BASE_TAG + tag, message);
-                }
-            };
-            handler.post(runnable);
+            Log.d("!!!!!!!!!!!!", "log w : intercept and logger");
+            if (checkLogLevel(logLevel)) {
+                Log.d("!!!!!!!!!!!!", "log w : checked and good");
+                Handler handler = new Handler(Looper.getMainLooper());
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        logger.w(logLevel, BASE_TAG + tag, message);
+                    }
+                };
+                handler.post(runnable);
+            }
         } else {
             Log.w(BASE_TAG + tag, message);
         }
@@ -78,18 +92,56 @@ public class STLog extends Logger {
      * {@inheritDoc}
      */
     @Override
-    public void e(final String tag, final String message) {
+    public void e(final LogLevel logLevel, final String tag, final String message) {
+        Log.d("!!!!!!!!!!!!", "log e");
         if (interceptLogs && logger != null) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    logger.e(BASE_TAG + tag, message);
-                }
-            };
-            handler.post(runnable);
+            Log.d("!!!!!!!!!!!!", "log e : intercept and logger");
+            if (checkLogLevel(logLevel)) {
+                Log.d("!!!!!!!!!!!!", "log e : checked and good");
+                Handler handler = new Handler(Looper.getMainLooper());
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        logger.e(logLevel, BASE_TAG + tag, message);
+                    }
+                };
+                handler.post(runnable);
+            }
         } else {
             Log.e(BASE_TAG + tag, message);
         }
+    }
+
+    /**
+     * Checks to see if log level of message confirms to set log level.
+     *
+     * @param logLevel {@link com.sailthru.android.sdk.impl.logger.Logger.LogLevel}
+     * @return boolean
+     */
+    private boolean checkLogLevel(LogLevel logLevel) {
+        if (logger == null) {
+            Log.d("!!!!!!!!!!!!", "checkLogLevel : false");
+            return false;
+        }
+
+        if (logger.logLevel.equals(LogLevel.NONE)) {
+            Log.d("!!!!!!!!!!!!", "checkLogLevel : none");
+            return false;
+        }
+
+        if (logger.logLevel.equals(LogLevel.BASIC)) {
+            Log.d("!!!!!!!!!!!!", "checkLogLevel : basic");
+            if (logLevel.equals(LogLevel.BASIC)) {
+                Log.d("!!!!!!!!!!!!", "checkLogLevel : basic : basic");
+                return true;
+            }
+        }
+
+        if (logger.logLevel.equals(LogLevel.FULL)) {
+            Log.d("!!!!!!!!!!!!", "checkLogLevel : full");
+            return true;
+        }
+
+        return false;
     }
 }

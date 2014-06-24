@@ -101,23 +101,29 @@ public class Sailthru {
                          String uid, String token) {
         if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
-                log.d(TAG, "Registering");
+                log.d(Logger.LogLevel.BASIC, TAG, "Registering");
                 sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
             } else {
-                log.d(TAG, "No network");
+                log.d(Logger.LogLevel.BASIC, TAG, "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
             sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
         }
-        log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
     }
 
+    /**
+     * Returns boolean to show if the client is currently registered.
+     *
+     * @return boolean
+     */
     public boolean isRegistered() {
         if (authenticatedClient.getHid() != null && !authenticatedClient.getHid().isEmpty()) {
+            log.d(Logger.LogLevel.BASIC, "Is registered?", "true");
             return true;
         }
 
+        log.d(Logger.LogLevel.BASIC, "Is registered?", "false");
         return false;
     }
 
@@ -125,7 +131,6 @@ public class Sailthru {
      * Public method to unregister current client from Sailthru
      */
     public void unregister() {
-        log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
         authenticatedClient.deleteHid();
     }
 
@@ -138,7 +143,6 @@ public class Sailthru {
      * @param longitude String
      */
     public void sendTags(List<String> tags, List<String> url, String latitude, String longitude) {
-        log.d(TAG, authenticatedClient.isConnectedToNetwork() + "");
         sailthruClient.addEventToQueue(tags, url, latitude, longitude, eventTaskQueue);
     }
 
@@ -152,6 +156,16 @@ public class Sailthru {
     }
 
     /**
+     * Returns instance of {@link com.sailthru.android.sdk.impl.logger.Logger}
+     * if set or returns null.
+     *
+     * @return {@link com.sailthru.android.sdk.impl.logger.Logger}
+     */
+    public Logger getLogger() {
+        return log.getExternalLogger();
+    }
+
+    /**
      * Returns a JSON String with recommendations which can be filtered by input tags
      * Leave tags as null to receive all recommendations
      *
@@ -162,8 +176,8 @@ public class Sailthru {
     public String getRecommendations(int count, List<String> tags) {
         String recommendations = "";
         if (sailthruClient.canGetRecommendations()) {
-            recommendations = RecommendService.getRecommendations(authenticatedClient.getDomain(),
-                    authenticatedClient.getHid(), count, tags);
+            recommendations = RecommendService.getRecommendations(context,
+                    authenticatedClient.getDomain(), authenticatedClient.getHid(), count, tags);
         }
 
         return recommendations;

@@ -10,5 +10,5 @@ public class Constants {
     public static final String ST_BROADCAST_NETWORK_STATUS = "ST_BROADCAST_NETWORK_STATUS";
 
     public static final int MAX_QUEUE_SIZE = 50;
-    public static final int QUEUE_SIZE_THRESHOLD = 20;
+    public static final int QUEUE_SIZE_THRESHOLD = 3;
 }

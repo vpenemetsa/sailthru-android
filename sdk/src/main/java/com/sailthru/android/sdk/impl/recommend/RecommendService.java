@@ -1,5 +1,7 @@
 package com.sailthru.android.sdk.impl.recommend;
 
+import android.content.Context;
+
 import com.sailthru.android.sdk.impl.api.ApiManager;
 
 import java.util.List;
@@ -20,9 +22,9 @@ public class RecommendService {
      * @param tags List<String>
      * @return String
      */
-    public static String getRecommendations(String domain, String hid, int count,
+    public static String getRecommendations(Context context, String domain, String hid, int count,
                                             List<String> tags) {
-        ApiManager apiManager = new ApiManager();
+        ApiManager apiManager = new ApiManager(context);
         return apiManager.getRecommendations(domain, hid, count, tags);
     }
 }
