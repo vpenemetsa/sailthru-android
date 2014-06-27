@@ -13,11 +13,11 @@ buildscript {
 
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion "android-L"
     buildToolsVersion '19.1.0'
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName '1.0'
     }
@@ -71,6 +71,5 @@ android.libraryVariants.all { variant ->
 
 dependencies {
     compile 'com.android.support:appcompat-v7:+'
-    compile 'com.google.android.gms:play-services:4.3.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
