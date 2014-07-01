@@ -7,7 +7,7 @@ import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
-import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
+import com.sailthru.android.sdk.impl.utils.UserRegisterUtils;
 
 import retrofit.Callback;
 
@@ -16,7 +16,7 @@ import retrofit.Callback;
  *
  * Async Task to make App Registration request
  */
-public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
+public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
 
     Context context;
     String appId;
@@ -25,13 +25,13 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
     Sailthru.Identification userType;
     AuthenticatedClient authenticatedClient;
     Callback<UserRegisterAppResponse> callback;
-    AppRegisterUtils appRegisterUtils;
+    UserRegisterUtils userRegisterUtils;
     ApiManager apiManager;
 
-    public RegisterAsyncTask(Context context, String appId, String apiKey, String uid,
-                             Sailthru.Identification userType,
-                             AuthenticatedClient authenticatedClient,
-                             Callback<UserRegisterAppResponse> callback) {
+    public UserRegisterAsyncTask(Context context, String appId, String apiKey, String uid,
+                                 Sailthru.Identification userType,
+                                 AuthenticatedClient authenticatedClient,
+                                 Callback<UserRegisterAppResponse> callback) {
         this.context = context;
         this.appId = appId;
         this.apiKey = apiKey;
@@ -39,7 +39,7 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         this.userType = userType;
         this.authenticatedClient = authenticatedClient;
         this.callback = callback;
-        appRegisterUtils = new AppRegisterUtils();
+        userRegisterUtils = new UserRegisterUtils();
         apiManager = new ApiManager(context);
     }
 
@@ -52,7 +52,7 @@ public class RegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         String id;
 
         if (userType.equals(Sailthru.Identification.ANONYMOUS)) {
-            if (appRegisterUtils.notNullOrEmpty(storedHid)) {
+            if (userRegisterUtils.notNullOrEmpty(storedHid)) {
                 id = storedHid;
                 userType = null;
             } else {

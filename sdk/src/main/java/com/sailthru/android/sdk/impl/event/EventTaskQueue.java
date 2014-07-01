@@ -49,7 +49,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     @Override
     public void add(EventTask entry) {
         try {
-            // Always maintain a queue of size less than 50 elements
+            // Always maintain a queue of size less than MAX_QUEUE_SIZE
             if (size() == Constants.MAX_QUEUE_SIZE) {
                 remove();
             }
@@ -57,7 +57,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
             super.add(entry);
             log.d(Logger.LogLevel.BASIC, "EventTaskQueue", "Added Event task ---- " + size() + "");
 
-            //Only sends tags if the size of queue exceeds 20 elements
+            //Only sends tags if the size of queue exceeds QUEUE_SIZE_THRESHOLD
             if (size() >= Constants.QUEUE_SIZE_THRESHOLD) {
                 startService();
             }
@@ -90,7 +90,8 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     public static EventTaskQueue create(Context context, Gson gson) {
         try {
             if (queue == null) {
-                FileObjectQueue.Converter<EventTask> converter = new GsonConverter<EventTask>(gson, EventTask.class);
+                FileObjectQueue.Converter<EventTask> converter =
+                        new GsonConverter<EventTask>(gson, EventTask.class);
                 File queueFile = new File(context.getFilesDir(), FILENAME);
                 FileObjectQueue<EventTask> delegate;
                 try {

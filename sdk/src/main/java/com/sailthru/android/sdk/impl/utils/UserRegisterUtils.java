@@ -23,9 +23,9 @@ import java.util.Map;
  *
  * Util methods to construct data for App Register request
  */
-public class AppRegisterUtils {
+public class UserRegisterUtils {
 
-    private static final String TAG = AppRegisterUtils.class.getSimpleName();
+    private static final String TAG = UserRegisterUtils.class.getSimpleName();
 
     STLog log;
 
