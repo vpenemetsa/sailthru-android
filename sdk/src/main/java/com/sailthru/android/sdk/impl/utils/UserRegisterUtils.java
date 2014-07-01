@@ -2,6 +2,7 @@ package com.sailthru.android.sdk.impl.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.Sailthru;
@@ -23,9 +24,9 @@ import java.util.Map;
  *
  * Util methods to construct data for App Register request
  */
-public class AppRegisterUtils {
+public class UserRegisterUtils {
 
-    private static final String TAG = AppRegisterUtils.class.getSimpleName();
+    private static final String TAG = UserRegisterUtils.class.getSimpleName();
 
     STLog log;
 

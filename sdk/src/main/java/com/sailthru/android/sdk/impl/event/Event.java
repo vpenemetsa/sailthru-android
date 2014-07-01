@@ -14,7 +14,7 @@ public class Event {
 
     private List<String> tags;
 
-    private List<String> urls;
+    private String url;
 
     private long timestamp;
 
@@ -40,12 +40,12 @@ public class Event {
         this.tags = tags;
     }
 
-    public List<String> getUrls() {
-        return urls;
+    public String getUrl() {
+        return url;
     }
 
-    public void setUrls(List<String> urls) {
-        this.urls = urls;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public long getTimestamp() {

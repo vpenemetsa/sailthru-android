@@ -1,10 +1,9 @@
 package com.sailthru.android.sdk;
 
 import android.content.Context;
-import android.widget.Toast;
 
+import com.sailthru.android.sdk.impl.async.UserRegisterAsyncTask;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
-import com.sailthru.android.sdk.impl.async.RegisterAsyncTask;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventTask;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
@@ -25,12 +24,12 @@ import retrofit.client.Response;
  *
  * Created by Vijay Penemetsa on 5/20/14.
  */
-class SailthruClient {
+public class SailthruClient {
 
     private static final String TAG = SailthruClient.class.getSimpleName();
 
     Context context;
-    RegisterAsyncTask appRegisterAsyncTask = null;
+    UserRegisterAsyncTask userRegisterAsyncTask = null;
     AuthenticatedClient authenticatedClient;
     STLog log;
 
@@ -51,7 +50,7 @@ class SailthruClient {
      * @param uid String
      * @param token String
      */
-    protected void saveCredentials(String mode, String domain, String apiKey, String appId,
+    public void saveCredentials(String mode, String domain, String apiKey, String appId,
                                           String identification, String uid, String token) {
         authenticatedClient.setMode(mode);
         authenticatedClient.setDomain(domain);
@@ -74,9 +73,10 @@ class SailthruClient {
      * @param token String
      * @return boolean
      */
-    protected boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain, String apiKey,
-                                                String appId, Sailthru.Identification identification, String uid,
-                                                String token) {
+    public boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain,
+                                         String apiKey, String appId,
+                                         Sailthru.Identification identification, String uid,
+                                         String token) {
 
         boolean passedChecks = true;
 
@@ -103,10 +103,22 @@ class SailthruClient {
 
         if (identification == Sailthru.Identification.EMAIL && uid == null) {
             passedChecks = false;
-            log.e(Logger.LogLevel.BASIC, TAG, "UID cannot be null when Identification is set to EMAIL");
+            log.e(Logger.LogLevel.BASIC, TAG, "UID cannot be null when Identification is set to " +
+                    "EMAIL");
         }
 
         return passedChecks;
+    }
+
+    /**
+     * Checks for valid Apptrack input
+     *
+     * @param tags List<String>
+     * @param url String
+     * @return boolean
+     */
+    public boolean checkAppTrackData(List<String> tags, String url) {
+        return !((tags == null || tags.size() == 0) && (url == null || url.isEmpty()));
     }
 
     /**
@@ -117,17 +129,17 @@ class SailthruClient {
      * @param uid String
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      */
-    protected void makeRegistrationRequest(String appId, String apiKey, String uid,
+    public void makeRegistrationRequest(String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType) {
 
         // Cancel any running AppRegister calls
-        if (appRegisterAsyncTask != null) {
-            appRegisterAsyncTask.cancel(true);
+        if (userRegisterAsyncTask != null) {
+            userRegisterAsyncTask.cancel(true);
         }
 
-        appRegisterAsyncTask = new RegisterAsyncTask(context, appId, apiKey, uid, userType,
+        userRegisterAsyncTask = new UserRegisterAsyncTask(context, appId, apiKey, uid, userType,
                 authenticatedClient, mRegisterCallback);
-        appRegisterAsyncTask.execute((Void) null);
+        userRegisterAsyncTask.execute((Void) null);
     }
 
     /**
@@ -139,7 +151,7 @@ class SailthruClient {
      * @param longitude String
      * @param eventTaskQueue {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
-    protected void addEventToQueue(List<String> tags, List<String> url, String latitude,
+    public void addEventToQueue(List<String> tags, String url, String latitude,
                                           String longitude, EventTaskQueue eventTaskQueue) {
         //Checking to make sure hid, appId and domain are not null.
         if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
@@ -154,9 +166,18 @@ class SailthruClient {
             return;
         }
 
+        StringBuilder tagsBuilder = new StringBuilder(0);
+        if (tags != null && tags.size() > 0) {
+            for (String tag : tags) {
+                tagsBuilder.append(tag + ", ");
+            }
+        }
+        log.d(Logger.LogLevel.BASIC, "", "Tags : " + tagsBuilder.toString());
+        log.d(Logger.LogLevel.BASIC, "", "Url : " + url);
+
         Event event = new Event();
         event.addTags(tags);
-        event.setUrls(url);
+        event.setUrl(url);
         event.setLatitude(latitude);
         event.setLongitude(longitude);
         event.setTimestamp(System.currentTimeMillis());
@@ -170,36 +191,39 @@ class SailthruClient {
     /**
      * Callback for Registration request
      */
-    protected Callback<UserRegisterAppResponse> mRegisterCallback = new Callback<UserRegisterAppResponse>() {
-        @Override
-        public void success(UserRegisterAppResponse registerAppResponse, Response response) {
-            if (response.getStatus() == HttpStatus.SC_OK) {
-                authenticatedClient.saveHid(registerAppResponse.getHid());
-                Toast.makeText(context, registerAppResponse.getHid(), Toast.LENGTH_SHORT).show();
-                log.d(Logger.LogLevel.BASIC, "Authentication Succesful", "hid - "
-                        + registerAppResponse.getHid());
-            } else {
-                log.d(Logger.LogLevel.BASIC, "Authentication Failure", response.getReason());
-            }
-        }
+    public Callback<UserRegisterAppResponse> mRegisterCallback =
+            new Callback<UserRegisterAppResponse>() {
+                @Override
+                public void success(UserRegisterAppResponse registerAppResponse,
+                                    Response response) {
+                    if (response.getStatus() == HttpStatus.SC_OK) {
+                        authenticatedClient.saveHid(registerAppResponse.getHid());
+                        log.d(Logger.LogLevel.BASIC, "Authentication Succesful", "hid - "
+                                + registerAppResponse.getHid());
+                    } else {
+                        log.d(Logger.LogLevel.BASIC, "Authentication Failure",
+                                response.getReason());
+                    }
+                }
 
-        @Override
-        public void failure(RetrofitError error) {
-            log.d(Logger.LogLevel.BASIC, "Authentication Failure",
-                    error.toString());
-        }
-    };
+                @Override
+                public void failure(RetrofitError error) {
+                    log.d(Logger.LogLevel.BASIC, "Authentication Failure",
+                            error.toString());
+                }
+            };
 
     /**
      * Checks to see if all parameters required for getting recommendations exist.
      *
      * @return boolean
      */
-    protected boolean canGetRecommendations() {
+    public boolean canGetRecommendations() {
         String hid = authenticatedClient.getHid();
         String domain = authenticatedClient.getDomain();
         if (hid == null || hid.isEmpty()) {
-            log.e(Logger.LogLevel.BASIC, TAG, "Not registered. Try registering to get recommendations");
+            log.e(Logger.LogLevel.BASIC, TAG, "Not registered. Try registering to get " +
+                    "recommendations");
             return false;
         } else if (domain == null || domain.isEmpty()) {
             log.e(Logger.LogLevel.BASIC, TAG, "No domain registered.");

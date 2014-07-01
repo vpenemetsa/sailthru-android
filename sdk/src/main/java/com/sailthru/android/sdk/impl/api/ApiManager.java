@@ -2,14 +2,13 @@ package com.sailthru.android.sdk.impl.api;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.response.AppTrackResponse;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
-import com.sailthru.android.sdk.impl.utils.AppRegisterUtils;
+import com.sailthru.android.sdk.impl.utils.UserRegisterUtils;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.utils.AppTrackUtils;
 import com.sailthru.android.sdk.impl.utils.RecommendUtils;
@@ -74,9 +73,9 @@ public class ApiManager {
         ApiInterfaces.RegisterUserService service = adapter.create(
                 ApiInterfaces.RegisterUserService.class);
 
-        AppRegisterUtils appRegisterUtils = new AppRegisterUtils();
+        UserRegisterUtils userRegisterUtils = new UserRegisterUtils();
 
-        Map<String, String> params = appRegisterUtils.buildRequest(context, appId, apiKey,
+        Map<String, String> params = userRegisterUtils.buildRequest(context, appId, apiKey,
                 uid, userType);
 
         service.registerUser(

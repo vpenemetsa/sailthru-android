@@ -1,8 +1,9 @@
-package com.sailthru.android.sdk.impl.tests;
+package com.sailthru.android.sdk.tests;
 
 import android.test.InstrumentationTestCase;
 
 import com.google.gson.Gson;
+import com.sailthru.android.sdk.SailthruClient;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventTask;
@@ -23,23 +24,24 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
     List<String> tags = new ArrayList<String>();
     Event event = new Event();
     EventTask eventTask;
+    SailthruClient sailthruClient;
 
     private static final long QUEUE_MAX_EXECUTION_TIME = 5000;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        queue = EventTaskQueue.create(getInstrumentation().getContext(), new Gson());
-        for (int i = 0; i < 100; i++) {
+        Gson gson = new Gson();
+        queue = EventTaskQueue.create(getInstrumentation().getContext(), gson);
+        for (int i = 0; i < 5; i++) {
             tags.add("kdljhflkjsghsldkjfhlskjdfgslkdjfglskjdfgslkjdfsdkljfg");
         }
         event.addTags(tags);
-        List<String> urls = new ArrayList<String>();
-        urls.add("www.google.com");
-        urls.add("www.apple.com");
-        event.setUrls(urls);
+        String url = "www.google.com";
+        event.setUrl(url);
         eventTask = new EventTask(event);
         authenticatedClient = AuthenticatedClient.getInstance(getInstrumentation().getContext());
+        sailthruClient = new SailthruClient(getInstrumentation().getContext(), authenticatedClient);
     }
 
     public void testAddToQueue() throws Exception {
@@ -63,12 +65,34 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
 
     public void testQueueExecution() throws Exception {
         int initialSize = queue.size();
-        for (int i = 0; i < (20 - initialSize); i++) {
+        for (int i = initialSize; i <= 3; i++) {
             queue.add(eventTask);
         }
 
         Thread.sleep(QUEUE_MAX_EXECUTION_TIME);
 
         assertEquals(queue.size(), 0);
+    }
+
+    public void testQueueInputValidation() throws Exception {
+        List<String> tags = new ArrayList<String>();
+        tags.add("green");
+        String url = "www.google.com";
+
+        boolean checkAppTrackInput = sailthruClient.checkAppTrackData(tags, url);
+        assertTrue(checkAppTrackInput);
+
+        checkAppTrackInput = sailthruClient.checkAppTrackData(null, url);
+        assertTrue(checkAppTrackInput);
+
+        checkAppTrackInput = sailthruClient.checkAppTrackData(tags, null);
+        assertTrue(checkAppTrackInput);
+
+        checkAppTrackInput = sailthruClient.checkAppTrackData(null, null);
+        assertFalse(checkAppTrackInput);
+
+        tags.clear();
+        checkAppTrackInput = sailthruClient.checkAppTrackData(tags, null);
+        assertFalse(checkAppTrackInput);
     }
 }

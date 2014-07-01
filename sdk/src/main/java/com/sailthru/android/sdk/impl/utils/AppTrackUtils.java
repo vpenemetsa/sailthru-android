@@ -27,7 +27,7 @@ public class AppTrackUtils {
 
         Map<String, String> parameters = new HashMap<String, String>();
 
-        String urlString = getCommaDelimitedString(event.getUrls());
+        String urlString = event.getUrl();
         if (urlString != null && !urlString.isEmpty()) {
             parameters.put(ApiConstants.APPTRACK_URL_KEY, urlString);
         }

@@ -99,7 +99,8 @@ public class Sailthru {
     public void register(RegistrationMode mode, String domain,
                          String apiKey, String appId, Identification identification,
                          String uid, String token) {
-        if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid, token)) {
+        if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid,
+                token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
                 log.d(Logger.LogLevel.BASIC, TAG, "Registering");
                 sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
@@ -108,7 +109,8 @@ public class Sailthru {
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
-            sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId, identification.toString(), uid, token);
+            sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId,
+                    identification.toString(), uid, token);
         }
     }
 
@@ -128,22 +130,26 @@ public class Sailthru {
     }
 
     /**
-     * Public method to unregister current client from Sailthru
+     * Public method to delete current Horizon id from device
      */
     public void unregister() {
         authenticatedClient.deleteHid();
     }
 
     /**
-     * Used to send prameters to AppTrack
+     * Used to send parameters to AppTrack
      *
      * @param tags List<String>
      * @param url String
      * @param latitude String
      * @param longitude String
      */
-    public void sendTags(List<String> tags, List<String> url, String latitude, String longitude) {
-        sailthruClient.addEventToQueue(tags, url, latitude, longitude, eventTaskQueue);
+    public void sendAppTrackData(List<String> tags, String url, String latitude, String longitude) {
+        if (sailthruClient.checkAppTrackData(tags, url)) {
+            sailthruClient.addEventToQueue(tags, url, latitude, longitude, eventTaskQueue);
+        } else {
+            log.d(Logger.LogLevel.BASIC, "Apptrack", "Task not added. No tags or url provided");
+        }
     }
 
     /**
