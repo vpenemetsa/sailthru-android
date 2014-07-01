@@ -2,6 +2,7 @@ package com.sailthru.android.sdk.impl.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sailthru.android.sdk.Sailthru;
@@ -84,6 +85,8 @@ public class UserRegisterUtils {
         data.put(ApiConstants.UR_JSON_DEVICE_VERSION_KEY, deviceUtils.getDeviceVersion());
 
         Gson gson = new Gson();
+        String js = gson.toJson(data);
+        Log.d("Test for JSON", js);
         return gson.toJson(data);
     }
 

@@ -1,6 +1,7 @@
-package com.sailthru.android.sdk.impl.tests;
+package com.sailthru.android.sdk.tests;
 
 import android.test.InstrumentationTestCase;
+import android.util.Log;
 
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiConstants;
@@ -26,30 +27,30 @@ public class UserRegisterUtilsTest extends InstrumentationTestCase {
     }
 
     public void testEmailRequest() throws Exception {
-        final String expectedEmailSig = "100e4efcf26e19d4928b7cbb975b9ad2";
+        final String expectedEmailSig = "f918b6f757126ff17ffed3d084a88ab4";
 
         Map<String, String> request = userRegisterUtils.buildRequest(
                 getInstrumentation().getContext(), mAppId, mApiKey, mEmail,
                 Sailthru.Identification.EMAIL);
-
-        assertEquals(request.get(ApiConstants.UR_SIG_KEY), expectedEmailSig);
+        Log.d("*********^%$@#$%^&*^%$#%^&*(", request.get(ApiConstants.UR_SIG_KEY));
+        assertEquals(expectedEmailSig, request.get(ApiConstants.UR_SIG_KEY));
     }
 
     public void testAnonymousRequest() throws Exception {
-        final String expectedAnonSig = "1ee148c342cffcdd135c175791c2b3e8";
+        final String expectedAnonSig = "01a42c081e8ab996d5f135eba9b0619";
 
         Map<String, String> request = userRegisterUtils.buildRequest(getInstrumentation().getContext(),
                 mAppId, mApiKey, null, Sailthru.Identification.ANONYMOUS);
-        assertEquals(request.get(ApiConstants.UR_SIG_KEY), expectedAnonSig);
+        assertEquals(expectedAnonSig, request.get(ApiConstants.UR_SIG_KEY));
     }
 
     public void testAnonymousToEmailTransitionRequest() throws Exception {
-        final String expectedTransitionSig = "95aafeff5e394448e2568495f3d27b6d";
+        final String expectedTransitionSig = "4719a6d01ade2d4f277e75e3706fbc43";
 
         Map<String, String> request = userRegisterUtils.buildRequest(getInstrumentation().getContext(),
                 mAppId, mApiKey, "5d42324e438731906c9d238d30ad9da7537bb5aba256ab85110000e47e351477d51d7a5f21f17ac4e0c3927a",
                 null);
-        assertEquals(request.get(ApiConstants.UR_SIG_KEY), expectedTransitionSig);
+        assertEquals(expectedTransitionSig, request.get(ApiConstants.UR_SIG_KEY));
     }
 
 

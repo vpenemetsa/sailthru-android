@@ -24,7 +24,7 @@ import retrofit.client.Response;
  *
  * Created by Vijay Penemetsa on 5/20/14.
  */
-class SailthruClient {
+public class SailthruClient {
 
     private static final String TAG = SailthruClient.class.getSimpleName();
 
@@ -50,7 +50,7 @@ class SailthruClient {
      * @param uid String
      * @param token String
      */
-    protected void saveCredentials(String mode, String domain, String apiKey, String appId,
+    public void saveCredentials(String mode, String domain, String apiKey, String appId,
                                           String identification, String uid, String token) {
         authenticatedClient.setMode(mode);
         authenticatedClient.setDomain(domain);
@@ -73,7 +73,7 @@ class SailthruClient {
      * @param token String
      * @return boolean
      */
-    protected boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain,
+    public boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain,
                                          String apiKey, String appId,
                                          Sailthru.Identification identification, String uid,
                                          String token) {
@@ -117,7 +117,7 @@ class SailthruClient {
      * @param url String
      * @return boolean
      */
-    protected boolean checkAppTrackData(List<String> tags, String url) {
+    public boolean checkAppTrackData(List<String> tags, String url) {
         return !((tags == null || tags.size() == 0) && (url == null || url.isEmpty()));
     }
 
@@ -129,7 +129,7 @@ class SailthruClient {
      * @param uid String
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      */
-    protected void makeRegistrationRequest(String appId, String apiKey, String uid,
+    public void makeRegistrationRequest(String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType) {
 
         // Cancel any running AppRegister calls
@@ -151,7 +151,7 @@ class SailthruClient {
      * @param longitude String
      * @param eventTaskQueue {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
-    protected void addEventToQueue(List<String> tags, String url, String latitude,
+    public void addEventToQueue(List<String> tags, String url, String latitude,
                                           String longitude, EventTaskQueue eventTaskQueue) {
         //Checking to make sure hid, appId and domain are not null.
         if (authenticatedClient.getHid() == null || authenticatedClient.getAppId() == null ||
@@ -191,7 +191,7 @@ class SailthruClient {
     /**
      * Callback for Registration request
      */
-    protected Callback<UserRegisterAppResponse> mRegisterCallback =
+    public Callback<UserRegisterAppResponse> mRegisterCallback =
             new Callback<UserRegisterAppResponse>() {
                 @Override
                 public void success(UserRegisterAppResponse registerAppResponse,
@@ -218,7 +218,7 @@ class SailthruClient {
      *
      * @return boolean
      */
-    protected boolean canGetRecommendations() {
+    public boolean canGetRecommendations() {
         String hid = authenticatedClient.getHid();
         String domain = authenticatedClient.getDomain();
         if (hid == null || hid.isEmpty()) {
