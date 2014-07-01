@@ -118,11 +118,7 @@ class SailthruClient {
      * @return boolean
      */
     protected boolean checkAppTrackData(List<String> tags, String url) {
-        if ((tags == null || tags.size() == 0) && (url == null || url.isEmpty())) {
-            return false;
-        }
-
-        return true;
+        return !((tags == null || tags.size() == 0) && (url == null || url.isEmpty()));
     }
 
     /**
@@ -170,13 +166,14 @@ class SailthruClient {
             return;
         }
 
-        String tagsString = "";
+        StringBuilder tagsBuilder = new StringBuilder(0);
         if (tags != null && tags.size() > 0) {
             for (String tag : tags) {
-                tagsString = tagsString + tag + ", ";
+                tagsBuilder.append(tag + ", ");
             }
         }
-        log.d(Logger.LogLevel.BASIC, "", "Tags : " + tagsString + "\n" + "Url : " + url);
+        log.d(Logger.LogLevel.BASIC, "", "Tags : " + tagsBuilder.toString());
+        log.d(Logger.LogLevel.BASIC, "", "Url : " + url);
 
         Event event = new Event();
         event.addTags(tags);

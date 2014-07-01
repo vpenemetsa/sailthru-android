@@ -88,22 +88,18 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
      * @return {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
     public static EventTaskQueue create(Context context, Gson gson) {
-        try {
-            if (queue == null) {
+        if (queue == null) {
+            FileObjectQueue<EventTask> delegate;
+            try {
                 FileObjectQueue.Converter<EventTask> converter =
                         new GsonConverter<EventTask>(gson, EventTask.class);
                 File queueFile = new File(context.getFilesDir(), FILENAME);
-                FileObjectQueue<EventTask> delegate;
-                try {
-                    delegate = new FileObjectQueue<EventTask>(queueFile, converter);
-                } catch (IOException e) {
-                    throw new RuntimeException("Unable to create queue", e);
-                }
-
-                queue = new EventTaskQueue(delegate, context);
+                delegate = new FileObjectQueue<EventTask>(queueFile, converter);
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to create queue", e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            queue = new EventTaskQueue(delegate, context);
         }
 
         return queue;
