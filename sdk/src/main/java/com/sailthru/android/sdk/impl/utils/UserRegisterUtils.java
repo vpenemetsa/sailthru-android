@@ -85,8 +85,6 @@ public class UserRegisterUtils {
         data.put(ApiConstants.UR_JSON_DEVICE_VERSION_KEY, deviceUtils.getDeviceVersion());
 
         Gson gson = new Gson();
-        String js = gson.toJson(data);
-        Log.d("Test for JSON", js);
         return gson.toJson(data);
     }
 

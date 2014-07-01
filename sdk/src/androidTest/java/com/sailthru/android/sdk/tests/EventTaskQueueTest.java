@@ -31,7 +31,8 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        queue = EventTaskQueue.create(getInstrumentation().getContext(), new Gson());
+        Gson gson = new Gson();
+        queue = EventTaskQueue.create(getInstrumentation().getContext(), gson);
         for (int i = 0; i < 5; i++) {
             tags.add("kdljhflkjsghsldkjfhlskjdfgslkdjfglskjdfgslkjdfsdkljfg");
         }
@@ -79,19 +80,19 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
         String url = "www.google.com";
 
         boolean checkAppTrackInput = sailthruClient.checkAppTrackData(tags, url);
-        assertEquals(true, checkAppTrackInput);
+        assertTrue(checkAppTrackInput);
 
         checkAppTrackInput = sailthruClient.checkAppTrackData(null, url);
-        assertEquals(true, checkAppTrackInput);
+        assertTrue(checkAppTrackInput);
 
         checkAppTrackInput = sailthruClient.checkAppTrackData(tags, null);
-        assertEquals(true, checkAppTrackInput);
+        assertTrue(checkAppTrackInput);
 
         checkAppTrackInput = sailthruClient.checkAppTrackData(null, null);
-        assertEquals(false, checkAppTrackInput);
+        assertFalse(checkAppTrackInput);
 
         tags.clear();
         checkAppTrackInput = sailthruClient.checkAppTrackData(tags, null);
-        assertEquals(false, checkAppTrackInput);
+        assertFalse(checkAppTrackInput);
     }
 }
