@@ -10,20 +10,6 @@ import com.sailthru.android.sdk.Sailthru;
  */
 public class NetworkQueue {
 
-    static NetworkQueue mQueue;
-
-    public enum TaskType {
-        APPREGISTER, EVENT
-    }
-
-    public void addTask() {
-        //TODO
-    }
-
-    public void executePendingTasks() {
-        //TODO
-    }
-
     public void registerCachedAttemptIfAvailable(Context context,
                                                            AuthenticatedClient client) {
         if (client.isCachedRegisterAttempt()) {
@@ -44,7 +30,8 @@ public class NetworkQueue {
             }
 
             stClient.register(mode, client.getDomain(), client.getApiKey(),
-                    client.getAppId(), identification, client.getUid(), client.getToken());
+                    client.getAppId(), identification, client.getUid(), client.getToken(),
+                    client.getPlatformAppId());
 
             client.deleteCachedRegisterAttempt();
         }

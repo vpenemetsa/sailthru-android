@@ -11,7 +11,6 @@ buildscript {
     }
 }
 
-
 android {
     compileSdkVersion "android-L"
     buildToolsVersion '19.1.0'
@@ -32,13 +31,28 @@ android {
 
     buildTypes {
         debug {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-        release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             debuggable true
+        }
+
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+
+        qa.initWith(buildTypes.debug)
+        qa {
+            buildConfigField "String", "UR_API_ENDPOINT", "\"http://api.qa5.sailthru-qa.com/mobile\""
+            buildConfigField "String", "HORIZON_API_ENDPOINT", "\"http://horizon-qa5.antiroach.com\""
+            buildConfigField "String", "HORIZON_API_ENDPOINT_GINGERBREAD", "\"http://horizon-qa5.antiroach.com\""
+        }
+
+        prod.initWith(buildTypes.release)
+        prod {
+            buildConfigField "String", "UR_API_ENDPOINT", "\"https://api.sailthru.com/mobile\""
+            buildConfigField "String", "HORIZON_API_ENDPOINT", "\"https://horizon.sailthru.com\""
+            buildConfigField "String", "HORIZON_API_ENDPOINT_GINGERBREAD", "\"http://horizon.sailthru.com\""
         }
     }
 

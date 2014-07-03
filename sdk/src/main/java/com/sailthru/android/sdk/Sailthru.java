@@ -93,24 +93,26 @@ public class Sailthru {
      * @param apiKey String
      * @param appId String
      * @param identification {@link com.sailthru.android.sdk.Sailthru.Identification}
+     * @param platformAppId String
      * @param uid String
      * @param token String
      */
     public void register(RegistrationMode mode, String domain,
                          String apiKey, String appId, Identification identification,
-                         String uid, String token) {
+                         String uid, String platformAppId, String token) {
         if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid,
-                token)) {
+                platformAppId, token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
                 log.d(Logger.LogLevel.BASIC, TAG, "Registering");
-                sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification);
+                sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification,
+                        platformAppId);
             } else {
                 log.d(Logger.LogLevel.BASIC, TAG, "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
             sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId,
-                    identification.toString(), uid, token);
+                    identification.toString(), uid, platformAppId, token);
         }
     }
 

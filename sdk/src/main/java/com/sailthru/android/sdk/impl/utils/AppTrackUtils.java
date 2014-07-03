@@ -23,8 +23,6 @@ public class AppTrackUtils {
      */
     public Map<String, String> buildRequest(Event event) {
 
-        STLog log = STLog.getInstance();
-
         Map<String, String> parameters = new HashMap<String, String>();
 
         String urlString = event.getUrl();

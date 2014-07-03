@@ -23,13 +23,14 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
     String apiKey;
     String uid;
     Sailthru.Identification userType;
+    String platformAppId;
     AuthenticatedClient authenticatedClient;
     Callback<UserRegisterAppResponse> callback;
     UserRegisterUtils userRegisterUtils;
     ApiManager apiManager;
 
     public UserRegisterAsyncTask(Context context, String appId, String apiKey, String uid,
-                                 Sailthru.Identification userType,
+                                 Sailthru.Identification userType, String platformAppId,
                                  AuthenticatedClient authenticatedClient,
                                  Callback<UserRegisterAppResponse> callback) {
         this.context = context;
@@ -37,6 +38,7 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         this.apiKey = apiKey;
         this.uid = uid;
         this.userType = userType;
+        this.platformAppId = platformAppId;
         this.authenticatedClient = authenticatedClient;
         this.callback = callback;
         userRegisterUtils = new UserRegisterUtils();
@@ -62,7 +64,7 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
             id = uid;
         }
 
-        apiManager.registerUser(context, appId, apiKey, id, userType, callback);
+        apiManager.registerUser(context, appId, apiKey, id, userType, platformAppId, callback);
 
         return null;
     }

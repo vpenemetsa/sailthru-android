@@ -63,6 +63,7 @@ public class ApiManager {
     public void registerUser(Context context, String appId,
                                     String apiKey, String uid,
                                     Sailthru.Identification userType,
+                                    String platformAppId,
                                     Callback<UserRegisterAppResponse> callback) {
 
         RestAdapter adapter = new RestAdapter.Builder()
@@ -76,7 +77,7 @@ public class ApiManager {
         UserRegisterUtils userRegisterUtils = new UserRegisterUtils();
 
         Map<String, String> params = userRegisterUtils.buildRequest(context, appId, apiKey,
-                uid, userType);
+                uid, userType, platformAppId);
 
         service.registerUser(
                 params.get(ApiConstants.UR_SIG_KEY),

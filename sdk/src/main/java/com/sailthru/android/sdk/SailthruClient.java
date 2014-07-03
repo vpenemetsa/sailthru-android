@@ -51,13 +51,15 @@ public class SailthruClient {
      * @param token String
      */
     public void saveCredentials(String mode, String domain, String apiKey, String appId,
-                                          String identification, String uid, String token) {
+                                          String identification, String uid, String platformAppId,
+                                          String token) {
         authenticatedClient.setMode(mode);
         authenticatedClient.setDomain(domain);
         authenticatedClient.setApiKey(apiKey);
         authenticatedClient.setAppId(appId);
         authenticatedClient.setIdentification(identification);
         authenticatedClient.setUid(uid);
+        authenticatedClient.setPlatformAppId(platformAppId);
         authenticatedClient.setToken(token);
     }
 
@@ -76,7 +78,7 @@ public class SailthruClient {
     public boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain,
                                          String apiKey, String appId,
                                          Sailthru.Identification identification, String uid,
-                                         String token) {
+                                         String platformAppId, String token) {
 
         boolean passedChecks = true;
 
@@ -107,6 +109,11 @@ public class SailthruClient {
                     "EMAIL");
         }
 
+        if (platformAppId == null || platformAppId.isEmpty()) {
+            passedChecks = false;
+            log.e(Logger.LogLevel.BASIC, TAG, "Invalid platform app id.");
+        }
+
         return passedChecks;
     }
 
@@ -130,7 +137,8 @@ public class SailthruClient {
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      */
     public void makeRegistrationRequest(String appId, String apiKey, String uid,
-                                                  Sailthru.Identification userType) {
+                                                  Sailthru.Identification userType,
+                                                  String platformAppId) {
 
         // Cancel any running AppRegister calls
         if (userRegisterAsyncTask != null) {
@@ -138,7 +146,7 @@ public class SailthruClient {
         }
 
         userRegisterAsyncTask = new UserRegisterAsyncTask(context, appId, apiKey, uid, userType,
-                authenticatedClient, mRegisterCallback);
+                platformAppId, authenticatedClient, mRegisterCallback);
         userRegisterAsyncTask.execute((Void) null);
     }
 

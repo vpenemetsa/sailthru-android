@@ -18,14 +18,17 @@ public class AuthenticatedClient {
 
     //Shared prefs keys
     private static final String ST_PREFS_CACHED_HID = "ST_PREFS_CACHED_HID";
-    private static final String ST_SECURE_PREFS_REGISTRATION_MODE = "ST_SECURE_PREFS_REGISTRATION_MODE";
+    private static final String ST_SECURE_PREFS_REGISTRATION_MODE =
+            "ST_SECURE_PREFS_REGISTRATION_MODE";
     private static final String ST_SECURE_PREFS_DOMAIN = "ST_SECURE_PREFS_DOMAIN";
     private static final String ST_SECURE_PREFS_API_KEY = "ST_SECURE_PREFS_API_KEY";
     private static final String ST_SECURE_PREFS_APP_ID = "ST_SECURE_PREFS_APP_ID";
     private static final String ST_SECURE_PREFS_IDENTIFICATION = "ST_SECURE_PREFS_IDENTIFICATION";
     private static final String ST_SECURE_PREFS_UID = "ST_SECURE_PREFS_UID";
+    private static final String ST_SECURE_PREFS_PLATFORM_APP_ID = "ST_SECURE_PREFS_PLATFORM_APP_ID";
     private static final String ST_SECURE_PREFS_TOKEN = "ST_SECURE_PREFS_TOKEN";
-    private static final String ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT = "ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT";
+    private static final String ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT =
+            "ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT";
 
     //Stored variables
     private static String hid;
@@ -36,6 +39,7 @@ public class AuthenticatedClient {
     private static String identification;
     private static String uid;
     private static String token;
+    private static String platformAppId;
 
     private boolean connectedToNetwork;
     private static boolean cachedRegisterAttempt;
@@ -76,6 +80,9 @@ public class AuthenticatedClient {
         }
         if (prefs.containsKey(ST_SECURE_PREFS_UID)) {
             uid = prefs.getString(ST_SECURE_PREFS_UID);
+        }
+        if (prefs.containsKey(ST_SECURE_PREFS_PLATFORM_APP_ID)) {
+            platformAppId = prefs.getString(ST_SECURE_PREFS_PLATFORM_APP_ID);
         }
         if (prefs.containsKey(ST_SECURE_PREFS_TOKEN)) {
             token = prefs.getString(ST_SECURE_PREFS_TOKEN);
@@ -153,6 +160,15 @@ public class AuthenticatedClient {
     public void setUid(String uid) {
         prefs.put(ST_SECURE_PREFS_UID, uid);
         this.uid = uid;
+    }
+
+    public String getPlatformAppId() {
+        return platformAppId;
+    }
+
+    public void setPlatformAppId(String platformAppId) {
+        prefs.put(ST_SECURE_PREFS_PLATFORM_APP_ID, platformAppId);
+        this.platformAppId = platformAppId;
     }
 
     public String getToken() {

@@ -1,5 +1,7 @@
 package com.sailthru.android.sdk.impl.api;
 
+import com.sailthru.android.sdk.BuildConfig;
+
 /**
  * Created by Vijay Penemetsa on 5/14/14.
  *
@@ -7,10 +9,10 @@ package com.sailthru.android.sdk.impl.api;
  */
 public class ApiConstants {
 
-    //API ENDPOINTS
-    public static final String UR_API_ENDPOINT = "https://api.sailthru.com/mobile";
-    public static final String HORIZON_API_ENDPOINT = "https://horizon.sailthru.com";
-    public static final String HORIZON_API_ENDPOINT_GINGERBREAD = "http://horizon.sailthru.com";
+    public static final String UR_API_ENDPOINT = BuildConfig.UR_API_ENDPOINT;
+    public static final String HORIZON_API_ENDPOINT = BuildConfig.HORIZON_API_ENDPOINT;
+    public static final String HORIZON_API_ENDPOINT_GINGERBREAD =
+            BuildConfig.HORIZON_API_ENDPOINT_GINGERBREAD;
 
     public static final String API_USER_REGISTER_PATH = "/userregisterapp";
     public static final String API_HORIZON_PATH = "/horizon";
@@ -32,7 +34,7 @@ public class ApiConstants {
     public static final String UR_JSON_ENV_KEY = "env";
     public static final String UR_JSON_ENV_VALUE = "dev";
     public static final String UR_JSON_PLATFORM_APP_ID_KEY = "platform_app_id";
-    public static final String UR_JSON_PLATFORM_APP_ID_VALUE = "com.sailthru.qa";
+//    public static final String UR_JSON_PLATFORM_APP_ID_VALUE = "com.sailthru.qa";
     public static final String UR_JSON_KEY_KEY = "key";
     public static final String UR_JSON_DEVICE_TYPE_KEY = "device_type";
     public static final String UR_JSON_DEVICE_VERSION_KEY = "device_version";
