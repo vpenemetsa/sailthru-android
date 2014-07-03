@@ -50,22 +50,7 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
      */
     @Override
     protected Void doInBackground(Void... params) {
-        String storedHid = authenticatedClient.getHid();
-        String id;
-
-        if (userType.equals(Sailthru.Identification.ANONYMOUS)) {
-            if (userRegisterUtils.notNullOrEmpty(storedHid)) {
-                id = storedHid;
-                userType = null;
-            } else {
-                id = uid;
-            }
-        } else {
-            id = uid;
-        }
-
         apiManager.registerUser(context, appId, apiKey, id, userType, platformAppId, callback);
-
         return null;
     }
 }
