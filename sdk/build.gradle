@@ -46,6 +46,7 @@ android {
             buildConfigField "String", "UR_API_ENDPOINT", "\"http://api.qa5.sailthru-qa.com/mobile\""
             buildConfigField "String", "HORIZON_API_ENDPOINT", "\"http://horizon-qa5.antiroach.com\""
             buildConfigField "String", "HORIZON_API_ENDPOINT_GINGERBREAD", "\"http://horizon-qa5.antiroach.com\""
+            buildConfigField "String", "CONFIG_TYPE", "\"qa\""
         }
 
         prod.initWith(buildTypes.release)
@@ -53,6 +54,7 @@ android {
             buildConfigField "String", "UR_API_ENDPOINT", "\"https://api.sailthru.com/mobile\""
             buildConfigField "String", "HORIZON_API_ENDPOINT", "\"https://horizon.sailthru.com\""
             buildConfigField "String", "HORIZON_API_ENDPOINT_GINGERBREAD", "\"http://horizon.sailthru.com\""
+            buildConfigField "String", "CONFIG_TYPE", "\"prod\""
         }
     }
 

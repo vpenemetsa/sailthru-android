@@ -19,6 +19,7 @@ import retrofit.Callback;
 public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
 
     Context context;
+    String env;
     String appId;
     String apiKey;
     String uid;
@@ -29,11 +30,12 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
     UserRegisterUtils userRegisterUtils;
     ApiManager apiManager;
 
-    public UserRegisterAsyncTask(Context context, String appId, String apiKey, String uid,
-                                 Sailthru.Identification userType, String platformAppId,
+    public UserRegisterAsyncTask(Context context, String env, String appId, String apiKey,
+                                 String uid, Sailthru.Identification userType, String platformAppId,
                                  AuthenticatedClient authenticatedClient,
                                  Callback<UserRegisterAppResponse> callback) {
         this.context = context;
+        this.env = env;
         this.appId = appId;
         this.apiKey = apiKey;
         this.uid = uid;
@@ -50,7 +52,7 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
      */
     @Override
     protected Void doInBackground(Void... params) {
-        apiManager.registerUser(context, appId, apiKey, id, userType, platformAppId, callback);
+        apiManager.registerUser(context, env, appId, apiKey, uid, userType, platformAppId, callback);
         return null;
     }
 }

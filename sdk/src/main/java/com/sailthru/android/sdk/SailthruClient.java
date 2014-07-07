@@ -66,7 +66,7 @@ public class SailthruClient {
     /**
      * Checks to see if input for registration conforms with standards
      *
-     * @param mode {@link com.sailthru.android.sdk.Sailthru.RegistrationMode}
+     * @param mode {@link com.sailthru.android.sdk.Sailthru.RegistrationEnvironment}
      * @param domain String
      * @param apiKey String
      * @param appId String
@@ -75,7 +75,7 @@ public class SailthruClient {
      * @param token String
      * @return boolean
      */
-    public boolean passedSanityChecks(Sailthru.RegistrationMode mode, String domain,
+    public boolean passedSanityChecks(Sailthru.RegistrationEnvironment mode, String domain,
                                          String apiKey, String appId,
                                          Sailthru.Identification identification, String uid,
                                          String platformAppId, String token) {
@@ -84,7 +84,7 @@ public class SailthruClient {
 
         if (mode == null) {
             passedChecks = false;
-            log.e(Logger.LogLevel.BASIC, TAG, "Mode cannot be set to null");
+            log.e(Logger.LogLevel.BASIC, TAG, "Environment cannot be set to null");
         }
         if (domain == null) {
             passedChecks = false;
@@ -136,7 +136,7 @@ public class SailthruClient {
      * @param uid String
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      */
-    public void makeRegistrationRequest(String appId, String apiKey, String uid,
+    public void makeRegistrationRequest(String env, String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType,
                                                   String platformAppId) {
 
@@ -145,8 +145,8 @@ public class SailthruClient {
             userRegisterAsyncTask.cancel(true);
         }
 
-        userRegisterAsyncTask = new UserRegisterAsyncTask(context, appId, apiKey, uid, userType,
-                platformAppId, authenticatedClient, mRegisterCallback);
+        userRegisterAsyncTask = new UserRegisterAsyncTask(context, env, appId, apiKey, uid,
+                userType, platformAppId, authenticatedClient, mRegisterCallback);
         userRegisterAsyncTask.execute((Void) null);
     }
 

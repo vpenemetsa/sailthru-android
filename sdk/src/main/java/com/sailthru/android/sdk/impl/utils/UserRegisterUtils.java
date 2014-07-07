@@ -40,13 +40,15 @@ public class UserRegisterUtils {
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @return Map<String,String>
      */
-    public Map<String, String> buildRequest(Context context, String appId, String apiKey, String id,
+    public Map<String, String> buildRequest(Context context, String env, String appId,
+                                            String apiKey, String id,
                                             Sailthru.Identification userType, String platformAppId) {
         log = STLog.getInstance();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ApiConstants.UR_API_KEY, apiKey);
         params.put(ApiConstants.UR_FORMAT_KEY, ApiConstants.UR_FORMAT_VALUE);
-        params.put(ApiConstants.UR_JSON_KEY, generateRegisterJson(context, id, userType, platformAppId));
+        params.put(ApiConstants.UR_JSON_KEY, generateRegisterJson(context, env, id, userType,
+                platformAppId));
         params.put(ApiConstants.UR_SIG_KEY, generateSig(appId, params));
 
         return params;
@@ -60,7 +62,7 @@ public class UserRegisterUtils {
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @return String
      */
-    private String generateRegisterJson(Context context, String uid,
+    private String generateRegisterJson(Context context, String env, String uid,
                                         Sailthru.Identification userType, String platformAppId) {
         Map<String, String> data = new HashMap<String, String>();
         data.put(ApiConstants.UR_JSON_PLATFORM_APP_VERSION_KEY, ApiConstants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
@@ -80,13 +82,13 @@ public class UserRegisterUtils {
         DeviceUtils deviceUtils = new DeviceUtils(context);
         data.put(ApiConstants.UR_JSON_DEVICE_ID_KEY, deviceUtils.getDeviceId());
         data.put(ApiConstants.UR_JSON_OS_VERSION_KEY, deviceUtils.getOsVersion());
-        data.put(ApiConstants.UR_JSON_ENV_KEY, ApiConstants.UR_JSON_ENV_VALUE);
+        data.put(ApiConstants.UR_JSON_ENV_KEY, env);
         data.put(ApiConstants.UR_JSON_PLATFORM_APP_ID_KEY, platformAppId);
         data.put(ApiConstants.UR_JSON_DEVICE_TYPE_KEY, deviceUtils.getDeviceType());
         data.put(ApiConstants.UR_JSON_DEVICE_VERSION_KEY, deviceUtils.getDeviceVersion());
 
         Gson gson = new Gson();
-        Log.d("++++++++++++++++++++++++++++++++", gson.toJson(data));
+        log.d(Logger.LogLevel.FULL, "Register JSON - ", gson.toJson(data));
         return gson.toJson(data);
     }
 
@@ -112,6 +114,7 @@ public class UserRegisterUtils {
             builder.append(value);
         }
 
+        log.d(Logger.LogLevel.FULL, "Registration sig hash - ", builder.toString());
         return getMd5(builder.toString());
     }
 

@@ -60,7 +60,7 @@ public class ApiManager {
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @param callback {@link retrofit.Callback}
      */
-    public void registerUser(Context context, String appId,
+    public void registerUser(Context context, String env, String appId,
                                     String apiKey, String uid,
                                     Sailthru.Identification userType,
                                     String platformAppId,
@@ -76,7 +76,7 @@ public class ApiManager {
 
         UserRegisterUtils userRegisterUtils = new UserRegisterUtils();
 
-        Map<String, String> params = userRegisterUtils.buildRequest(context, appId, apiKey,
+        Map<String, String> params = userRegisterUtils.buildRequest(context, env, appId, apiKey,
                 uid, userType, platformAppId);
 
         service.registerUser(

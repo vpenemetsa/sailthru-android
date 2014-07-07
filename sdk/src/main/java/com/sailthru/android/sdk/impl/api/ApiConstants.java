@@ -32,9 +32,7 @@ public class ApiConstants {
     public static final String UR_JSON_DEVICE_ID_KEY = "device_id";
     public static final String UR_JSON_OS_VERSION_KEY = "os_version";
     public static final String UR_JSON_ENV_KEY = "env";
-    public static final String UR_JSON_ENV_VALUE = "dev";
     public static final String UR_JSON_PLATFORM_APP_ID_KEY = "platform_app_id";
-//    public static final String UR_JSON_PLATFORM_APP_ID_VALUE = "com.sailthru.qa";
     public static final String UR_JSON_KEY_KEY = "key";
     public static final String UR_JSON_DEVICE_TYPE_KEY = "device_type";
     public static final String UR_JSON_DEVICE_VERSION_KEY = "device_version";

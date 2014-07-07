@@ -14,11 +14,11 @@ public class NetworkQueue {
                                                            AuthenticatedClient client) {
         if (client.isCachedRegisterAttempt()) {
             Sailthru stClient = new Sailthru(context);
-            Sailthru.RegistrationMode mode;
-            if (client.getMode().equals(Sailthru.RegistrationMode.DEV.toString())) {
-                mode = Sailthru.RegistrationMode.DEV;
+            Sailthru.RegistrationEnvironment mode;
+            if (client.getMode().equals(Sailthru.RegistrationEnvironment.DEV.toString())) {
+                mode = Sailthru.RegistrationEnvironment.DEV;
             } else {
-                mode = Sailthru.RegistrationMode.PROD;
+                mode = Sailthru.RegistrationEnvironment.PROD;
             }
 
             Sailthru.Identification identification;

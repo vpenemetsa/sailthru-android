@@ -49,12 +49,12 @@ public class Sailthru {
     /**
      * Defines registration environment
      */
-    public enum RegistrationMode {
+    public enum RegistrationEnvironment {
         DEV("dev"), PROD("prod");
 
         private final String name;
 
-        private RegistrationMode(String name) {
+        private RegistrationEnvironment(String name) {
             this.name = name;
         }
 
@@ -88,7 +88,7 @@ public class Sailthru {
     /**
      * Public method to register a client to Sailthru
      *
-     * @param mode {@link com.sailthru.android.sdk.Sailthru.RegistrationMode}
+     * @param mode {@link com.sailthru.android.sdk.Sailthru.RegistrationEnvironment}
      * @param domain String
      * @param apiKey String
      * @param appId String
@@ -97,21 +97,21 @@ public class Sailthru {
      * @param uid String
      * @param token String
      */
-    public void register(RegistrationMode mode, String domain,
+    public void register(RegistrationEnvironment env, String domain,
                          String apiKey, String appId, Identification identification,
                          String uid, String platformAppId, String token) {
-        if (sailthruClient.passedSanityChecks(mode, domain, apiKey, appId, identification, uid,
+        if (sailthruClient.passedSanityChecks(env, domain, apiKey, appId, identification, uid,
                 platformAppId, token)) {
             if (authenticatedClient.isConnectedToNetwork()) {
                 log.d(Logger.LogLevel.BASIC, TAG, "Registering");
-                sailthruClient.makeRegistrationRequest(appId, apiKey, uid, identification,
-                        platformAppId);
+                sailthruClient.makeRegistrationRequest(env.toString(), appId, apiKey, uid,
+                        identification, platformAppId);
             } else {
                 log.d(Logger.LogLevel.BASIC, TAG, "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
-            sailthruClient.saveCredentials(mode.toString(), domain, apiKey, appId,
+            sailthruClient.saveCredentials(env.toString(), domain, apiKey, appId,
                     identification.toString(), uid, platformAppId, token);
         }
     }

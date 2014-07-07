@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 
+import com.sailthru.android.sdk.BuildConfig;
+
 /**
  * Created by Vijay Penemetsa on 5/19/14.
  *
@@ -23,7 +25,6 @@ public class DeviceUtils {
      * @return String
      */
     public String getDeviceId() {
-//        return "1234567890";
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
@@ -33,18 +34,16 @@ public class DeviceUtils {
      * @return String
      */
     public String getOsVersion() {
-        return "7.1";
-//        return String.valueOf(Build.VERSION.SDK_INT);
+        return String.valueOf(Build.VERSION.SDK_INT);
     }
 
     /**
-     * Returns Device manufacturer
+     * Returns "android"
      *
      * @return String
      */
     public String getDeviceType() {
-        return "iphone";
-//        return Build.MANUFACTURER;
+        return "android";
     }
 
     /**
@@ -53,7 +52,6 @@ public class DeviceUtils {
      * @return String
      */
     public static String getDeviceVersion() {
-        return "4.3";
-//        return Build.MODEL;
+        return Build.MODEL;
     }
 }
