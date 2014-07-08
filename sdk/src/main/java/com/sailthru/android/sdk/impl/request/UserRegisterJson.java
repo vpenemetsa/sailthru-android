@@ -1,8 +1,7 @@
 package com.sailthru.android.sdk.impl.request;
 
-import com.google.gson.annotations.SerializedName;
-import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.api.ApiConstants;
+import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.annotations.SerializedName;
 
 /**
  * Created by vijaypenemetsa on 7/1/14.

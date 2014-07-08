@@ -45,11 +45,8 @@ public class STLog extends Logger {
      */
     @Override
     public void d(final LogLevel logLevel, final String tag, final String message) {
-        Log.d("!!!!!!!!!!!!", "log d");
         if (interceptLogs && logger != null) {
-            Log.d("!!!!!!!!!!!!", "log d : intercept and logger");
             if (checkLogLevel(logLevel)) {
-                Log.d("!!!!!!!!!!!!", "log d : checked and good");
                 Handler handler = new Handler(Looper.getMainLooper());
                 Runnable runnable = new Runnable() {
                     @Override
@@ -69,11 +66,8 @@ public class STLog extends Logger {
      */
     @Override
     public void w(final LogLevel logLevel, final String tag, final String message) {
-        Log.d("!!!!!!!!!!!!", "log w");
         if (interceptLogs && logger != null) {
-            Log.d("!!!!!!!!!!!!", "log w : intercept and logger");
             if (checkLogLevel(logLevel)) {
-                Log.d("!!!!!!!!!!!!", "log w : checked and good");
                 Handler handler = new Handler(Looper.getMainLooper());
                 Runnable runnable = new Runnable() {
                     @Override
@@ -93,11 +87,8 @@ public class STLog extends Logger {
      */
     @Override
     public void e(final LogLevel logLevel, final String tag, final String message) {
-        Log.d("!!!!!!!!!!!!", "log e");
         if (interceptLogs && logger != null) {
-            Log.d("!!!!!!!!!!!!", "log e : intercept and logger");
             if (checkLogLevel(logLevel)) {
-                Log.d("!!!!!!!!!!!!", "log e : checked and good");
                 Handler handler = new Handler(Looper.getMainLooper());
                 Runnable runnable = new Runnable() {
                     @Override
@@ -120,25 +111,20 @@ public class STLog extends Logger {
      */
     private boolean checkLogLevel(LogLevel logLevel) {
         if (logger == null) {
-            Log.d("!!!!!!!!!!!!", "checkLogLevel : false");
             return false;
         }
 
         if (logger.logLevel.equals(LogLevel.NONE)) {
-            Log.d("!!!!!!!!!!!!", "checkLogLevel : none");
             return false;
         }
 
         if (logger.logLevel.equals(LogLevel.BASIC)) {
-            Log.d("!!!!!!!!!!!!", "checkLogLevel : basic");
             if (logLevel.equals(LogLevel.BASIC)) {
-                Log.d("!!!!!!!!!!!!", "checkLogLevel : basic : basic");
                 return true;
             }
         }
 
         if (logger.logLevel.equals(LogLevel.FULL)) {
-            Log.d("!!!!!!!!!!!!", "checkLogLevel : full");
             return true;
         }
 

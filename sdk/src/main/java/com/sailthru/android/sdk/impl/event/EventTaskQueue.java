@@ -3,13 +3,13 @@ package com.sailthru.android.sdk.impl.event;
 import android.content.Context;
 import android.content.Intent;
 
-import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.Constants;
+import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson;
+import com.sailthru.android.sdk.impl.external.tape.FileObjectQueue;
+import com.sailthru.android.sdk.impl.external.tape.ObjectQueue;
+import com.sailthru.android.sdk.impl.external.tape.TaskQueue;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
-import com.squareup.tape.FileObjectQueue;
-import com.squareup.tape.ObjectQueue;
-import com.squareup.tape.TaskQueue;
 
 import java.io.File;
 import java.io.IOException;
@@ -84,7 +84,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
      * Creates and initializes an {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      *
      * @param context {@link android.content.Context}
-     * @param gson {@link com.google.gson.Gson}
+     * @param gson {@link com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson}
      * @return {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
     public static EventTaskQueue create(Context context, Gson gson) {

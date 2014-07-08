@@ -32,13 +32,11 @@ android {
     buildTypes {
         debug {
             runProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             debuggable true
         }
 
         release {
             runProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
 
         qa.initWith(buildTypes.debug)

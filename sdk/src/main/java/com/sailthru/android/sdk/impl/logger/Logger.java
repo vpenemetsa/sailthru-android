@@ -1,9 +1,5 @@
 package com.sailthru.android.sdk.impl.logger;
 
-import com.sailthru.android.sdk.impl.api.RetrofitLogger;
-
-import retrofit.RestAdapter;
-
 /**
  * Created by Vijay Penemetsa on 5/22/14.
  *

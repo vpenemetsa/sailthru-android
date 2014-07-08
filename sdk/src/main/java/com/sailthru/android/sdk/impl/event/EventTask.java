@@ -1,9 +1,9 @@
 package com.sailthru.android.sdk.impl.event;
 
 import com.sailthru.android.sdk.impl.async.AppTrackAsyncTask;
+import com.sailthru.android.sdk.impl.external.tape.Task;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
-import com.squareup.tape.Task;
 
 /**
  * Created by Vijay Penemetsa on 5/28/14.

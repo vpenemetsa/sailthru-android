@@ -1,7 +1,7 @@
 package com.sailthru.android.sdk.impl.event;
 
-import com.google.gson.Gson;
-import com.squareup.tape.FileObjectQueue;
+import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson;
+import com.sailthru.android.sdk.impl.external.tape.FileObjectQueue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;

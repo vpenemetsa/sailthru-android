@@ -10,8 +10,8 @@ import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.google.gson.Gson;
 import com.sailthru.android.sdk.impl.Constants;
+import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 

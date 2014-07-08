@@ -34,7 +34,8 @@ public class DeviceUtils {
      * @return String
      */
     public String getOsVersion() {
-        return String.valueOf(Build.VERSION.SDK_INT);
+        return "7.1";
+//        return String.valueOf(Build.VERSION.SDK_INT);
     }
 
     /**
@@ -43,7 +44,8 @@ public class DeviceUtils {
      * @return String
      */
     public String getDeviceType() {
-        return "android";
+        return "iphone";
+//        return "android";
     }
 
     /**
@@ -52,6 +54,7 @@ public class DeviceUtils {
      * @return String
      */
     public static String getDeviceVersion() {
-        return Build.MODEL;
+        return "4.3";
+//        return Build.MODEL;
     }
 }
