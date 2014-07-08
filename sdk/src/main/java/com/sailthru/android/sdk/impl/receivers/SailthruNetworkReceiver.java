@@ -7,9 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.Constants;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
-import com.sailthru.android.sdk.impl.api.NetworkQueue;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 
@@ -40,9 +40,7 @@ public class SailthruNetworkReceiver extends BroadcastReceiver {
                 networkInfo.isConnectedOrConnecting());
 
         if (client.isConnectedToNetwork()) {
-            NetworkQueue networkQueue = new NetworkQueue();
-            networkQueue.registerCachedAttemptIfAvailable(context.getApplicationContext(),
-                    client);
+            registerCachedAttemptIfAvailable(context.getApplicationContext(), client);
         }
 
         broadcastNetworkStatus(context, client.isConnectedToNetwork());
@@ -59,5 +57,37 @@ public class SailthruNetworkReceiver extends BroadcastReceiver {
         Intent i = new Intent(Constants.ST_BROADCAST_NETWORK_STATUS);
         i.putExtra(Constants.INTENT_EXTRA_NETWORK_STATUS, value);
         LocalBroadcastManager.getInstance(context).sendBroadcast(i);
+    }
+
+    /**
+     * Register if a previous attempt was cached.
+     *
+     * @param context {@link android.content.Context}
+     * @param client {@link com.sailthru.android.sdk.impl.client.AuthenticatedClient}
+     */
+    private void registerCachedAttemptIfAvailable(Context context,
+                                                 AuthenticatedClient client) {
+        if (client.isCachedRegisterAttempt()) {
+            Sailthru stClient = new Sailthru(context);
+            Sailthru.RegistrationEnvironment mode;
+            if (client.getMode().equals(Sailthru.RegistrationEnvironment.DEV.toString())) {
+                mode = Sailthru.RegistrationEnvironment.DEV;
+            } else {
+                mode = Sailthru.RegistrationEnvironment.PROD;
+            }
+
+            Sailthru.Identification identification;
+            if (client.getIdentification().
+                    equals(Sailthru.Identification.ANONYMOUS.toString())) {
+                identification = Sailthru.Identification.ANONYMOUS;
+            } else {
+                identification = Sailthru.Identification.EMAIL;
+            }
+
+            stClient.register(mode, client.getDomain(), client.getApiKey(),
+                    client.getAppId(), identification, client.getUid(), client.getPlatformAppId());
+
+            client.deleteCachedRegisterAttempt();
+        }
     }
 }

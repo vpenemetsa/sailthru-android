@@ -3,7 +3,7 @@ package com.sailthru.android.sdk.tests;
 import android.test.InstrumentationTestCase;
 
 import com.google.gson.Gson;
-import com.sailthru.android.sdk.SailthruClient;
+import com.sailthru.android.sdk.impl.utils.SailthruUtils;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
 import com.sailthru.android.sdk.impl.event.EventTask;
@@ -24,7 +24,7 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
     List<String> tags = new ArrayList<String>();
     Event event = new Event();
     EventTask eventTask;
-    SailthruClient sailthruClient;
+    SailthruUtils sailthruUtils;
 
     private static final long QUEUE_MAX_EXECUTION_TIME = 5000;
 
@@ -41,7 +41,7 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
         event.setUrl(url);
         eventTask = new EventTask(event);
         authenticatedClient = AuthenticatedClient.getInstance(getInstrumentation().getContext());
-        sailthruClient = new SailthruClient(getInstrumentation().getContext(), authenticatedClient);
+        sailthruUtils = new SailthruUtils(getInstrumentation().getContext(), authenticatedClient);
     }
 
     public void testAddToQueue() throws Exception {
@@ -79,20 +79,20 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
         tags.add("green");
         String url = "www.google.com";
 
-        boolean checkAppTrackInput = sailthruClient.checkAppTrackData(tags, url);
+        boolean checkAppTrackInput = sailthruUtils.checkAppTrackData(tags, url);
         assertTrue(checkAppTrackInput);
 
-        checkAppTrackInput = sailthruClient.checkAppTrackData(null, url);
+        checkAppTrackInput = sailthruUtils.checkAppTrackData(null, url);
         assertTrue(checkAppTrackInput);
 
-        checkAppTrackInput = sailthruClient.checkAppTrackData(tags, null);
+        checkAppTrackInput = sailthruUtils.checkAppTrackData(tags, null);
         assertTrue(checkAppTrackInput);
 
-        checkAppTrackInput = sailthruClient.checkAppTrackData(null, null);
+        checkAppTrackInput = sailthruUtils.checkAppTrackData(null, null);
         assertFalse(checkAppTrackInput);
 
         tags.clear();
-        checkAppTrackInput = sailthruClient.checkAppTrackData(tags, null);
+        checkAppTrackInput = sailthruUtils.checkAppTrackData(tags, null);
         assertFalse(checkAppTrackInput);
     }
 }

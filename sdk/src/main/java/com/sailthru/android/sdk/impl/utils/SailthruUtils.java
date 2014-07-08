@@ -1,7 +1,8 @@
-package com.sailthru.android.sdk;
+package com.sailthru.android.sdk.impl.utils;
 
 import android.content.Context;
 
+import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.async.UserRegisterAsyncTask;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
@@ -24,16 +25,16 @@ import retrofit.client.Response;
  *
  * Created by Vijay Penemetsa on 5/20/14.
  */
-public class SailthruClient {
+public class SailthruUtils {
 
-    private static final String TAG = SailthruClient.class.getSimpleName();
+    private static final String TAG = SailthruUtils.class.getSimpleName();
 
     Context context;
     UserRegisterAsyncTask userRegisterAsyncTask = null;
     AuthenticatedClient authenticatedClient;
     STLog log;
 
-    public SailthruClient(Context context, AuthenticatedClient authenticatedClient) {
+    public SailthruUtils(Context context, AuthenticatedClient authenticatedClient) {
         this.authenticatedClient = authenticatedClient;
         this.context = context;
         log = STLog.getInstance();
@@ -48,11 +49,9 @@ public class SailthruClient {
      * @param appId String
      * @param identification String
      * @param uid String
-     * @param token String
      */
     public void saveCredentials(String mode, String domain, String apiKey, String appId,
-                                          String identification, String uid, String platformAppId,
-                                          String token) {
+                                          String identification, String uid, String platformAppId) {
         authenticatedClient.setMode(mode);
         authenticatedClient.setDomain(domain);
         authenticatedClient.setApiKey(apiKey);
@@ -60,7 +59,6 @@ public class SailthruClient {
         authenticatedClient.setIdentification(identification);
         authenticatedClient.setUid(uid);
         authenticatedClient.setPlatformAppId(platformAppId);
-        authenticatedClient.setToken(token);
     }
 
     /**
@@ -72,13 +70,12 @@ public class SailthruClient {
      * @param appId String
      * @param identification {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @param uid String
-     * @param token String
      * @return boolean
      */
     public boolean passedSanityChecks(Sailthru.RegistrationEnvironment mode, String domain,
                                          String apiKey, String appId,
                                          Sailthru.Identification identification, String uid,
-                                         String platformAppId, String token) {
+                                         String platformAppId) {
 
         boolean passedChecks = true;
 

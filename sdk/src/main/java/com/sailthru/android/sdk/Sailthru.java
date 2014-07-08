@@ -10,6 +10,7 @@ import com.sailthru.android.sdk.impl.event.EventTaskQueue;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.recommend.RecommendService;
+import com.sailthru.android.sdk.impl.utils.SailthruUtils;
 
 import java.util.List;
 /**
@@ -26,7 +27,7 @@ public class Sailthru {
     AuthenticatedClient authenticatedClient;
 
     Context context;
-    private SailthruClient sailthruClient;
+    private SailthruUtils sailthruUtils;
     STLog log;
 
     /**
@@ -82,37 +83,36 @@ public class Sailthru {
             authenticatedClient.setConnectedToNetwork(true);
         }
 
-        sailthruClient = new SailthruClient(context, authenticatedClient);
+        sailthruUtils = new SailthruUtils(context, authenticatedClient);
     }
 
     /**
      * Public method to register a client to Sailthru
      *
-     * @param mode {@link com.sailthru.android.sdk.Sailthru.RegistrationEnvironment}
+     * @param env {@link com.sailthru.android.sdk.Sailthru.RegistrationEnvironment}
      * @param domain String
      * @param apiKey String
      * @param appId String
      * @param identification {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @param platformAppId String
      * @param uid String
-     * @param token String
      */
     public void register(RegistrationEnvironment env, String domain,
                          String apiKey, String appId, Identification identification,
-                         String uid, String platformAppId, String token) {
-        if (sailthruClient.passedSanityChecks(env, domain, apiKey, appId, identification, uid,
-                platformAppId, token)) {
+                         String uid, String platformAppId) {
+        if (sailthruUtils.passedSanityChecks(env, domain, apiKey, appId, identification, uid,
+                platformAppId)) {
             if (authenticatedClient.isConnectedToNetwork()) {
                 log.d(Logger.LogLevel.BASIC, TAG, "Registering");
-                sailthruClient.makeRegistrationRequest(env.toString(), appId, apiKey, uid,
+                sailthruUtils.makeRegistrationRequest(env.toString(), appId, apiKey, uid,
                         identification, platformAppId);
             } else {
                 log.d(Logger.LogLevel.BASIC, TAG, "No network");
                 authenticatedClient.setCachedRegisterAttempt();
             }
 
-            sailthruClient.saveCredentials(env.toString(), domain, apiKey, appId,
-                    identification.toString(), uid, platformAppId, token);
+            sailthruUtils.saveCredentials(env.toString(), domain, apiKey, appId,
+                    identification.toString(), uid, platformAppId);
         }
     }
 
@@ -147,8 +147,8 @@ public class Sailthru {
      * @param longitude String
      */
     public void sendAppTrackData(List<String> tags, String url, String latitude, String longitude) {
-        if (sailthruClient.checkAppTrackData(tags, url)) {
-            sailthruClient.addEventToQueue(tags, url, latitude, longitude, eventTaskQueue);
+        if (sailthruUtils.checkAppTrackData(tags, url)) {
+            sailthruUtils.addEventToQueue(tags, url, latitude, longitude, eventTaskQueue);
         } else {
             log.d(Logger.LogLevel.BASIC, "Apptrack", "Task not added. No tags or url provided");
         }
@@ -183,7 +183,7 @@ public class Sailthru {
      */
     public String getRecommendations(int count, List<String> tags) {
         String recommendations = "";
-        if (sailthruClient.canGetRecommendations()) {
+        if (sailthruUtils.canGetRecommendations()) {
             recommendations = RecommendService.getRecommendations(context,
                     authenticatedClient.getDomain(), authenticatedClient.getHid(), count, tags);
         }

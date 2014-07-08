@@ -38,7 +38,6 @@ public class AuthenticatedClient {
     private static String appId;
     private static String identification;
     private static String uid;
-    private static String token;
     private static String platformAppId;
 
     private boolean connectedToNetwork;
@@ -83,9 +82,6 @@ public class AuthenticatedClient {
         }
         if (prefs.containsKey(ST_SECURE_PREFS_PLATFORM_APP_ID)) {
             platformAppId = prefs.getString(ST_SECURE_PREFS_PLATFORM_APP_ID);
-        }
-        if (prefs.containsKey(ST_SECURE_PREFS_TOKEN)) {
-            token = prefs.getString(ST_SECURE_PREFS_TOKEN);
         }
         if (prefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
             cachedRegisterAttempt = true;
@@ -169,15 +165,6 @@ public class AuthenticatedClient {
     public void setPlatformAppId(String platformAppId) {
         prefs.put(ST_SECURE_PREFS_PLATFORM_APP_ID, platformAppId);
         this.platformAppId = platformAppId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        prefs.put(ST_SECURE_PREFS_TOKEN, token);
-        this.token = token;
     }
 
     public boolean isConnectedToNetwork() {
