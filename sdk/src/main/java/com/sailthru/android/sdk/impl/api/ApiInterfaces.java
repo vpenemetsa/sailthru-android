@@ -5,13 +5,13 @@ import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 
 import java.util.Map;
 
-import retrofit.Callback;
-import retrofit.client.Response;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.QueryMap;
+import com.sailthru.android.sdk.impl.external.retrofit.Callback;
+import com.sailthru.android.sdk.impl.external.retrofit.client.Response;
+import com.sailthru.android.sdk.impl.external.retrofit.http.Field;
+import com.sailthru.android.sdk.impl.external.retrofit.http.FormUrlEncoded;
+import com.sailthru.android.sdk.impl.external.retrofit.http.GET;
+import com.sailthru.android.sdk.impl.external.retrofit.http.POST;
+import com.sailthru.android.sdk.impl.external.retrofit.http.QueryMap;
 
 
 /**

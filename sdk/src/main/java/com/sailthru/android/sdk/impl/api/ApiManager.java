@@ -21,10 +21,10 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.sailthru.android.sdk.impl.external.retrofit.Callback;
+import com.sailthru.android.sdk.impl.external.retrofit.RestAdapter;
+import com.sailthru.android.sdk.impl.external.retrofit.RetrofitError;
+import com.sailthru.android.sdk.impl.external.retrofit.client.Response;
 
 
 /**
@@ -59,7 +59,7 @@ public class ApiManager {
      * @param apiKey String
      * @param uid String
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
-     * @param callback {@link retrofit.Callback}
+     * @param callback {@link com.sailthru.android.sdk.impl.external.retrofit.Callback}
      */
     public void registerUser(Context context, String env, String appId,
                                     String apiKey, String uid,

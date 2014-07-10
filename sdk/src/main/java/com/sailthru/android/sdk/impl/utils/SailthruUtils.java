@@ -16,9 +16,9 @@ import org.apache.http.HttpStatus;
 
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.sailthru.android.sdk.impl.external.retrofit.Callback;
+import com.sailthru.android.sdk.impl.external.retrofit.RetrofitError;
+import com.sailthru.android.sdk.impl.external.retrofit.client.Response;
 
 
 /**

@@ -3,7 +3,7 @@ package com.sailthru.android.sdk.impl.api;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 
-import retrofit.RestAdapter;
+import com.sailthru.android.sdk.impl.external.retrofit.RestAdapter;
 
 /**
  * Created by Vijay Penemetsa on 6/11/14.

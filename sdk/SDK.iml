@@ -61,7 +61,6 @@
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.0-rc1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.0-rc1" level="project" />
-    <orderEntry type="library" exported="" name="retrofit-1.5.1" level="project" />
   </component>
 </module>
 

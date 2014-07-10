@@ -9,7 +9,7 @@ import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
 import com.sailthru.android.sdk.impl.utils.UserRegisterUtils;
 
-import retrofit.Callback;
+import com.sailthru.android.sdk.impl.external.retrofit.Callback;
 
 /**
  * Created by Vijay Penemetsa on 5/19/14.
