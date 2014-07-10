@@ -21,6 +21,10 @@ android {
         versionName '1.0'
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     sourceSets {
         main  {
             java {
@@ -32,25 +36,14 @@ android {
     buildTypes {
         debug {
             debuggable true
-        }
-
-        release {
-            runProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), \
-                          'proguard-rules.txt'
-        }
-
-        qa.initWith(buildTypes.debug)
-        qa {
             buildConfigField "String", "UR_API_ENDPOINT", "\"http://api.qa5.sailthru-qa.com/mobile\""
             buildConfigField "String", "HORIZON_API_ENDPOINT", "\"http://horizon-qa5.antiroach.com\""
             buildConfigField "String", "HORIZON_API_ENDPOINT_GINGERBREAD", "\"http://horizon-qa5.antiroach.com\""
             buildConfigField "String", "CONFIG_TYPE", "\"qa\""
         }
 
-        prod.initWith(buildTypes.release)
-        prod {
-            runProguard true
+        release {
+            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), \
                           'proguard-rules.txt'
             buildConfigField "String", "UR_API_ENDPOINT", "\"https://api.sailthru.com/mobile\""
@@ -84,7 +77,6 @@ android.libraryVariants.all { variant ->
     task.dependsOn variant.javaCompile
     task.from variant.javaCompile.destinationDir
     artifacts.add('archives', task);
-
 }
 
 dependencies {

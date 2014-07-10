@@ -2,7 +2,6 @@ package com.sailthru.android.sdk.impl.utils;
 
 import com.sailthru.android.sdk.impl.api.ApiConstants;
 import com.sailthru.android.sdk.impl.event.Event;
-import com.sailthru.android.sdk.impl.logger.STLog;
 
 import java.util.HashMap;
 import java.util.List;

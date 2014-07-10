@@ -1,6 +1,5 @@
 package com.sailthru.android.sdk.impl.async;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.sailthru.android.sdk.impl.api.ApiManager;

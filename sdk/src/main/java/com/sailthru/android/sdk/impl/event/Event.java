@@ -1,8 +1,5 @@
 package com.sailthru.android.sdk.impl.event;
 
-import android.content.Context;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +18,6 @@ public class Event {
     private String latitude;
 
     private String longitude;
-
-    private int retryCount;
 
     private String hid;
 
@@ -70,14 +65,6 @@ public class Event {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
-    }
-
-    public int getRetryCount() {
-        return retryCount;
-    }
-
-    public void setRetryCount(int retryCount) {
-        this.retryCount = retryCount;
     }
 
     public String getHid() {

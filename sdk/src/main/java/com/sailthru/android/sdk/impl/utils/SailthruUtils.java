@@ -129,10 +129,12 @@ public class SailthruUtils {
     /**
      * Makes a call to the ApiManager with input credentials based on UserType
      *
+     * @param env String
      * @param appId String
      * @param apiKey String
      * @param uid String
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
+     * @param platformAppId String
      */
     public void makeRegistrationRequest(String env, String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType,
@@ -166,7 +168,7 @@ public class SailthruUtils {
             return;
         }
 
-        //Checking to make sure both tags and url are not part of the request
+        //Checking to make sure either tags or url are part of the request
         if ((tags == null || tags.size() == 0) && url == null) {
             log.d(Logger.LogLevel.BASIC, TAG, "Invalid input. No tags or url");
             return;

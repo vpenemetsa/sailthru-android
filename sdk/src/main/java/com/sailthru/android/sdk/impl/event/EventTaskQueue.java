@@ -49,7 +49,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
     @Override
     public void add(EventTask entry) {
         try {
-            // Always maintain a queue of size less than MAX_QUEUE_SIZE
+            // Always maintain a queue of size less than {@link MAX_QUEUE_SIZE}
             if (size() == Constants.MAX_QUEUE_SIZE) {
                 remove();
             }
@@ -57,7 +57,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
             super.add(entry);
             log.d(Logger.LogLevel.BASIC, "EventTaskQueue", "Added Event task ---- " + size() + "");
 
-            //Only sends tags if the size of queue exceeds QUEUE_SIZE_THRESHOLD
+            //Only sends tags if the size of queue exceeds {@link QUEUE_SIZE_THRESHOLD}
             if (size() >= Constants.QUEUE_SIZE_THRESHOLD) {
                 startService();
             }
@@ -84,7 +84,7 @@ public class EventTaskQueue extends TaskQueue<EventTask> {
      * Creates and initializes an {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      *
      * @param context {@link android.content.Context}
-     * @param gson {@link com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson}
+     * @param gson {@link com.sailthru.android.sdk.impl.external.gson.Gson}
      * @return {@link com.sailthru.android.sdk.impl.event.EventTaskQueue}
      */
     public static EventTaskQueue create(Context context, Gson gson) {

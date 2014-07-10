@@ -14,8 +14,6 @@ import com.sailthru.android.sdk.impl.logger.STLog;
 
 public class EventTask implements Task<EventTask.EventCallback> {
 
-    private static final String TAG = EventTask.class.getSimpleName();
-
     STLog log;
 
     public interface EventCallback {
