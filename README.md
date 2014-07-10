@@ -72,6 +72,7 @@ Or,
 
 User Register
 ---------------
+#####TODO. IN PROGRESS
 The UserRegister method 
 There are two types of registrations, Anonymous and Email,
 
@@ -81,6 +82,8 @@ There are two types of registrations, Anonymous and Email,
                                 apiKey, appId, identification,
                                 email, platformAppId);
     ...
+
+
 
 AppTrack
 -------------
@@ -105,9 +108,9 @@ needs to be made on a seperate thread(AsyncTask or Service) and accepts the foll
   - <code>tags</code>  : List<String>. Return only items that match all of the given tags.
   
   
-    ...  
+    ...
     mSailthru.getRecommendations(count, tags);
-    ...  
+    ...
 
 Logging
-------------
+----------
