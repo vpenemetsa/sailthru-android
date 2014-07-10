@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.EventTaskQueue;
-import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson;
+import com.sailthru.android.sdk.impl.external.gson.Gson;
 import com.sailthru.android.sdk.impl.logger.Logger;
 import com.sailthru.android.sdk.impl.logger.STLog;
 import com.sailthru.android.sdk.impl.recommend.RecommendService;

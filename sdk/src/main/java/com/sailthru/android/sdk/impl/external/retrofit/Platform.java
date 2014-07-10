@@ -17,14 +17,13 @@ package com.sailthru.android.sdk.impl.external.retrofit;
 
 import android.os.Build;
 import android.os.Process;
-import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson;
+import com.sailthru.android.sdk.impl.external.gson.Gson;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import com.sailthru.android.sdk.impl.external.retrofit.android.AndroidApacheClient;
 import com.sailthru.android.sdk.impl.external.retrofit.android.AndroidLog;
 import com.sailthru.android.sdk.impl.external.retrofit.android.MainThreadExecutor;
-//import com.sailthru.android.sdk.impl.external.retrofit.appengine.UrlFetchClient;
 import com.sailthru.android.sdk.impl.external.retrofit.client.Client;
 import com.sailthru.android.sdk.impl.external.retrofit.client.OkClient;
 import com.sailthru.android.sdk.impl.external.retrofit.client.UrlConnectionClient;

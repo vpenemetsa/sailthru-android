@@ -2,9 +2,9 @@ package com.sailthru.android.sdk.impl.external.retrofit;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
-import com.sailthru.android.sdk.impl.external.retrofit.rx.Observable;
-import com.sailthru.android.sdk.impl.external.retrofit.rx.Subscriber;
-import com.sailthru.android.sdk.impl.external.retrofit.rx.subscriptions.Subscriptions;
+//import com.sailthru.android.sdk.impl.external.retrofit.rx.Observable;
+//import com.sailthru.android.sdk.impl.external.retrofit.rx.Subscriber;
+//import com.sailthru.android.sdk.impl.external.retrofit.rx.subscriptions.Subscriptions;
 
 /**
  * Utilities for supporting RxJava Observables.
@@ -28,37 +28,37 @@ final class RxSupport {
     this.requestInterceptor = requestInterceptor;
   }
 
-  Observable createRequestObservable(final Invoker invoker) {
-    return Observable.create(new Observable.OnSubscribe<Object>() {
-      @Override public void call(Subscriber<? super Object> subscriber) {
-        RequestInterceptorTape interceptorTape = new RequestInterceptorTape();
-        requestInterceptor.intercept(interceptorTape);
-
-        Runnable runnable = getRunnable(subscriber, invoker, interceptorTape);
-        FutureTask<Void> task = new FutureTask<Void>(runnable, null);
-
-        // Subscribe to the future task of the network call allowing unsubscription.
-        subscriber.add(Subscriptions.from(task));
-        executor.execute(task);
-      }
-    });
-  }
-
-  private Runnable getRunnable(final Subscriber<? super Object> subscriber, final Invoker invoker,
-      final RequestInterceptorTape interceptorTape) {
-    return new Runnable() {
-      @Override public void run() {
-        try {
-          if (subscriber.isUnsubscribed()) {
-            return;
-          }
-          ResponseWrapper wrapper = invoker.invoke(interceptorTape);
-          subscriber.onNext(wrapper.responseBody);
-          subscriber.onCompleted();
-        } catch (RetrofitError e) {
-          subscriber.onError(errorHandler.handleError(e));
-        }
-      }
-    };
-  }
+//  Observable createRequestObservable(final Invoker invoker) {
+//    return Observable.create(new Observable.OnSubscribe<Object>() {
+//      @Override public void call(Subscriber<? super Object> subscriber) {
+//        RequestInterceptorTape interceptorTape = new RequestInterceptorTape();
+//        requestInterceptor.intercept(interceptorTape);
+//
+//        Runnable runnable = getRunnable(subscriber, invoker, interceptorTape);
+//        FutureTask<Void> task = new FutureTask<Void>(runnable, null);
+//
+//        // Subscribe to the future task of the network call allowing unsubscription.
+//        subscriber.add(Subscriptions.from(task));
+//        executor.execute(task);
+//      }
+//    });
+//  }
+//
+//  private Runnable getRunnable(final Subscriber<? super Object> subscriber, final Invoker invoker,
+//      final RequestInterceptorTape interceptorTape) {
+//    return new Runnable() {
+//      @Override public void run() {
+//        try {
+//          if (subscriber.isUnsubscribed()) {
+//            return;
+//          }
+//          ResponseWrapper wrapper = invoker.invoke(interceptorTape);
+//          subscriber.onNext(wrapper.responseBody);
+//          subscriber.onCompleted();
+//        } catch (RetrofitError e) {
+//          subscriber.onError(errorHandler.handleError(e));
+//        }
+//      }
+//    };
+//  }
 }

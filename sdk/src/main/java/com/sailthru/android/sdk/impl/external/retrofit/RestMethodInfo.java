@@ -45,7 +45,6 @@ import com.sailthru.android.sdk.impl.external.retrofit.http.Query;
 import com.sailthru.android.sdk.impl.external.retrofit.http.QueryMap;
 import com.sailthru.android.sdk.impl.external.retrofit.http.Streaming;
 import com.sailthru.android.sdk.impl.external.retrofit.http.RestMethod;
-import com.sailthru.android.sdk.impl.external.retrofit.rx.Observable;
 
 /** Request metadata about a service interface declaration. */
 final class RestMethodInfo {
@@ -286,14 +285,14 @@ final class RestMethodInfo {
     }
 
     if (hasReturnType) {
-      if (Platform.HAS_RX_JAVA) {
-        Class rawReturnType = Types.getRawType(returnType);
-        if (RxSupport.isObservable(rawReturnType)) {
-          returnType = RxSupport.getObservableType(returnType, rawReturnType);
-          responseObjectType = getParameterUpperBound((ParameterizedType) returnType);
-          return ResponseType.OBSERVABLE;
-        }
-      }
+//      if (Platform.HAS_RX_JAVA) {
+//        Class rawReturnType = Types.getRawType(returnType);
+//        if (RxSupport.isObservable(rawReturnType)) {
+//          returnType = RxSupport.getObservableType(returnType, rawReturnType);
+//          responseObjectType = getParameterUpperBound((ParameterizedType) returnType);
+//          return ResponseType.OBSERVABLE;
+//        }
+//      }
       responseObjectType = returnType;
       return ResponseType.OBJECT;
     }
@@ -487,13 +486,13 @@ final class RestMethodInfo {
   }
 
   /** Indirection to avoid log complaints if RxJava isn't present. */
-  private static final class RxSupport {
-    public static boolean isObservable(Class rawType) {
-      return rawType == Observable.class;
-    }
-
-    public static Type getObservableType(Type contextType, Class contextRawType) {
-      return Types.getSupertype(contextType, contextRawType, Observable.class);
-    }
-  }
+//  private static final class RxSupport {
+//    public static boolean isObservable(Class rawType) {
+//      return rawType == Observable.class;
+//    }
+//
+//    public static Type getObservableType(Type contextType, Class contextRawType) {
+//      return Types.getSupertype(contextType, contextRawType, Observable.class);
+//    }
+//  }
 }

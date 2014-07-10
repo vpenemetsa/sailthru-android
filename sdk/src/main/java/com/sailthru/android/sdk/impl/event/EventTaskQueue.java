@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.sailthru.android.sdk.impl.Constants;
-import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson;
+import com.sailthru.android.sdk.impl.external.gson.Gson;
 import com.sailthru.android.sdk.impl.external.tape.FileObjectQueue;
 import com.sailthru.android.sdk.impl.external.tape.ObjectQueue;
 import com.sailthru.android.sdk.impl.external.tape.TaskQueue;

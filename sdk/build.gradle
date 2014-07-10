@@ -35,6 +35,9 @@ android {
         }
 
         release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), \
+                          'proguard-rules.txt'
         }
 
         qa.initWith(buildTypes.debug)
@@ -47,9 +50,9 @@ android {
 
         prod.initWith(buildTypes.release)
         prod {
-            runProguard false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), \
-//                          'proguard-rules.txt'
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), \
+                          'proguard-rules.txt'
             buildConfigField "String", "UR_API_ENDPOINT", "\"https://api.sailthru.com/mobile\""
             buildConfigField "String", "HORIZON_API_ENDPOINT", "\"https://horizon.sailthru.com\""
             buildConfigField "String", "HORIZON_API_ENDPOINT_GINGERBREAD", "\"http://horizon.sailthru.com\""

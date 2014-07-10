@@ -252,20 +252,20 @@ public class RestAdapter {
         throw new IllegalStateException("Asynchronous invocation requires calling setExecutors.");
       }
 
-      if (methodInfo.isObservable) {
-        if (rxSupport == null) {
-          if (Platform.HAS_RX_JAVA) {
-            rxSupport = new RxSupport(httpExecutor, errorHandler, requestInterceptor);
-          } else {
-            throw new IllegalStateException("Observable method found but no RxJava on classpath.");
-          }
-        }
-        return rxSupport.createRequestObservable(new RxSupport.Invoker() {
-          @Override public ResponseWrapper invoke(RequestInterceptor requestInterceptor) {
-            return (ResponseWrapper) invokeRequest(requestInterceptor, methodInfo, args);
-          }
-        });
-      }
+//      if (methodInfo.isObservable) {
+//        if (rxSupport == null) {
+//          if (Platform.HAS_RX_JAVA) {
+//            rxSupport = new RxSupport(httpExecutor, errorHandler, requestInterceptor);
+//          } else {
+//            throw new IllegalStateException("Observable method found but no RxJava on classpath.");
+//          }
+//        }
+//        return rxSupport.createRequestObservable(new RxSupport.Invoker() {
+//          @Override public ResponseWrapper invoke(RequestInterceptor requestInterceptor) {
+//            return (ResponseWrapper) invokeRequest(requestInterceptor, methodInfo, args);
+//          }
+//        });
+//      }
 
       // Apply the interceptor synchronously, recording the interception so we can replay it later.
       // This way we still defer argument serialization to the background thread.

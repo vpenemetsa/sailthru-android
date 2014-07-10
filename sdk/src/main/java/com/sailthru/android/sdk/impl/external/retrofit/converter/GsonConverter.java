@@ -15,8 +15,8 @@
  */
 package com.sailthru.android.sdk.impl.external.retrofit.converter;
 
-import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.Gson;
-import com.sailthru.android.sdk.impl.external.gson.src.main.java.com.st.gson.JsonParseException;
+import com.sailthru.android.sdk.impl.external.gson.Gson;
+import com.sailthru.android.sdk.impl.external.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
