@@ -77,13 +77,9 @@ The UserRegister method
 There are two types of registrations, Anonymous and Email,
 
 ###Anonymous,
-    ...
     mSailthru.register(registrationMode, domain,
                                 apiKey, appId, identification,
                                 email, platformAppId);
-    ...
-
-
 
 AppTrack
 -------------
@@ -95,9 +91,8 @@ The AppTrack call accepts the following parameters,
   - <code>longitude</code> : String
   
 ####It is required to have atleast one tag or a url in a request.
-    ...
     mSailthru.sendAppTrackData(tagList, url, latitude, longitude);
-    ...
+
 
 Recommendations
 ----------------
@@ -106,11 +101,9 @@ needs to be made on a seperate thread(AsyncTask or Service) and accepts the foll
 
   - <code>count</code> : int. The maximum number of recommendations to return.
   - <code>tags</code>  : List<String>. Return only items that match all of the given tags.
-  
-  
-    ...
-    mSailthru.getRecommendations(count, tags);
-    ...
+
+
+    mSailthru.getRecommendations(count, tags);  
 
 Logging
 ----------

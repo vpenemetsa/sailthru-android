@@ -2,7 +2,7 @@ package com.sailthru.android.sdk.tests;
 
 import android.test.InstrumentationTestCase;
 
-import com.google.gson.Gson;
+import com.sailthru.android.sdk.impl.external.gson.Gson;
 import com.sailthru.android.sdk.impl.utils.SailthruUtils;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
@@ -37,7 +37,7 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
             tags.add("kdljhflkjsghsldkjfhlskjdfgslkdjfglskjdfgslkjdfsdkljfg");
         }
         event.addTags(tags);
-        String url = "www.google.com";
+        String url = "www.sailthru.com";
         event.setUrl(url);
         eventTask = new EventTask(event);
         authenticatedClient = AuthenticatedClient.getInstance(getInstrumentation().getContext());
