@@ -1,6 +1,7 @@
 Sailthru Android SDK Library
 =======================
 
+[![Build Status](https://travis-ci.org/sailthru/sailthru-mobile-android.svg?branch=master)](https://travis-ci.org/sailthru/sailthru-mobile-android)
 
 Product Features
 -----
