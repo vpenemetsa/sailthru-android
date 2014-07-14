@@ -6,8 +6,8 @@ Product Features
 -----
 ####Supported Features
 The Sailthru Android SDK provides:
-*  User Registration
-*  Anonymous User Support 
+*  User registration
+*  Anonymous user support 
 *  Profile data acquisition 
 *  Recommendation delivery 
 
