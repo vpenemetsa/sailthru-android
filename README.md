@@ -1,6 +1,17 @@
 Sailthru Android SDK Library
 =======================
 
+
+Product Features
+-----
+####Supported Features
+The Sailthru Android SDK provides:
+*  User Registration
+*  Anonymous User Support 
+*  Profile data acquisition 
+*  Recommendation delivery 
+
+
 Setup
 -----
 
