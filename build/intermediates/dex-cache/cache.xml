@@ -2,29 +2,35 @@
 <pre-dex-items>
 
     <item
-        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/gson-2.2.4-66d6da44c765c14004e872b759e8836c231649bb.jar"
-        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/libs/gson-2.2.4.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8"/>
-    <item
         dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/classes-8a7a7265f3d0fc3fb99791de8a4d08f06b8842d5.jar"
         jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="7ae84435ebc95f67a3f5e511025e96caa8688da2"/>
     <item
-        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/gson-2.2.4-javadoc-9f6459b8e53916e5718f82e5825c3f359fb65b1a.jar"
-        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/libs/gson-2.2.4-javadoc.jar"
+        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/internal_impl-21.0.0-rc1-005cd4d6d25c1e993fb402b024216498dd16a3f6.jar"
+        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/libs/internal_impl-21.0.0-rc1.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="be47c2ee6e9ab0668874e4c6c4933c0637f473d8"/>
+        sha1="d1a625e8a94bf7c73e0f9d30ad1b483ff6ea64e9"/>
     <item
-        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/tape-1.1.0-ffe59c310db06425be44ed3bbe724d684ebad7bc.jar"
-        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/libs/tape-1.1.0.jar"
+        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/classes-9c8292419c377a1d04a1db3cdd66109ec225f72d.jar"
+        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/bundles/debug/classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="4cf9211e62b6b67a8cad5a6733ace47be22d8f69"/>
+        sha1="89c2f93d282fe707182bbf4bcd467a661c450f73"/>
+    <item
+        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/classes-9c8292419c377a1d04a1db3cdd66109ec225f72d.jar"
+        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/bundles/debug/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="29f6048fd0ae04e9f383ba9ca8d6d1e1d5f0b83a"/>
+    <item
+        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/support-annotations-21.0.0-rc1-9da56907a54bc62b80b021d0066dc3e5625c73ba.jar"
+        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0-rc1/support-annotations-21.0.0-rc1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="57c343f05b73b923bf2502b05851dbfe12193dcb"/>
     <item
         dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/classes-cf037d5eb3e40a9a330db196e27f8ec3373608f9.jar"
         jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0-rc1/classes.jar"
@@ -35,7 +41,7 @@
         dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/internal_impl-21.0.0-rc1-005cd4d6d25c1e993fb402b024216498dd16a3f6.jar"
         jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/libs/internal_impl-21.0.0-rc1.jar"
         jumboMode="false"
-        revision="19.1.0"
+        revision="20.0.0"
         sha1="d1a625e8a94bf7c73e0f9d30ad1b483ff6ea64e9"/>
     <item
         dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/support-annotations-21.0.0-rc1-9da56907a54bc62b80b021d0066dc3e5625c73ba.jar"
@@ -44,22 +50,16 @@
         revision="19.1.0"
         sha1="57c343f05b73b923bf2502b05851dbfe12193dcb"/>
     <item
-        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/retrofit-1.5.1-66831b50587cc2e788e3c14caad9170965931e41.jar"
-        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/libs/retrofit-1.5.1.jar"
+        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/classes-cf037d5eb3e40a9a330db196e27f8ec3373608f9.jar"
+        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0-rc1/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="266695d62b6df0e1176af2be3634bcd0837d4fbd"/>
+        revision="20.0.0"
+        sha1="f43ddb172b0a91aa546a2aec7e6aad71c935d036"/>
     <item
-        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/gson-2.2.4-sources-312c8cc1ccabb9ace736750ee164adbd63828818.jar"
-        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/libs/gson-2.2.4-sources.jar"
+        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/classes-8a7a7265f3d0fc3fb99791de8a4d08f06b8842d5.jar"
+        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="10ab84ba225b583b10713f57c04270c918ef162b"/>
-    <item
-        dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/classes-9c8292419c377a1d04a1db3cdd66109ec225f72d.jar"
-        jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/bundles/debug/classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="89c2f93d282fe707182bbf4bcd467a661c450f73"/>
+        revision="20.0.0"
+        sha1="7ae84435ebc95f67a3f5e511025e96caa8688da2"/>
 
 </pre-dex-items>

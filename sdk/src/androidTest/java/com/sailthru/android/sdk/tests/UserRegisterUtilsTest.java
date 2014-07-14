@@ -27,7 +27,7 @@ public class UserRegisterUtilsTest extends InstrumentationTestCase {
     }
 
     public void testEmailRequest() throws Exception {
-        final String expectedEmailSig = "f918b6f757126ff17ffed3d084a88ab4";
+        final String expectedEmailSig = "6b2e05aad17c90d6647dbe9d253b29b8";
 
         Map<String, String> request = userRegisterUtils.buildRequest(
                 getInstrumentation().getContext(), Sailthru.RegistrationEnvironment.DEV.toString(),
@@ -36,7 +36,7 @@ public class UserRegisterUtilsTest extends InstrumentationTestCase {
     }
 
     public void testAnonymousRequest() throws Exception {
-        final String expectedAnonSig = "01a42c081e8ab996d5f135eba9b0619";
+        final String expectedAnonSig = "11171e863ec8e12c2192fc2c6cebe545";
 
         Map<String, String> request = userRegisterUtils.buildRequest(getInstrumentation().getContext(),
                 Sailthru.RegistrationEnvironment.DEV.toString(), mAppId, mApiKey, null,
@@ -45,7 +45,7 @@ public class UserRegisterUtilsTest extends InstrumentationTestCase {
     }
 
     public void testAnonymousToEmailTransitionRequest() throws Exception {
-        final String expectedTransitionSig = "4719a6d01ade2d4f277e75e3706fbc43";
+        final String expectedTransitionSig = "a1d517c7c71fa8c81d6761f3bb7ca2d0";
 
         Map<String, String> request = userRegisterUtils.buildRequest(getInstrumentation().getContext(),
                 Sailthru.RegistrationEnvironment.DEV.toString(), mAppId, mApiKey,

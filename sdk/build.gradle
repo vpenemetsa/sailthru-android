@@ -21,6 +21,10 @@ android {
         targetSdkVersion 20
         versionCode 1
         versionName '1.0'
+        testPackageName "com.sailthru.android.sdk.tests"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testHandleProfiling true
+        testFunctionalTest true
     }
     lintOptions {
         abortOnError false
@@ -29,11 +33,6 @@ android {
         main {
             java {
                 srcDir 'src/main/java'
-            }
-        }
-        androidTest {
-            java {
-                srcDir 'src/androidTest/java'
             }
         }
     }

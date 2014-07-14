@@ -33,7 +33,7 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
         super.setUp();
         Gson gson = new Gson();
         queue = EventTaskQueue.create(getInstrumentation().getContext(), gson);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             tags.add("kdljhflkjsghsldkjfhlskjdfgslkdjfglskjdfgslkjdfsdkljfg");
         }
         event.addTags(tags);
@@ -48,30 +48,47 @@ public class EventTaskQueueTest extends InstrumentationTestCase {
         int initialSize = queue.size();
         queue.add(eventTask);
 
-        assertEquals(initialSize + 1, queue.size());
+        int expectedSize;
+        if (initialSize >= 2) {
+            expectedSize = 0;
+        } else {
+            expectedSize = initialSize + 1;
+        }
+        assertEquals(expectedSize, queue.size());
     }
 
     public void testRemoveFromQueue() throws Exception {
         int initialSize = queue.size();
         if (initialSize == 0) {
             queue.add(eventTask);
-            initialSize = 1;
+        } else {
+            for (int i = initialSize; i<=3; i++) {
+                queue.add(eventTask);
+            }
         }
 
+        Thread.sleep(QUEUE_MAX_EXECUTION_TIME);
+
+        queue.add(eventTask);
+        int expectedSize = queue.size() - 1;
         queue.remove();
 
-        assertEquals(initialSize - 1, queue.size());
+        assertEquals(expectedSize, queue.size());
     }
 
     public void testQueueExecution() throws Exception {
         int initialSize = queue.size();
-        for (int i = initialSize; i <= 3; i++) {
+        if (initialSize < 3) {
+            for (int i = initialSize; i < 3; i++) {
+                queue.add(eventTask);
+            }
+        } else {
             queue.add(eventTask);
         }
 
         Thread.sleep(QUEUE_MAX_EXECUTION_TIME);
 
-        assertEquals(queue.size(), 0);
+        assertEquals(0, queue.size());
     }
 
     public void testQueueInputValidation() throws Exception {
