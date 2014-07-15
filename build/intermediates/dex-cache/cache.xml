@@ -24,7 +24,7 @@
         jar="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/bundles/debug/classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="29f6048fd0ae04e9f383ba9ca8d6d1e1d5f0b83a"/>
+        sha1="b7b545346863d61e932cb34983ba116f5c96e136"/>
     <item
         dex="/Users/vijaypenemetsa/AndroidStudioProjects/sailthru-mobile-android/sdk/build/intermediates/pre-dexed/test/debug/support-annotations-21.0.0-rc1-9da56907a54bc62b80b021d0066dc3e5625c73ba.jar"
         jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0-rc1/support-annotations-21.0.0-rc1.jar"
