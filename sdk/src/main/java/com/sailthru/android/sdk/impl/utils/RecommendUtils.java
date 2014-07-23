@@ -18,25 +18,40 @@ public class RecommendUtils {
      *
      * @param domain String
      * @param hid String
-     * @param count int
+     * @param count Integer
      * @param tags List<String>
+     * @param appTrackTags List<String>
+     * @param url String
      * @return Map<String,String>
      */
-    public Map<String, String> buildRequest(String domain, String hid, int count, List<String> tags) {
+    public static Map<String, String> buildRequest(String domain, boolean useStoredTags, String hid,
+                                                   Integer count, List<String> tags,
+                                                   List<String> appTrackTags, String url) {
         Map<String, String> parameters = new HashMap<String, String>();
 
         parameters.put(ApiConstants.REC_DOMAIN_KEY, domain);
         parameters.put(ApiConstants.REC_HID_KEY, hid);
-        parameters.put(ApiConstants.REC_COUNT_KEY, Integer.toString(count));
-        if (tags != null && tags.size() > 0) {
-            String tagsString = "";
-            for (String tag : tags) {
-                tagsString += tag + ",";
-            }
 
-            tagsString = tagsString.replaceAll(" ", "");
-            tagsString = tagsString.substring(0, tagsString.length() - 1);
+        if (useStoredTags) {
+            parameters.put(ApiConstants.REC_USE_STORED_TAGS, "1");
+        }
+
+        if (count != null) {
+            parameters.put(ApiConstants.REC_COUNT_KEY, Integer.toString(count));
+        }
+
+        if (tags != null && tags.size() > 0) {
+            String tagsString = SailthruUtils.getCommaDelimitedString(tags);
             parameters.put(ApiConstants.REC_FILTER_TAGS_KEY, tagsString);
+        }
+
+        if (appTrackTags != null && appTrackTags.size() > 0) {
+            String appTrackTagsString = SailthruUtils.getCommaDelimitedString(appTrackTags);
+            parameters.put(ApiConstants.REC_TAGS_KEY, appTrackTagsString);
+        }
+
+        if (url != null) {
+            parameters.put(ApiConstants.REC_URL_KEY, url);
         }
 
         return parameters;

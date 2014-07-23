@@ -75,9 +75,7 @@ public class ApiManager {
         ApiInterfaces.RegisterUserService service = adapter.create(
                 ApiInterfaces.RegisterUserService.class);
 
-        UserRegisterUtils userRegisterUtils = new UserRegisterUtils();
-
-        Map<String, String> params = userRegisterUtils.buildRequest(context, env, appId, apiKey,
+        Map<String, String> params = UserRegisterUtils.buildRequest(context, env, appId, apiKey,
                 uid, userType, platformAppId);
 
         service.registerUser(
@@ -109,8 +107,7 @@ public class ApiManager {
                 .build();
         ApiInterfaces.AppTrackService service = adapter.create(ApiInterfaces.AppTrackService.class);
 
-        AppTrackUtils utils = new AppTrackUtils();
-        Map<String, String> parameters = utils.buildRequest(event);
+        Map<String, String> parameters = AppTrackUtils.buildRequest(event);
 
         AppTrackResponse response = null;
         try {
@@ -137,7 +134,8 @@ public class ApiManager {
      * @param tags List<String>
      * @return String
      */
-    public String getRecommendations(String domain, String hid, int count, List<String> tags) {
+    public String getRecommendations(String domain, String hid, boolean useStoredTags, Integer count, List<String> tags,
+                                     List<String> appTrackTags, String url) {
         String horizonEndpoint;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             horizonEndpoint = ApiConstants.HORIZON_API_ENDPOINT;
@@ -153,8 +151,8 @@ public class ApiManager {
         ApiInterfaces.RecommendService service = adapter.create(
                 ApiInterfaces.RecommendService.class);
 
-        RecommendUtils recommendUtils = new RecommendUtils();
-        Map<String, String> parameters = recommendUtils.buildRequest(domain, hid, count, tags);
+        Map<String, String> parameters = RecommendUtils.buildRequest(domain, useStoredTags,  hid,
+                count, tags, appTrackTags, url);
 
         String response = "";
         try {

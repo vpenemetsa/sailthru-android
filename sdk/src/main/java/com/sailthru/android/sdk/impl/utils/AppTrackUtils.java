@@ -20,7 +20,7 @@ public class AppTrackUtils {
      * @param event {@link com.sailthru.android.sdk.impl.event.Event}
      * @return Map<String,String>
      */
-    public Map<String, String> buildRequest(Event event) {
+    public static Map<String, String> buildRequest(Event event) {
 
         Map<String, String> parameters = new HashMap<String, String>();
 
@@ -29,7 +29,7 @@ public class AppTrackUtils {
             parameters.put(ApiConstants.APPTRACK_URL_KEY, urlString);
         }
 
-        String tagsString = getCommaDelimitedString(event.getTags());
+        String tagsString = SailthruUtils.getCommaDelimitedString(event.getTags());
         if (tagsString != null && !tagsString.isEmpty()) {
             parameters.put(ApiConstants.APPTRACK_TAGS_KEY, tagsString);
         }
@@ -62,20 +62,5 @@ public class AppTrackUtils {
         }
 
         return parameters;
-    }
-
-    private String getCommaDelimitedString(List<String> input) {
-        String output = "";
-
-        if (input != null && input.size() > 0) {
-            for (String tag : input) {
-                output += tag + ",";
-            }
-
-            output = output.substring(0, output.length() - 1);
-            output = output.replaceAll(" ", "");
-        }
-
-        return output;
     }
 }

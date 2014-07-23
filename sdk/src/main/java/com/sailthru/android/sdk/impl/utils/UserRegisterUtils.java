@@ -27,7 +27,7 @@ public class UserRegisterUtils {
 
     private static final String TAG = UserRegisterUtils.class.getSimpleName();
 
-    STLog log;
+    private static STLog log;
 
     /**
      * Builds request parameters for AppRegister
@@ -39,7 +39,7 @@ public class UserRegisterUtils {
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @return Map<String,String>
      */
-    public Map<String, String> buildRequest(Context context, String env, String appId,
+    public static Map<String, String> buildRequest(Context context, String env, String appId,
                                             String apiKey, String id,
                                             Sailthru.Identification userType, String platformAppId) {
         log = STLog.getInstance();
@@ -61,7 +61,7 @@ public class UserRegisterUtils {
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @return String
      */
-    private String generateRegisterJson(Context context, String env, String uid,
+    private static String generateRegisterJson(Context context, String env, String uid,
                                         Sailthru.Identification userType, String platformAppId) {
         Map<String, String> data = new HashMap<String, String>();
         data.put(ApiConstants.UR_JSON_PLATFORM_APP_VERSION_KEY, ApiConstants.UR_JSON_PLATFORM_APP_VERSION_VALUE);
@@ -99,7 +99,7 @@ public class UserRegisterUtils {
      * @param params Map<String,String>
      * @return String
      */
-    private String generateSig(String appId, Map<String, String> params) {
+    private static String generateSig(String appId, Map<String, String> params) {
         List<String> values = new ArrayList<String>();
 
         StringBuilder builder = new StringBuilder();
@@ -122,7 +122,7 @@ public class UserRegisterUtils {
      * @param data String
      * @return String
      */
-    private String getMd5(String data) {
+    private static String getMd5(String data) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(data.getBytes());
@@ -145,7 +145,7 @@ public class UserRegisterUtils {
      * @param input String
      * @return boolean
      */
-    public boolean notNullOrEmpty(String input) {
+    public static boolean notNullOrEmpty(String input) {
         if (input != null ) {
             if (!TextUtils.isEmpty(input)) {
                 return true;
@@ -162,7 +162,7 @@ public class UserRegisterUtils {
      * @param match String
      * @return boolean
      */
-    public boolean notNullAndHasValue(String input, String match) {
+    public static boolean notNullAndHasValue(String input, String match) {
         if (input != null) {
             if (input.equals(match)) {
                 return true;

@@ -29,14 +29,14 @@ public class STLog extends Logger {
     /**
      * Used to set an external logger. All messages are redirected to this logger if set
      *
-     * @param logger {@link com.sailthru.android.sdk.impl.logger.Logger}
+     * @param externalLogger {@link com.sailthru.android.sdk.impl.logger.Logger}
      */
-    public void setExternalLogger(Logger logger) {
-        this.logger = logger;
+    public static void setExternalLogger(Logger externalLogger) {
+        logger = externalLogger;
         interceptLogs = true;
     }
 
-    public Logger getExternalLogger() {
+    public static Logger getExternalLogger() {
         return logger;
     }
 

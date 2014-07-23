@@ -141,7 +141,8 @@ public class Sailthru {
     /**
      * Used to send parameters to AppTrack
      *
-     * @param tags List<String>
+     * @param tags List<String>. List of interest tags, passing tags to track inserts these tags
+     *             onto the user profile.
      * @param url String
      * @param latitude String
      * @param longitude String
@@ -174,18 +175,46 @@ public class Sailthru {
     }
 
     /**
-     * Returns a JSON String with recommendations which can be filtered by input tags
-     * Leave tags as null to receive all recommendations
-     *
-     * @param count int
-     * @param tags List<String>
+     * Returns a JSON String with recommendations
      * @return String
      */
-    public String getRecommendations(int count, List<String> tags) {
+    public String getRecommendations() {
+        return getRecommendations(null, null, null, null, false);
+    }
+
+    /**
+     * Returns a JSON String with recommendations filtered by filterTags
+     *
+     * @param count Integer. Specify the number of recommendations to return.
+     * @param filterTags List<String>. Filter content inclusively using a list of interest tags.
+     * @return String
+     */
+    public String getRecommendations(int count, List<String> filterTags) {
+        return getRecommendations(count, filterTags, null, null, false);
+    }
+
+    /**
+     * Returns a JSON String with recommendations which can be filtered by input tags
+     * Leave tags as null to receive all recommendations
+     * Optionally, you can send AppTrack data with a recommendation call as a List of
+     * tags and/or a url
+     *
+     * @param count Integer. Specify the number of recommendations to return.
+     * @param filterTags List<String>. Filter content inclusively using a list of interest tags.
+     * @param appTrackTags List<String>. Specify a list of interest tags, passing tags to track
+     *                     inserts these tags onto the user profile.
+     * @param url String. Specify which URL of the page the user has visited.
+     * @param useStoredTags boolean. Specify whether Sailthru should prefer database tags over
+     *                      tags present on the page.
+     * @return String
+     */
+    public String getRecommendations(Integer count, List<String> filterTags,
+                                     List<String> appTrackTags, String url, boolean useStoredTags) {
         String recommendations = "";
         if (sailthruUtils.canGetRecommendations()) {
-            recommendations = RecommendService.getRecommendations(context,
-                    authenticatedClient.getDomain(), authenticatedClient.getHid(), count, tags);
+            recommendations = RecommendService.getRecommendations(context, useStoredTags,
+                    authenticatedClient.getDomain(), authenticatedClient.getHid(), count,
+                    filterTags, appTrackTags, url);
         }
 
         return recommendations;

@@ -240,4 +240,25 @@ public class SailthruUtils {
 
         return true;
     }
+
+    /**
+     * Returns a comma delimited String from input list of strings.
+     *
+     * @param input List<String>
+     * @return String
+     */
+    public static String getCommaDelimitedString(List<String> input) {
+        String output = "";
+
+        if (input != null && input.size() > 0) {
+            for (String tag : input) {
+                output += tag + ",";
+            }
+
+            output = output.substring(0, output.length() - 1);
+            output = output.replaceAll(" ", "");
+        }
+
+        return output;
+    }
 }

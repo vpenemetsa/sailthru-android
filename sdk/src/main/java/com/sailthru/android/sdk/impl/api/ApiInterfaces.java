@@ -19,7 +19,7 @@ import com.sailthru.android.sdk.impl.external.retrofit.http.QueryMap;
  *
  * Contains interfaces for all api calls
  */
-public class ApiInterfaces {
+public class    ApiInterfaces {
 
     /**
      * Interface for UserRegister api call

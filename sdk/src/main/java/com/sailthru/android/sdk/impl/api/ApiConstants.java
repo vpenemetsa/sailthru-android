@@ -53,6 +53,9 @@ public class ApiConstants {
     public static final String REC_HID_KEY = "hid";
     public static final String REC_COUNT_KEY = "number";
     public static final String REC_FILTER_TAGS_KEY = "filter[tags]";
+    public static final String REC_TAGS_KEY = "tags";
+    public static final String REC_URL_KEY = "url";
+    public static final String REC_USE_STORED_TAGS = "use_stored_tags";
 
     public static final String ST_CACHED_UR_ATTEMPTED = "ST_CACHED_UR_ATTEMPTED";
 }

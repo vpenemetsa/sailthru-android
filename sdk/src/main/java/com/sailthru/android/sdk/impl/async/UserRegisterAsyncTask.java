@@ -27,7 +27,6 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
     String platformAppId;
     AuthenticatedClient authenticatedClient;
     Callback<UserRegisterAppResponse> callback;
-    UserRegisterUtils userRegisterUtils;
     ApiManager apiManager;
 
     public UserRegisterAsyncTask(Context context, String env, String appId, String apiKey,
@@ -43,7 +42,6 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         this.platformAppId = platformAppId;
         this.authenticatedClient = authenticatedClient;
         this.callback = callback;
-        userRegisterUtils = new UserRegisterUtils();
         apiManager = new ApiManager(context);
     }
 

@@ -18,13 +18,15 @@ public class RecommendService {
      *
      * @param domain String
      * @param hid String
-     * @param count int
+     * @param count Integer
      * @param tags List<String>
      * @return String
      */
-    public static String getRecommendations(Context context, String domain, String hid, int count,
-                                            List<String> tags) {
+    public static String getRecommendations(Context context, boolean useStoredTags, String domain,
+                                            String hid, Integer count, List<String> tags,
+                                            List<String> appTrackTags, String url) {
         ApiManager apiManager = new ApiManager(context);
-        return apiManager.getRecommendations(domain, hid, count, tags);
+        return apiManager.getRecommendations(domain, hid, useStoredTags, count, tags,
+                appTrackTags, url);
     }
 }
