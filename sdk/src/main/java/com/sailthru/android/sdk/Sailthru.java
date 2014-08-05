@@ -22,13 +22,11 @@ public class Sailthru {
 
     private static final String TAG = Sailthru.class.getSimpleName();
 
-    EventTaskQueue eventTaskQueue;
-
-    AuthenticatedClient authenticatedClient;
-
-    Context context;
+    private EventTaskQueue eventTaskQueue;
+    private AuthenticatedClient authenticatedClient;
+    private Context context;
     private SailthruUtils sailthruUtils;
-    STLog log;
+    private static STLog log;
 
     /**
      * Defines User type for registration
@@ -218,5 +216,11 @@ public class Sailthru {
         }
 
         return recommendations;
+    }
+
+    public void setLogLevel(Logger.LogLevel logLevel) {
+        if (log != null && logLevel != null) {
+            log.setLogLevel(logLevel);
+        }
     }
 }
