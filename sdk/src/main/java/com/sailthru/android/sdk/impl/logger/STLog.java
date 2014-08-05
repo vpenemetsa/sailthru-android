@@ -21,6 +21,7 @@ public class STLog extends Logger {
     public static STLog getInstance() {
         if (STLog == null) {
             STLog = new STLog();
+            logger = STLog;
         }
 
         return STLog;
@@ -32,8 +33,10 @@ public class STLog extends Logger {
      * @param externalLogger {@link com.sailthru.android.sdk.impl.logger.Logger}
      */
     public static void setExternalLogger(Logger externalLogger) {
-        logger = externalLogger;
-        interceptLogs = true;
+        if (externalLogger != null) {
+            logger = externalLogger;
+            interceptLogs = true;
+        }
     }
 
     public static Logger getExternalLogger() {
@@ -110,19 +113,7 @@ public class STLog extends Logger {
      * @return boolean
      */
     private boolean checkLogLevel(LogLevel logLevel) {
-        if (logger == null) {
-            return false;
-        }
-
-        if (logLevel.equals(LogLevel.NONE)) {
-            return false;
-        }
-
-        if (logLevel.equals(LogLevel.BASIC)) {
-            return true;
-        }
-
-        if (logLevel.equals(LogLevel.FULL)) {
+        if (logLevel.equals(LogLevel.BASIC) || logLevel.equals(LogLevel.FULL)) {
             return true;
         }
 
