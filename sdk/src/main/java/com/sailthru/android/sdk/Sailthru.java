@@ -159,7 +159,9 @@ public class Sailthru {
      * @param logger {@link com.sailthru.android.sdk.impl.logger.Logger}
      */
     public void setLogger(Logger logger) {
-        log.setExternalLogger(logger);
+        if (logger != null) {
+            log.setExternalLogger(logger);
+        }
     }
 
     /**
@@ -169,7 +171,7 @@ public class Sailthru {
      * @return {@link com.sailthru.android.sdk.impl.logger.Logger}
      */
     public Logger getLogger() {
-        return log.getExternalLogger();
+        return log.getLogger();
     }
 
     /**
