@@ -194,14 +194,13 @@ Give the project a name and a project ID.
 
 Agree to Google's Terms of Service
 
-//INSERT IMAGE HERE.
+![terms of service](images/tos.png)
 
 Note the Project Number as it is will be required to add to the SDK as the "SENDER_ID"
 
-![terms of service](images/tos.png)
+![project_number](images/project_number.png)
 
 Enable "Google Cloud Messaging for Android" in the API section
-
 
 ![api authentication](images/api_auth.png)
 
