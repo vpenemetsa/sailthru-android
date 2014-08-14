@@ -110,17 +110,18 @@ The UserRegister method accepts the following parameters,
   - <code>appId</code>          : String. Can be found in the [Sailthru] dashboard.
   - <code>identification</code> : Identification. (__EMAIL__ or __ANONYMOUS__).
   - <code>uid</code>            : String. Email of user if <code>identification</code> is __EMAIL__. <code>null</code> if <code>identification</code> is __ANONYMOUS__.
-  - <code>platformAppId</code>  : String. Can be found in the [Sailthru] dashboard. 
+  - <code>platformAppId</code>  : String. Can be found in the [Sailthru] dashboard.
+  - <code>projectNumber</code>  : String. The GCM Project Number also referred to as the SENDER_ID. This can be obtained from the Google Cloud console by following instructions shown below in the Google setup section.
   
 There are two types of registrations, Anonymous and Email,
 
 ###Anonymous
     
-    mSailthru.register(RegistrationMode.PROD, example.sailthru.com, 000000, 123456, Identification.ANONYMOUS, null, com.example);
+    mSailthru.register(RegistrationMode.PROD, "example.sailthru.com", "000000", "123456", Identification.ANONYMOUS, null, "com.example", "0123456789");
     
 ###Email
 
-    mSailthru.register(RegistrationMode.PROD, example.sailthru.com, 000000, 123456, Identification.EMAIL, jdoe@sailthru.com, com.example);
+    mSailthru.register(RegistrationMode.PROD, "example.sailthru.com", "000000", "123456", Identification.EMAIL, "jdoe@sailthru.com", "com.example", "0123456789");
 
 AppTrack
 -------------

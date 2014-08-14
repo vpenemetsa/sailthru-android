@@ -64,15 +64,12 @@ public class GCMRegistrationAsyncTask extends AsyncTask<Void, Void, Boolean> {
         try {
             gcm = GoogleCloudMessaging.getInstance(context);
             regId = gcm.register(projectNumber);
-            log.d(Logger.LogLevel.BASIC, "*******2*************", regId);
+            log.d(Logger.LogLevel.BASIC, "GCM", regId);
 
             return true;
         } catch (IOException ex) {
             String msg = "Error :" + ex.getMessage();
-            Log.e("*******8**3********", msg);
-            // If there is an error, don't just keep trying to register.
-            // Require the user to click a button again, or perform
-            // exponential back-off.
+            log.e(Logger.LogLevel.BASIC, "GCM", msg);
         }
 
         return false;
