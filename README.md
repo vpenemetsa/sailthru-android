@@ -22,7 +22,7 @@ The Sailthru Android SDK uses the Google Play Services Library and needs to be i
 ###JAR
 Download the [SailthruAndroidSDK] jar
 
-####For Android Studio,
+#####For Android Studio,
 Add the SailthruSDK jar to a <code>libs/</code> folder in your project root.  
 In your <code>build.gradle</code>,  
 
@@ -33,7 +33,7 @@ In your <code>build.gradle</code>,
         ...
     }
     
-####For Eclipse,
+#####For Eclipse,
 
   - Add the Sailthru SDK jar to the <code>libs/</code> folder in your project root and refresh you project.
   - Copy the library project at <android-sdk>/extras/google/google_play_services/libproject/google-play-services_lib/ to the location where you maintain your Android app projects.
@@ -208,7 +208,6 @@ You can set the <code>LogLevel</code> in the following way,
     
     mSailthru.setLogLevel(logLevel);
   
-
 If you need to take a closer look at the requests, responses and other log messages, you can intercept logs using a custom implementation of the <code>Logger</code>. You can also set the <code>LogLevel</code> property.  
 
     Logger logger = new Logger() {
