@@ -26,7 +26,8 @@ public class AuthenticatedClient {
     private static final String ST_SECURE_PREFS_IDENTIFICATION = "ST_SECURE_PREFS_IDENTIFICATION";
     private static final String ST_SECURE_PREFS_UID = "ST_SECURE_PREFS_UID";
     private static final String ST_SECURE_PREFS_PLATFORM_APP_ID = "ST_SECURE_PREFS_PLATFORM_APP_ID";
-    private static final String ST_SECURE_PREFS_TOKEN = "ST_SECURE_PREFS_TOKEN";
+    private static final String ST_SECURE_PREFS_GCM_REG_ID = "ST_SECURE_PREFS_GCM_REG_ID";
+    private static final String ST_SECURE_PREFS_APP_VERSION = "ST_SECURE_PREFS_APP_VERSION";
     private static final String ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT =
             "ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT";
 
@@ -39,6 +40,8 @@ public class AuthenticatedClient {
     private static String identification;
     private static String uid;
     private static String platformAppId;
+    private static String gcmRegId;
+    private static String appVersion;
 
     private boolean connectedToNetwork;
     private static boolean cachedRegisterAttempt;
@@ -82,6 +85,12 @@ public class AuthenticatedClient {
         }
         if (prefs.containsKey(ST_SECURE_PREFS_PLATFORM_APP_ID)) {
             platformAppId = prefs.getString(ST_SECURE_PREFS_PLATFORM_APP_ID);
+        }
+        if (prefs.containsKey(ST_SECURE_PREFS_GCM_REG_ID)) {
+            gcmRegId = prefs.getString(ST_SECURE_PREFS_GCM_REG_ID);
+        }
+        if (prefs.containsKey(ST_SECURE_PREFS_APP_VERSION)) {
+            appVersion = prefs.getString(ST_SECURE_PREFS_APP_VERSION);
         }
         if (prefs.containsKey(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT)) {
             cachedRegisterAttempt = true;
@@ -189,5 +198,33 @@ public class AuthenticatedClient {
             prefs.removeValue(ST_SECURE_PREFS_CACHED_REGISTER_ATTEMPT);
             cachedRegisterAttempt = false;
         }
+    }
+
+    public String getGcmRegId() {
+        return gcmRegId;
+    }
+
+    public void saveGcmRegId(String regId) {
+        prefs.put(ST_SECURE_PREFS_GCM_REG_ID, regId);
+        this.gcmRegId = regId;
+    }
+
+    public void deleteRegId() {
+        prefs.removeValue(ST_SECURE_PREFS_GCM_REG_ID);
+        this.gcmRegId = null;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void saveAppVersion(String appVersion) {
+        prefs.put(ST_SECURE_PREFS_APP_VERSION, appVersion);
+        this.appVersion = appVersion;
+    }
+
+    public void deleteAppVersion() {
+        prefs.removeValue(ST_SECURE_PREFS_APP_VERSION);
+        this.appVersion = null;
     }
 }

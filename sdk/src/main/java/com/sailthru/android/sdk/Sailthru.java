@@ -94,16 +94,17 @@ public class Sailthru {
      * @param identification {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @param platformAppId String
      * @param uid String
+     * @param projectNumber String. Obtained from Google cloud console. Also known as SENDER ID.
      */
-    public void register(RegistrationEnvironment env, String domain,
+     public void register(RegistrationEnvironment env, String domain,
                          String apiKey, String appId, Identification identification,
-                         String uid, String platformAppId) {
+                         String uid, String platformAppId, String projectNumber) {
         if (sailthruUtils.passedSanityChecks(env, domain, apiKey, appId, identification, uid,
-                platformAppId)) {
+                platformAppId, projectNumber)) {
             if (authenticatedClient.isConnectedToNetwork()) {
                 log.d(Logger.LogLevel.BASIC, TAG, "Registering");
                 sailthruUtils.makeRegistrationRequest(env.toString(), appId, apiKey, uid,
-                        identification, platformAppId);
+                        identification, platformAppId, projectNumber);
             } else {
                 log.d(Logger.LogLevel.BASIC, TAG, "No network");
                 authenticatedClient.setCachedRegisterAttempt();
