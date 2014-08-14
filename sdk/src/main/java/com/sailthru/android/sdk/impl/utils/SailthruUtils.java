@@ -1,8 +1,16 @@
 package com.sailthru.android.sdk.impl.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.sailthru.android.sdk.Sailthru;
+import com.sailthru.android.sdk.impl.async.GCMRegistrationAsyncTask;
 import com.sailthru.android.sdk.impl.async.UserRegisterAsyncTask;
 import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.impl.event.Event;
@@ -30,10 +38,11 @@ public class SailthruUtils {
 
     private static final String TAG = SailthruUtils.class.getSimpleName();
 
-    Context context;
-    UserRegisterAsyncTask userRegisterAsyncTask = null;
-    AuthenticatedClient authenticatedClient;
-    STLog log;
+    private Context context;
+    private UserRegisterAsyncTask userRegisterAsyncTask = null;
+    private GCMRegistrationAsyncTask gcmRegisterAsyncTask = null;
+    private AuthenticatedClient authenticatedClient;
+    private STLog log;
 
     public SailthruUtils(Context context, AuthenticatedClient authenticatedClient) {
         this.authenticatedClient = authenticatedClient;
@@ -76,7 +85,7 @@ public class SailthruUtils {
     public boolean passedSanityChecks(Sailthru.RegistrationEnvironment mode, String domain,
                                          String apiKey, String appId,
                                          Sailthru.Identification identification, String uid,
-                                         String platformAppId) {
+                                         String platformAppId, String projectNumber) {
 
         boolean passedChecks = true;
 
@@ -112,6 +121,11 @@ public class SailthruUtils {
             log.e(Logger.LogLevel.BASIC, TAG, "Invalid platform app id.");
         }
 
+        if (projectNumber == null || projectNumber.isEmpty()) {
+            passedChecks = false;
+            log.e(Logger.LogLevel.BASIC, TAG, "Invalid GCM Project Number");
+        }
+
         return passedChecks;
     }
 
@@ -135,19 +149,90 @@ public class SailthruUtils {
      * @param uid String
      * @param userType {@link com.sailthru.android.sdk.Sailthru.Identification}
      * @param platformAppId String
+     * @param projectNumber String
      */
     public void makeRegistrationRequest(String env, String appId, String apiKey, String uid,
                                                   Sailthru.Identification userType,
-                                                  String platformAppId) {
+                                                  String platformAppId, String projectNumber) {
+        if (checkPlayServices()) {
+            String regId = getRegistrationId(context);
+            if (regId.isEmpty()) {
+                if (gcmRegisterAsyncTask != null) {
+                    gcmRegisterAsyncTask.cancel(true);
+                }
+                gcmRegisterAsyncTask = new GCMRegistrationAsyncTask(context, env, appId, apiKey,
+                        uid, userType, platformAppId, projectNumber, authenticatedClient,
+                        mRegisterCallback, log);
+                gcmRegisterAsyncTask.execute((Void) null);
+            } else {
+                if (userRegisterAsyncTask != null) {
+                    userRegisterAsyncTask.cancel(true);
+                }
+                userRegisterAsyncTask = new UserRegisterAsyncTask(context, env, appId, apiKey, uid,
+                        userType, platformAppId, regId, authenticatedClient, mRegisterCallback);
+                userRegisterAsyncTask.execute((Void) null);
+            }
+        } else {
+            log.e(Logger.LogLevel.BASIC, TAG, "Play services not available. Import play services " +
+                    "to register");
+        }
+    }
 
-        // Cancel any running AppRegister calls
-        if (userRegisterAsyncTask != null) {
-            userRegisterAsyncTask.cancel(true);
+    /**
+     * Checks to see if play services are available on current device.
+     *
+     * @return Boolean
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            log.d(Logger.LogLevel.BASIC, TAG, "Play services not available.");
+            return false;
         }
 
-        userRegisterAsyncTask = new UserRegisterAsyncTask(context, env, appId, apiKey, uid,
-                userType, platformAppId, authenticatedClient, mRegisterCallback);
-        userRegisterAsyncTask.execute((Void) null);
+        return true;
+    }
+
+    /**
+     * Checks and returns GCM Registration ID.
+     *
+     * @param context {@link android.content.Context}
+     * @return String
+     */
+    private String getRegistrationId(Context context) {
+        String registrationId = authenticatedClient.getGcmRegId();
+        if (registrationId == null || registrationId.isEmpty()) {
+            return "";
+        }
+
+        // Check if app was updated; if so, it must clear the registration ID
+        // since the existing regID is not guaranteed to work with the new
+        // app version.
+        String registeredVersion = authenticatedClient.getAppVersion();
+        int currentVersion = getAppVersion(context);
+        if (Integer.parseInt(registeredVersion) != currentVersion) {
+            return "";
+        }
+        return registrationId;
+    }
+
+    /**
+     * Returns current version of app
+     *
+     * @param context {@link android.content.Context}
+     * @return int
+     */
+    private int getAppVersion(Context context) {
+        int versionCode = 0;
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            versionCode = packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            log.d(Logger.LogLevel.BASIC, TAG, "App Version not available.");
+        }
+
+        return versionCode;
     }
 
     /**

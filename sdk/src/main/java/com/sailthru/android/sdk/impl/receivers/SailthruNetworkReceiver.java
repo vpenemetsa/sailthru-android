@@ -85,7 +85,8 @@ public class SailthruNetworkReceiver extends BroadcastReceiver {
             }
 
             stClient.register(mode, client.getDomain(), client.getApiKey(),
-                    client.getAppId(), identification, client.getUid(), client.getPlatformAppId());
+                    client.getAppId(), identification, client.getUid(), client.getPlatformAppId(),
+                    client.getGcmRegId());
 
             client.deleteCachedRegisterAttempt();
         }
