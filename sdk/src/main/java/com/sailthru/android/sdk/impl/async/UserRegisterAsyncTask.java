@@ -7,7 +7,6 @@ import com.sailthru.android.sdk.impl.client.AuthenticatedClient;
 import com.sailthru.android.sdk.Sailthru;
 import com.sailthru.android.sdk.impl.api.ApiManager;
 import com.sailthru.android.sdk.impl.response.UserRegisterAppResponse;
-import com.sailthru.android.sdk.impl.utils.UserRegisterUtils;
 
 import com.sailthru.android.sdk.impl.external.retrofit.Callback;
 
@@ -25,13 +24,14 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
     String uid;
     Sailthru.Identification userType;
     String platformAppId;
+    String gcmRegId;
     AuthenticatedClient authenticatedClient;
     Callback<UserRegisterAppResponse> callback;
     ApiManager apiManager;
 
     public UserRegisterAsyncTask(Context context, String env, String appId, String apiKey,
                                  String uid, Sailthru.Identification userType, String platformAppId,
-                                 AuthenticatedClient authenticatedClient,
+                                 String gcmRegId, AuthenticatedClient authenticatedClient,
                                  Callback<UserRegisterAppResponse> callback) {
         this.context = context;
         this.env = env;
@@ -40,6 +40,7 @@ public class UserRegisterAsyncTask extends AsyncTask<Void, Void, Void> {
         this.uid = uid;
         this.userType = userType;
         this.platformAppId = platformAppId;
+        this.gcmRegId = gcmRegId;
         this.authenticatedClient = authenticatedClient;
         this.callback = callback;
         apiManager = new ApiManager(context);
