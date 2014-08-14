@@ -19,6 +19,9 @@ Client Setup
 ###JAR
 Download the [SailthruAndroidSDK] jar
 
+###Dependency
+The Sailthru Android SDK uses the Google Play Services Library and needs to be imported.
+
 ####For Android Studio,
 Add the SailthruSDK jar to a <code>libs/</code> folder in your project root.  
 In your <code>build.gradle</code>,  
@@ -26,6 +29,7 @@ In your <code>build.gradle</code>,
     dependencies {
         ...
         compile files('libs/sailthru-1.0.0.jar')
+        compile 'com.google.android.gms:play-services:5.+'
         ...
     }
     
@@ -36,6 +40,7 @@ Add the Sailthru SDK jar to the <code>libs/</code> folder in your project root a
     dependencies {
             ...
             compile 'com.sailthru:com.sailthru.android:1.+'
+            compile 'com.google.android.gms:play-services:5.+'
             ...
         }
         
@@ -150,7 +155,18 @@ Example call,
 
 Logging
 ----------
-If you need to take a closer look at the requests, responses and other log messages, you can intercept logs using a custom implementation of the <code>Logger</code>. You can also set the <code>LogLevel</code> property. The possible logging levels are <code>NONE</code>, <code>BASIC</code> and <code>FULL</code>
+There are 3 Log Levels you can choose from to display logs.  
+
+  - NONE   : No logs will be displayed.
+  - BASIC  : Only basic information will be logged.
+  - FULL   : All logs including network requests/responses are logged.
+  
+You can set the <code>LogLevel</code> in the following way,  
+    
+    mSailthru.setLogLevel(logLevel);
+  
+
+If you need to take a closer look at the requests, responses and other log messages, you can intercept logs using a custom implementation of the <code>Logger</code>. You can also set the <code>LogLevel</code> property.  
 
     Logger logger = new Logger() {
         @Override
@@ -174,7 +190,7 @@ If you need to take a closer look at the requests, responses and other log messa
     mSailthru.setLogger(logger);
   
 The <code>LogLevel</code> is set to <code>BASIC</code> by default.
-[SailthruAndroidSDK]:http://search.maven.org/remotecontent?filepath=com/sailthru/com.sailthru.android/1.0/com.sailthru.android-1.0.jar
+[SailthruAndroidSDK]:https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=com.sailthru&a=com.sailthru.android&v=1.0.1&e=jar
 [Sailthru]:https://my.sailthru.com/
 
 Google Setup

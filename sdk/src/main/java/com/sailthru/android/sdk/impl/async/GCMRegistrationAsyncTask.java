@@ -94,7 +94,6 @@ public class GCMRegistrationAsyncTask extends AsyncTask<Void, Void, Boolean> {
      */
     private void storeRegistrationId(Context context, String regId) {
         int appVersion = getAppVersion(context);
-        Log.i("GCM ASYNC TASK", "Saving regId on app version " + appVersion);
         authClient.saveGcmRegId(regId);
         authClient.saveAppVersion(Integer.toString(appVersion));
     }
