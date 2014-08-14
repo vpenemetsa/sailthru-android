@@ -201,4 +201,4 @@ Enable "Google Cloud Messaging for Android" in the API section
 
 ![api authentication](images/api_auth.png)
 
-That's it. It should be noted  that there are no quotas for Google Cloud Messaging for Android. More info can be [found here] (https://developer.android.com/google/gcm/c2dm.html#history)
+That's it. It should be noted that there are no quotas for Google Cloud Messaging for Android. More info can be [found here] (https://developer.android.com/google/gcm/c2dm.html#history)
