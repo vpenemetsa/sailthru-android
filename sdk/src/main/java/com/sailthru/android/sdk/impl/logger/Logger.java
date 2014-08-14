@@ -10,7 +10,13 @@ public abstract class Logger {
     public static final String BASE_TAG = "com.sailthru.";
 
     public enum LogLevel {
-        NONE, FULL, BASIC
+        NONE(0), BASIC(1), FULL(2);
+
+        public final int value;
+
+        private LogLevel(int value) {
+            this.value = value;
+        }
     }
 
     protected LogLevel logLevel;
@@ -18,13 +24,6 @@ public abstract class Logger {
 
     public Logger() {
         logLevel = LogLevel.BASIC;
-    }
-
-    public void setLogLevel(LogLevel logLevel) {
-        if (logLevel == null) {
-            this.logLevel = LogLevel.NONE;
-        }
-        this.logLevel = logLevel;
     }
 
     /**

@@ -32,11 +32,26 @@ public class STLog extends Logger {
      * @param externalLogger {@link com.sailthru.android.sdk.impl.logger.Logger}
      */
     public static void setExternalLogger(Logger externalLogger) {
-        logger = externalLogger;
-        interceptLogs = true;
+        if (externalLogger != null) {
+            logger = externalLogger;
+            interceptLogs = true;
+        }
     }
 
-    public static Logger getExternalLogger() {
+    /**
+     * Sets log level
+     *
+     * @param logLevel {@link com.sailthru.android.sdk.impl.logger.Logger.LogLevel}
+     */
+    public void setLogLevel(LogLevel logLevel) {
+        if (logLevel == null) {
+            this.logLevel = LogLevel.NONE;
+        } else {
+            this.logLevel = logLevel;
+        }
+    }
+
+    public static Logger getLogger() {
         return logger;
     }
 
@@ -45,8 +60,8 @@ public class STLog extends Logger {
      */
     @Override
     public void d(final LogLevel logLevel, final String tag, final String message) {
-        if (interceptLogs && logger != null) {
-            if (checkLogLevel(logLevel)) {
+        if (checkLogLevel(logLevel)) {
+            if (interceptLogs && logger != null) {
                 Handler handler = new Handler(Looper.getMainLooper());
                 Runnable runnable = new Runnable() {
                     @Override
@@ -55,9 +70,9 @@ public class STLog extends Logger {
                     }
                 };
                 handler.post(runnable);
+            } else {
+                Log.d(BASE_TAG + tag, message);
             }
-        } else {
-            Log.d(BASE_TAG + tag, message);
         }
     }
 
@@ -66,8 +81,8 @@ public class STLog extends Logger {
      */
     @Override
     public void w(final LogLevel logLevel, final String tag, final String message) {
-        if (interceptLogs && logger != null) {
-            if (checkLogLevel(logLevel)) {
+        if (checkLogLevel(logLevel)) {
+            if (interceptLogs && logger != null) {
                 Handler handler = new Handler(Looper.getMainLooper());
                 Runnable runnable = new Runnable() {
                     @Override
@@ -76,9 +91,9 @@ public class STLog extends Logger {
                     }
                 };
                 handler.post(runnable);
+            } else {
+                Log.w(BASE_TAG + tag, message);
             }
-        } else {
-            Log.w(BASE_TAG + tag, message);
         }
     }
 
@@ -87,8 +102,8 @@ public class STLog extends Logger {
      */
     @Override
     public void e(final LogLevel logLevel, final String tag, final String message) {
-        if (interceptLogs && logger != null) {
-            if (checkLogLevel(logLevel)) {
+        if (checkLogLevel(logLevel)) {
+            if (interceptLogs && logger != null) {
                 Handler handler = new Handler(Looper.getMainLooper());
                 Runnable runnable = new Runnable() {
                     @Override
@@ -97,9 +112,9 @@ public class STLog extends Logger {
                     }
                 };
                 handler.post(runnable);
+            } else {
+                Log.e(BASE_TAG + tag, message);
             }
-        } else {
-            Log.e(BASE_TAG + tag, message);
         }
     }
 
@@ -110,21 +125,7 @@ public class STLog extends Logger {
      * @return boolean
      */
     private boolean checkLogLevel(LogLevel logLevel) {
-        if (logger == null) {
-            return false;
-        }
-
-        if (logger.logLevel.equals(LogLevel.NONE)) {
-            return false;
-        }
-
-        if (logger.logLevel.equals(LogLevel.BASIC)) {
-            if (logLevel.equals(LogLevel.BASIC)) {
-                return true;
-            }
-        }
-
-        if (logger.logLevel.equals(LogLevel.FULL)) {
+        if (logLevel.value <= this.logLevel.value) {
             return true;
         }
 
