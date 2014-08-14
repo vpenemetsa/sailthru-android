@@ -13,7 +13,7 @@ The Sailthru Android SDK provides:
 *  Recommendation delivery 
 
 
-Setup
+Client Setup
 -----
 
 ###JAR
@@ -173,8 +173,32 @@ If you need to take a closer look at the requests, responses and other log messa
     mSailthru.setLogger(logger);
   
 The <code>LogLevel</code> is set to <code>BASIC</code> by default.
-
-
 [SailthruAndroidSDK]:http://search.maven.org/remotecontent?filepath=com/sailthru/com.sailthru.android/1.0/com.sailthru.android-1.0.jar
 [Sailthru]:https://my.sailthru.com/
 
+Google Setup
+-----
+
+The Sailthru Android SDK requires a Google Project be created. The Google Project should have the "Google Cloud Messaging for Android" API enabled. To enable the api follow the directions below.
+
+Navigate to the [Google Developers Console](https://console.developers.google.com/)
+
+Create a new project
+
+![creating](images/create.png)
+
+Give the project a name and a project ID. Note the project ID as it is will be required to add to the SDK as the "SENDER_ID"
+
+
+![naming a project](images/name_project.png)
+
+Agree to Google's Terms of Service
+
+![terms of service](images/tos.png)
+
+Enable "Google Cloud Messaging for Android" in the API section
+
+
+![api authentication](images/api_auth.png)
+
+That's it. It should be noted that there are no quotas for Google Cloud Messaging for Android. More info can be [found here] (https://developer.android.com/google/gcm/c2dm.html#history)
