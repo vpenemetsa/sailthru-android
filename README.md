@@ -16,11 +16,11 @@ The Sailthru Android SDK provides:
 Client Setup
 -----
 
-###JAR
-Download the [SailthruAndroidSDK] jar
-
 ###Dependency
 The Sailthru Android SDK uses the Google Play Services Library and needs to be imported.
+
+###JAR
+Download the [SailthruAndroidSDK] jar
 
 ####For Android Studio,
 Add the SailthruSDK jar to a <code>libs/</code> folder in your project root.  
@@ -28,7 +28,7 @@ In your <code>build.gradle</code>,
 
     dependencies {
         ...
-        compile files('libs/sailthru-1.0.0.jar')
+        compile files('libs/com.sailthru.android-1.0.1.jar')
         compile 'com.google.android.gms:play-services:5.+'
         ...
     }
@@ -48,7 +48,7 @@ Add the Sailthru SDK jar to the <code>libs/</code> folder in your project root a
     <dependency>
       <groupId>com.sailthru</groupId>
       <artifactId>com.sailthru.android</artifactId>
-      <version>1.0</version>
+      <version>1.0.1</version>
     </dependency>
 
 Initialization
