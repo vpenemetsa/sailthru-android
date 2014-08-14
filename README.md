@@ -187,12 +187,16 @@ Create a new project
 
 ![creating](images/create.png)
 
-Give the project a name and a project ID. Note the project ID as it is will be required to add to the SDK as the "SENDER_ID"
+Give the project a name and a project ID.
 
 
 ![naming a project](images/name_project.png)
 
 Agree to Google's Terms of Service
+
+//INSERT IMAGE HERE.
+
+Note the Project Number as it is will be required to add to the SDK as the "SENDER_ID"
 
 ![terms of service](images/tos.png)
 
