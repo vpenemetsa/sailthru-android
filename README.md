@@ -34,7 +34,11 @@ In your <code>build.gradle</code>,
     }
     
 ####For Eclipse,
-Add the Sailthru SDK jar to the <code>libs/</code> folder in your project root and refresh you project.
+
+  - Add the Sailthru SDK jar to the <code>libs/</code> folder in your project root and refresh you project.
+  - Copy the library project at <android-sdk>/extras/google/google_play_services/libproject/google-play-services_lib/ to the location where you maintain your Android app projects.
+  - Import the library project into your Eclipse workspace. Click File > Import, select Android > Existing Android Code into Workspace, and browse to the copy of the library project to import it.
+  - In your app project, reference Google Play services library project.
   
 ###Gradle
     dependencies {
@@ -50,6 +54,45 @@ Add the Sailthru SDK jar to the <code>libs/</code> folder in your project root a
       <artifactId>com.sailthru.android</artifactId>
       <version>1.0.1</version>
     </dependency>
+    
+###Android Manifest
+Update your <code>AndroidManifest.xml</code> including the following code.
+
+    <?xml version="1.1" encoding="utf-8"?>
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+        ...
+    
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        
+        ...
+        
+        <application
+            >
+            ...
+    
+            <meta-data android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version" />
+    
+            ...
+            
+            <receiver
+                android:name="com.sailthru.android.sdk.impl.receivers.SailthruNetworkReceiver"
+                android:enabled="true" >
+                <intent-filter>
+                    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                </intent-filter>
+            </receiver>
+    
+            <service android:name="com.sailthru.android.sdk.impl.event.SailthruAppTrackService" />
+    
+            ...
+            
+        </application>
+    
+    </manifest>
+
 
 Initialization
 ---------------
