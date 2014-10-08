@@ -11,8 +11,7 @@ The Sailthru Android SDK provides:
 *  Anonymous user support 
 *  Profile data acquisition 
 *  Recommendation delivery 
-
-* Note: Push Notifications are coming soon!
+*  Note: Push Notifications are coming soon!
 
 Client Setup
 -----
