@@ -12,6 +12,7 @@ The Sailthru Android SDK provides:
 *  Profile data acquisition 
 *  Recommendation delivery 
 
+* Note: Push Notifications are coming soon!
 
 Client Setup
 -----
