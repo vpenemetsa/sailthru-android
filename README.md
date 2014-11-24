@@ -9,7 +9,11 @@ Product Features
 The Sailthru Android SDK provides:
 *  User registration
 *  Anonymous user support 
-*  Profile data acquisition 
+*  Profile data acquisition
+    *   App usage date & time
+    *   URLs visited
+    *   Tags viewed
+    *   Geolocation 
 *  Recommendation delivery 
 *  Note: Push Notifications are coming soon!
 
