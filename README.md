@@ -15,7 +15,6 @@ The Sailthru Android SDK provides:
     *   Tags viewed
     *   Geolocation 
 *  Recommendation delivery 
-*  Note: Push Notifications are coming soon!
 
 Client Setup
 -----
